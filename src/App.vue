@@ -1,24 +1,24 @@
 <script setup lang="ts">
-  function handleClick (nombre: string) {
-    console.log("Bienvenido " + nombre);
-  }
+import Hero from './components/Hero.vue';
 
-  const handleClickDos = () => {
-    console.log("Funcion flecha!");
-  }
+const handleConfirm = () => {
+  // Aquí puedes manejar la lógica de confirmación
+  console.log('Asistencia confirmada');
+};
 
 </script>
 
-<template class="container">
+<template >
+  <Hero
+    groom="Alejandro"
+    bride="Candelaria"
+    date="15 de Septiembre, 2026"
+    @confirm="handleConfirm"
+  />
 
-  <button v-on:click="handleClick('Lucas')">Funcion convencional</button>
-  <br>
-  <br>
-  <button v-on:click="handleClickDos()">Funcion Flecha</button>
+  <div class="h-screen"></div>
 </template>
 
 <style scoped>
-.container {
-  border: 1px solid red;
-}
+
 </style>
