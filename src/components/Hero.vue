@@ -23,7 +23,7 @@ const emit = defineEmits<{
         <p class=" hero-date">{{ date }}</p>
       </div>
       <div class="w-1/2">
-        <Button @click="emit('confirm')">
+        <Button variant="primary" @click="emit('confirm')">
           <i class="fas fa-heart me-2" aria-hidden="true"></i>
           Confirma tu Asistencia
         </Button>
@@ -31,7 +31,7 @@ const emit = defineEmits<{
 
     </div>
   
-    <div class="scroll-indicator absolute bottom-0 left-1/2 transform -translate-x-1/2 animate-ping text-white">
+    <div class="scroll-indicator absolute bottom-5 left-1/2 transform -translate-x-1/2 animate-ping text-white">
       <i class="fas fa-chevron-down" aria-hidden="true"></i>
     </div>
   </section>
@@ -40,8 +40,9 @@ const emit = defineEmits<{
 <style scoped>
 .hero-bg {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../assets/images/married-main.webp');
-  background-size: cover;
-  background-position: top center;
+  background-size: 130%;
+  background-position: top;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 .hero-wedding {
