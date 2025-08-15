@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-    --primary-green: #4A6360;
-    --secondary-gold: #BFA880;
+    --green-color: #4A6360;
+    --gold-color: #BFA880;
+    --brown-color: #8b6f47;
     --cream-bg: #f8f6f3;
     --light-cream: #faf9f7;
     --text-dark: #2c2c2c;
@@ -26,6 +27,12 @@ body {
   font-weight: 400;
   line-height: 1.7;
   color: var(--text-dark);
+}
+
+.title-wedding {
+  letter-spacing: 3px;
+  opacity: 0.9;
+  color: var(--white);
 }
 
 /* 

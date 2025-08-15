@@ -28,13 +28,13 @@ const emit = defineEmits(['click']);
   letter-spacing: 1px;
 }
 .primary {
-  background: var(--primary-green);
+  background: var(--green-color);
   color: var(--white);
   transition: all 0.3s ease;
 }
 
 .primary:hover {
-  background: var(--secondary-gold);
+  background: var(--gold-color);
   color: var(--white);
   transform: translateY(-3px);
 }

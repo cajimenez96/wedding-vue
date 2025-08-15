@@ -18,11 +18,11 @@ const emit = defineEmits<{
   <section id="inicio" class="h-screen w-screen flex flex-col items-center justify-center bg-cover bg-center relative hero-bg">
     <div class="text-center flex flex-col items-center gap-20 fade-in">
       <div class="flex flex-col gap-5">
-        <p class="uppercase text-md font-light hero-wedding">Nos casamos</p>
+        <p class="uppercase text-md font-light title-wedding">Nos casamos</p>
         <h1 class="hero-title">{{ groom }} & {{ bride }}</h1>
         <p class=" hero-date">{{ date }}</p>
       </div>
-      <div class="w-1/2">
+      <div class="w-3/4 md:w-1/2">
         <Button variant="primary" @click="emit('confirm')">
           <i class="fas fa-heart me-2" aria-hidden="true"></i>
           Confirma tu Asistencia
@@ -40,15 +40,10 @@ const emit = defineEmits<{
 <style scoped>
 .hero-bg {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../assets/images/married-main.webp');
-  background-size: 130%;
+  background-size: center;
   background-position: top;
   background-repeat: no-repeat;
   background-attachment: fixed;
-}
-.hero-wedding {
-  letter-spacing: 3px;
-  opacity: 0.9;
-  color: var(--white);
 }
 .hero-title {
   font-family: 'Sail', cursive;
