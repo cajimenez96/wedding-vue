@@ -11,11 +11,10 @@ const emit = defineEmits(['click']);
 
 <template>
   <button
-    class="w-full border-none cursor-pointer"
     :class="[
-      'w-full h-full py-4 cursor-pointer rounded-3xl text-lg button',
+      'h-full w-full border-none py-4 cursor-pointer rounded-3xl text-lg button',
       variant === 'primary' && 'primary',
-      variant === 'outline' && 'outline'
+      variant === 'outline' && 'outline',
     ]"
     @click="emit('click')"
   >

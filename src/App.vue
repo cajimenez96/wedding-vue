@@ -5,7 +5,6 @@ import Events from './components/Events.vue';
 import Separator from './components/Separator.vue';
 
 const handleConfirm = () => {
-  // Aquí puedes manejar la lógica de confirmación
   console.log('Asistencia confirmada');
 };
 
@@ -27,7 +26,11 @@ const handleConfirm = () => {
 
   <Separator />
 
-  <Events title="Ceremonia" location="Casona Campo" startDate="2026-09-15T18:00:00" />
+  <Events
+    title="Ceremonia"
+    location="Casona Campo"
+    startDate="2026-09-15T18:00:00"
+  />
 </template>
 
 <style scoped>
