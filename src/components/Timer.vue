@@ -43,12 +43,12 @@ onUnmounted(() => {
 
 <template>
   <section class="container-timer w-full">
-    <div class="my-18">
-      <div class="mx-auto">
-        <Vue3Lottie :animationData="Calendar" :height="50" :width="50" />
+    <div>
+      <div class="mx-auto mb-10">
+        <Vue3Lottie :animationData="Calendar" :height="80" :width="80" />
       </div>
       <div class="w-full justify-center items-center md:text-center flex flex-col gap-10 p-8">
-        <p class="text-4xl title-wedding title">{{ title }}</p>
+        <p class="text-4xl title-wedding title-section">{{ title }}</p>
         <p class="text-xl" v-html="description"></p>
       </div>
       <div class="mt-5 w-full flex justify-center items-center">
@@ -91,16 +91,10 @@ onUnmounted(() => {
 
 <style scoped>
 .container-timer {
-  height: 690px;
-  border-bottom: .5 solid var(--gold-color);
+  height: 690px;    
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.title {
-  font-family: 'Sail', cursive;
-  color: var(--brown-color);
-  letter-spacing: .5px;
 }
 .border-box::after {
   content: ":";

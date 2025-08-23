@@ -35,6 +35,12 @@ body {
   color: var(--white);
 }
 
+.title-section {
+  font-family: 'Sail', cursive;
+  color: var(--brown-color);
+  letter-spacing: .5px;
+}
+
 /* 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
