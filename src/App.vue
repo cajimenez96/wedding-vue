@@ -3,6 +3,7 @@ import Hero from './components/Hero.vue';
 import Timer from './components/Timer.vue';
 import Events from './components/Events.vue';
 import Separator from './components/Separator.vue';
+import Gallery from './components/Gallery.vue';
 
 const handleConfirm = () => {
   console.log('Asistencia confirmada');
@@ -30,6 +31,12 @@ const handleConfirm = () => {
     title="Ceremonia"
     location="Casona Campo"
     startDate="2026-09-15T18:00:00"
+  />
+
+  <Separator />
+
+  <Gallery
+    title="Nuestra Galería de amor"
   />
 </template>
 
