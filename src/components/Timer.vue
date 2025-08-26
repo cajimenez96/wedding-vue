@@ -99,13 +99,13 @@ onUnmounted(() => {
 .border-box::after {
   content: ":";
   font-family: 'Sail', cursive;
-  color: var(--gold-color);
+  color: var(--green-color);
 }
 .number {
   font-family: 'Sail', cursive;
   font-size: 5rem;
   font-weight: lighter;
-  color: var(--gold-color);
+  color: var(--green-color);
   line-height: 1;
   margin-bottom: 0.5rem;
 }

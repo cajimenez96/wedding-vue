@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Button from './Button.vue';
+import Button from './Button.vue'; // eslint-disable-line
 
 defineProps<{
   groom: string;
@@ -19,10 +19,17 @@ const emit = defineEmits<{
     <div class="text-center flex flex-col items-center gap-20 fade-in">
       <div class="flex flex-col gap-5">
         <p class="uppercase text-md font-light title-wedding">Nos casamos</p>
-        <h1 class="hero-title">{{ groom }} & {{ bride }}</h1>
+        <h1 class="hero-title">
+          <span class="desktop-layout">{{ groom }} & {{ bride }}</span>
+          <span class="mobile-layout">
+            <span class="groom-name">{{ groom }}</span>
+            <span class="ampersand">&</span>
+            <span class="bride-name">{{ bride }}</span>
+          </span>
+        </h1>
         <p class=" hero-date">{{ date }}</p>
       </div>
-      <div class="w-3/4 md:w-1/2">
+      <div class="hero-button-container">
         <Button variant="primary" @click="emit('confirm')">
           <i class="fas fa-heart me-2" aria-hidden="true"></i>
           Confirma tu Asistencia
@@ -52,6 +59,58 @@ const emit = defineEmits<{
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
   line-height: 1.2;
   color: var(--white);
+}
+
+/* Desktop layout - show inline */
+.hero-title .desktop-layout {
+  display: inline;
+}
+
+.hero-title .mobile-layout {
+  display: none;
+}
+
+/* Mobile layout - show vertically */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 3rem;
+  }
+  
+  .hero-title .desktop-layout {
+    display: none;
+  }
+  
+  .hero-title .mobile-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .hero-title .groom-name, 
+  .hero-title .bride-name {
+    display: block;
+  }
+  
+  .hero-title .ampersand {
+    display: block;
+    font-size: 2rem;
+    opacity: 0.8;
+  }
+}
+
+.hero-button-container {
+  width: calc(100% - 2rem);
+  max-width: none;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .hero-button-container {
+    width: 50%;
+    max-width: 400px;
+    padding: 0;
+  }
 }
 .hero-date {
   font-size: 1.3rem;

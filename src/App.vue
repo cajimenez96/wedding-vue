@@ -5,6 +5,8 @@ import Events from './components/Events.vue';
 import Separator from './components/Separator.vue';
 import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
+import Footer from './components/Footer.vue';
+import MusicPlayer from './components/MusicPlayer.vue';
 
 const handleConfirm = () => {
   console.log('Asistencia confirmada');
@@ -47,6 +49,13 @@ const handleConfirm = () => {
     title="Regalos"
     description="Tu presencia es lo más importante para nosotros.<br>Si además querés hacernos un regalo te contamos cómo hacerlo."
   />
+
+  <Footer
+    groom="Alejandro"
+    bride="Candelaria"
+  />
+
+  <MusicPlayer />
 
 </template>
 
