@@ -7,9 +7,19 @@ import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
 import Footer from './components/Footer.vue';
 import MusicPlayer from './components/MusicPlayer.vue';
+import MusicModal from './components/MusicModal.vue';
+import ScrollToTop from './components/ScrollToTop.vue';
+
+import { ref } from 'vue';
+
+const musicMuted = ref(true);
 
 const handleConfirm = () => {
   console.log('Asistencia confirmada');
+};
+
+const handleMusicPreference = (withMusic: boolean) => {
+  musicMuted.value = !withMusic;
 };
 
 </script>
@@ -55,7 +65,9 @@ const handleConfirm = () => {
     bride="Candelaria"
   />
 
-  <MusicPlayer />
+  <MusicPlayer :initial-muted="musicMuted" />
+  <MusicModal @music-preference="handleMusicPreference" />
+  <ScrollToTop />
 
 </template>
 

@@ -74,7 +74,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 
 interface Song {
   title: string;
@@ -82,20 +82,38 @@ interface Song {
   id: string;
 }
 
-defineProps<{
+const props = defineProps<{
   title?: string;
+  initialMuted?: boolean;
 }>();
 
 const audioPlayer = ref<HTMLAudioElement>();
 const isPlaying = ref(false);
 const currentTime = ref(0);
 const duration = ref(0);
-const volume = ref(70);
+const volume = ref(0); // Empezar en 0 porque está muted
 const songs = ref<Song[]>([]);
 const currentSongIndex = ref(0);
-const isMinimized = ref(false);
-const isMuted = ref(false);
+const isMinimized = ref(true);
+const isMuted = ref(true); // Empezar muted por defecto
 const previousVolume = ref(70);
+
+// Watch para cambios en la prop initialMuted
+watch(() => props.initialMuted, (newValue) => {
+  if (newValue !== undefined) {
+    isMuted.value = newValue;
+    if (newValue) {
+      previousVolume.value = volume.value > 0 ? volume.value : 70;
+      volume.value = 0;
+    } else {
+      volume.value = previousVolume.value > 0 ? previousVolume.value : 70;
+    }
+    // updateVolume será llamado en onMounted
+    if (audioPlayer.value) {
+      audioPlayer.value.volume = volume.value / 100;
+    }
+  }
+}, { immediate: true });
 
 const progress = computed(() => {
   return duration.value > 0 ? (currentTime.value / duration.value) * 100 : 0;
@@ -179,7 +197,17 @@ const toggleMute = () => {
 };
 
 onMounted(() => {
+  console.log('MusicPlayer mounted', { initialMuted: props.initialMuted });
   loadMusicFiles();
+  
+  // Aplicar configuración inicial de mute
+  if (props.initialMuted !== undefined) {
+    isMuted.value = props.initialMuted;
+    if (props.initialMuted) {
+      volume.value = 0;
+    }
+  }
+  
   updateVolume();
 });
 </script>
