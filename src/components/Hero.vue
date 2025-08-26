@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Button from './Button.vue'; // eslint-disable-line
+import Button from "./Button.vue";
 
 defineProps<{
   groom: string;
@@ -8,14 +8,15 @@ defineProps<{
 }>();
 
 const emit = defineEmits<{
-  (e: 'confirm'): void;
+  (e: "confirm"): void;
 }>();
-
-
 </script>
 
 <template>
-  <section id="inicio" class="h-screen w-screen flex flex-col items-center justify-center bg-cover bg-center relative hero-bg">
+  <section
+    id="inicio"
+    class="h-screen w-screen flex flex-col items-center justify-center bg-cover bg-center relative hero-bg"
+  >
     <div class="text-center flex flex-col items-center gap-20 fade-in">
       <div class="flex flex-col gap-5">
         <p class="uppercase text-md font-light title-wedding">Nos casamos</p>
@@ -27,7 +28,7 @@ const emit = defineEmits<{
             <span class="bride-name">{{ bride }}</span>
           </span>
         </h1>
-        <p class=" hero-date">{{ date }}</p>
+        <p class="hero-date">{{ date }}</p>
       </div>
       <div class="hero-button-container">
         <Button variant="primary" @click="emit('confirm')">
@@ -35,10 +36,11 @@ const emit = defineEmits<{
           Confirma tu Asistencia
         </Button>
       </div>
-
     </div>
-  
-    <div class="scroll-indicator absolute bottom-5 left-1/2 transform -translate-x-1/2 animate-ping text-white">
+
+    <div
+      class="scroll-indicator absolute bottom-5 left-1/2 transform -translate-x-1/2 animate-ping text-white"
+    >
       <i class="fas fa-chevron-down" aria-hidden="true"></i>
     </div>
   </section>
@@ -46,14 +48,15 @@ const emit = defineEmits<{
 
 <style scoped>
 .hero-bg {
-  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), url('../assets/images/married-main.webp');
+  background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("../assets/images/married-main.webp");
   background-size: center;
   background-position: top;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 .hero-title {
-  font-family: 'Sail', cursive;
+  font-family: "Sail", cursive;
   font-size: 5rem;
   margin-bottom: 1.5rem;
   text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
@@ -61,7 +64,6 @@ const emit = defineEmits<{
   color: var(--white);
 }
 
-/* Desktop layout - show inline */
 .hero-title .desktop-layout {
   display: inline;
 }
@@ -70,7 +72,6 @@ const emit = defineEmits<{
   display: none;
 }
 
-/* Mobile layout - show vertically */
 @media (max-width: 768px) {
   .hero-title {
     font-size: 3rem;
@@ -105,6 +106,20 @@ const emit = defineEmits<{
   padding: 0 1rem;
 }
 
+@media (max-width: 767px) {
+  .hero-button-container {
+    width: calc(100vw - 2rem);
+    padding: 0 1rem;
+  }
+  
+  .hero-button-container :deep(.button) {
+    white-space: nowrap;
+    min-width: 280px;
+    font-size: 1rem;
+    padding: 1rem 1.5rem;
+  }
+}
+
 @media (min-width: 768px) {
   .hero-button-container {
     width: 50%;
@@ -118,6 +133,6 @@ const emit = defineEmits<{
   margin-bottom: 2rem;
   opacity: 0.95;
   letter-spacing: 1px;
-  color: var(--white)
+  color: var(--white);
 }
 </style>

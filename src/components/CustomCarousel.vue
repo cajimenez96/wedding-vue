@@ -161,7 +161,6 @@ img {
   border-radius: 6px;
 }
 
-/* Responsive thumbnail styles */
 @media (max-width: 768px) {
   .thumbnail {
     min-height: 120px;
