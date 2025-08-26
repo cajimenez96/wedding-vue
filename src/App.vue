@@ -4,6 +4,7 @@ import Timer from './components/Timer.vue';
 import Events from './components/Events.vue';
 import Separator from './components/Separator.vue';
 import Gallery from './components/Gallery.vue';
+import Gifts from './components/Gifts.vue';
 
 const handleConfirm = () => {
   console.log('Asistencia confirmada');
@@ -29,6 +30,7 @@ const handleConfirm = () => {
 
   <Events
     title="Ceremonia"
+    description="La Casona de Campo es un salón de eventos al aire libre que tiene todo lo que necesita para crear una ocasión especial e inolvidable para usted y sus invitados. "
     location="Casona Campo"
     startDate="2026-09-15T18:00:00"
   />
@@ -38,6 +40,14 @@ const handleConfirm = () => {
   <Gallery
     title="Nuestra Galería de amor"
   />
+
+  <Separator />
+
+  <Gifts
+    title="Regalos"
+    description="Tu presencia es lo más importante para nosotros.<br>Si además querés hacernos un regalo te contamos cómo hacerlo."
+  />
+
 </template>
 
 <style scoped>

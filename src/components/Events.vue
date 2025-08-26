@@ -6,6 +6,7 @@ import { Vue3Lottie } from 'vue3-lottie'
 
 defineProps<{
   title: string;
+  description?: string;
   location: string;
   startDate: string;
 }>();
@@ -30,7 +31,7 @@ defineProps<{
         </div>
         <div class="border-t border-b border-gray-300 py-5 mt-10 flex flex-col gap-4">
           <p class="text-2xl font-medium">{{ location }}</p>
-          <p class="text-lg text-center">La Casona de Campo es un salón de eventos al aire libre que tiene todo lo que necesita para crear una ocasión especial e inolvidable para usted y sus invitados. </p>
+          <p class="text-xl" v-html="description"></p>
         </div>
       </div>
       <div class="flex gap-2 w-full mt-5">
