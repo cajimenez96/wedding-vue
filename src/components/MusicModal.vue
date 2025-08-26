@@ -43,10 +43,8 @@ const handleChoice = (withMusic: boolean) => {
 };
 
 onMounted(() => {
-  console.log('MusicModal mounted');
   // Mostrar modal después de un pequeño delay
   setTimeout(() => {
-    console.log('Showing modal');
     showModal.value = true;
   }, 500);
 });

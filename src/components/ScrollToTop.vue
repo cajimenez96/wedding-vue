@@ -51,7 +51,7 @@ onUnmounted(() => {
 .scroll-to-top {
   position: fixed;
   bottom: 2rem;
-  left: 2rem;
+  right: 2rem;
   width: 40px;
   height: 40px;
   background: rgba(255, 255, 255, 0.9);
@@ -93,7 +93,7 @@ onUnmounted(() => {
     width: 36px;
     height: 36px;
     bottom: 1.5rem;
-    left: 1.5rem;
+    right: 1.5rem;
     font-size: 0.8rem;
   }
 }

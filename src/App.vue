@@ -9,6 +9,7 @@ import Footer from './components/Footer.vue';
 import MusicPlayer from './components/MusicPlayer.vue';
 import MusicModal from './components/MusicModal.vue';
 import ScrollToTop from './components/ScrollToTop.vue';
+import backgroundLeaves from './assets/images/background-leafs.webp';
 
 import { ref } from 'vue';
 
@@ -37,6 +38,11 @@ const handleMusicPreference = (withMusic: boolean) => {
     description='Faltan pocos días para nuestra boda. <br>¡Estamos emocionados de compartir este momento especial contigo!'
     weddingDate="2026-05-09T14:00:00"
   />
+
+  <!-- Background para secciones intermedias -->
+  <div class="background-leaves">
+    <img :src="backgroundLeaves" alt="" class="bg-image" />
+  </div>
 
   <Separator />
 
@@ -72,5 +78,45 @@ const handleMusicPreference = (withMusic: boolean) => {
 </template>
 
 <style scoped>
+.background-leaves {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  opacity: 0.032;
+  pointer-events: none;
+}
+
+.bg-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .background-leaves {
+    background-size: cover;
+    background-position: center center;
+    min-height: calc(100vh * 3.5);
+  }
+}
+
+@media (max-width: 768px) {
+  .background-leaves {
+    background-size: 120% auto;
+    background-position: center top;
+    min-height: calc(100vh * 3);
+  }
+}
+
+@media (max-width: 480px) {
+  .background-leaves {
+    background-size: 150% auto;
+    min-height: calc(100vh * 2.5);
+    opacity: 0.04;
+  }
+}
 
 </style>

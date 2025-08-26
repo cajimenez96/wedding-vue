@@ -137,7 +137,7 @@ const loadMusicFiles = async () => {
       };
     });
   } catch (error) {
-    console.log('No se encontraron archivos de música en assets/music/');
+    // No se encontraron archivos de música en assets/music/
   }
 };
 
@@ -197,7 +197,6 @@ const toggleMute = () => {
 };
 
 onMounted(() => {
-  console.log('MusicPlayer mounted', { initialMuted: props.initialMuted });
   loadMusicFiles();
   
   // Aplicar configuración inicial de mute
