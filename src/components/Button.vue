@@ -25,16 +25,30 @@ const emit = defineEmits(['click']);
 <style scoped>
 .button {
   letter-spacing: 1px;
+  transition: all 0.3s ease;
 }
+
 .primary {
   background: var(--green-color);
   color: var(--white);
-  transition: all 0.3s ease;
 }
 
 .primary:hover {
   background: var(--gold-color);
   color: var(--white);
   transform: translateY(-3px);
+}
+
+.outline {
+  background: transparent;
+  border: 2px solid var(--green-color);
+  color: var(--green-color);
+}
+
+.outline:hover {
+  background: var(--green-color);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 99, 96, 0.3);
 }
 </style>

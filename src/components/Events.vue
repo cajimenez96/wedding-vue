@@ -34,7 +34,7 @@ defineProps<{
           <p class="text-xl" v-html="description"></p>
         </div>
       </div>
-      <div class="flex gap-2 w-full mt-5">
+      <div class="events-buttons-container">
         <Button variant="outline">Confirmar asistencia</Button>
         <Button variant="primary">Como llegar</Button>
       </div>
@@ -45,5 +45,23 @@ defineProps<{
 <style scoped>
 .text-style {
   color: var(--text-medium);
+}
+
+.events-buttons-container {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+
+@media (max-width: 768px) {
+  .events-buttons-container {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .events-buttons-container :deep(button) {
+    width: 100%;
+  }
 }
 </style>
