@@ -9,6 +9,7 @@ import Footer from './components/Footer.vue';
 import MusicPlayer from './components/MusicPlayer.vue';
 import MusicModal from './components/MusicModal.vue';
 import ScrollToTop from './components/ScrollToTop.vue';
+import Presentation from './components/Presentation.vue';
 import backgroundLeaves from './assets/images/background-leafs.webp';
 
 import { ref } from 'vue';
@@ -31,6 +32,11 @@ const handleMusicPreference = (withMusic: boolean) => {
     bride="Candelaria"
     date="09 de Mayo, 2026"
     @confirm="handleConfirm"
+  />
+
+  <Presentation
+    title="La medida del amor es amar sin medida"
+    description='Nos complace invitarte a acompañarnos en el día más especial de nuestras vidas, cuando uniremos nuestros corazones en matrimonio. <br><br>Tu presencia hará de este momento un recuerdo inolvidable.'
   />
 
   <Timer

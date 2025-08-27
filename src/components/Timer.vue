@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { Vue3Lottie } from 'vue3-lottie'
 import Calendar from '../assets/lottie/calendar.json';
+import Container from './Container.vue';
 
 const props = defineProps<{
   title?: string;
