@@ -2,6 +2,7 @@
 import Hero from './components/Hero.vue';
 import Timer from './components/Timer.vue';
 import Events from './components/Events.vue';
+import Schedule from './components/Schedule.vue';
 import Separator from './components/Separator.vue';
 import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
@@ -52,6 +53,10 @@ const handleMusicPreference = (withMusic: boolean) => {
     location="Casona Campo"
     startDate="2026-09-15T18:00:00"
   />
+
+  <Separator />
+
+  <Schedule />
 
   <Separator />
 
