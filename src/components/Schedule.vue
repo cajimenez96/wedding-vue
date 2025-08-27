@@ -88,39 +88,39 @@ const scheduleItems = [
     <div class="flex flex-col gap-10 justify-center items-center">
       <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
       
-      <div class="schedule-timeline max-w-6xl w-full">
+      <div class="relative max-w-6xl w-full">
         <div 
           v-for="(item, index) in scheduleItems" 
           :key="index"
           :class="[
-            'schedule-item', 
+            'grid grid-cols-[1fr_60px_1fr] gap-8 mb-12 items-center', 
             { 'schedule-item-reverse': index % 2 === 1 },
             { 'schedule-item-active': activeIndex === index }
           ]"
           @mouseenter="!isMobile && (activeIndex = index)"
           @mouseleave="!isMobile && (activeIndex = -1)"
         >
-          <div class="schedule-time">
-            <span class="time-text" :class="{ 'time-visible': activeIndex === index }">{{ item.time }}</span>
+          <div class="flex justify-center items-center">
+            <span class="text-2xl font-medium text-[#697368] transition-all duration-400 opacity-0 -translate-x-5" :class="{ 'time-visible': activeIndex === index }">{{ item.time }}</span>
           </div>
           
-          <div class="schedule-connector">
-            <div class="schedule-dot"></div>
-            <div v-if="index < scheduleItems.length - 1" class="schedule-line"></div>
+          <div class="flex flex-col items-center h-full relative">
+            <div class="w-3 h-3 bg-[#8B5A3C] rounded-full relative z-[2]"></div>
+            <div v-if="index < scheduleItems.length - 1" class="w-0.5 h-20 bg-[#8B5A3C] opacity-20 mt-2"></div>
           </div>
           
           <div 
-            :class="['schedule-content', {
-              'align-left': ['Cóctel', 'Recepción', 'Fiesta'].includes(item.title),
-              'align-right': ['Ceremonia', 'Almuerzo', 'Fin de fiesta'].includes(item.title)
+            :class="['flex gap-4 items-center', {
+              'text-left': ['Cóctel', 'Recepción', 'Fiesta'].includes(item.title),
+              'text-right': ['Ceremonia', 'Almuerzo', 'Fin de fiesta'].includes(item.title)
             }]"
           >
-            <div class="schedule-image">
-              <img :src="item.image" :alt="item.title" />
+            <div class="w-[94px] h-[94px] flex-shrink-0 transition-all duration-300 rounded-lg overflow-hidden schedule-image">
+              <img :src="item.image" :alt="item.title" class="w-full h-full object-contain object-center p-2" />
             </div>
-            <div class="schedule-text">
-              <h3 class="schedule-title">{{ item.title }}</h3>
-              <p class="schedule-description">{{ item.description }}</p>
+            <div class="flex-1">
+              <h3 class="text-xl font-semibold text-[#697368] mb-1 transition-colors duration-300 schedule-title">{{ item.title }}</h3>
+              <p class="text-sm text-gray-500 leading-tight transition-colors duration-300 schedule-description">{{ item.description }}</p>
             </div>
           </div>
         </div>
@@ -130,131 +130,18 @@ const scheduleItems = [
 </template>
 
 <style scoped>
-.schedule-timeline {
-  position: relative;
-}
-
-.schedule-item {
-  display: grid;
-  grid-template-columns: 1fr 60px 1fr;
-  gap: 2rem;
-  margin-bottom: 3rem;
-  align-items: center;
-}
-
-.schedule-item-reverse {
-  grid-template-columns: 1fr 60px 1fr;
-}
-
-.schedule-item-reverse .schedule-time {
+.schedule-item-reverse .flex:first-child {
   order: 3;
   text-align: left;
 }
 
-.schedule-item-reverse .schedule-connector {
+.schedule-item-reverse .flex:nth-child(2) {
   order: 2;
 }
 
-.schedule-content {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-}
-
-.align-left {
-  text-align: left;
-}
-
-.align-right {
-  text-align: right;
-}
-
-.schedule-item-reverse .schedule-content {
+.schedule-item-reverse .flex:last-child {
   order: 1;
-}
-
-.schedule-time {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-
-.schedule-connector {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  height: 100%;
-  position: relative;
-}
-
-.schedule-dot {
-  width: 12px;
-  height: 12px;
-  background: var(--primary-color, #8B5A3C);
-  border-radius: 50%;
-  position: relative;
-  z-index: 2;
-}
-
-.schedule-line {
-  width: 2px;
-  height: 80px;
-  background: var(--primary-color, #8B5A3C);
-  opacity: 0.2;
-  margin-top: 8px;
-}
-
-
-.schedule-item-reverse .schedule-content {
   flex-direction: row-reverse;
-}
-
-.schedule-image {
-  width: 94px;
-  height: 94px;
-  flex-shrink: 0;
-  transition: all 0.3s ease;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-
-
-.schedule-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  padding: 8px;
-}
-
-.schedule-text {
-  flex: 1;
-}
-
-.schedule-title {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #697368;
-  margin-bottom: 0.25rem;
-  transition: color 0.3s ease;
-}
-
-.schedule-description {
-  font-size: 0.875rem;
-  color: var(--text-medium, #6B7280);
-  line-height: 1.4;
-  transition: color 0.3s ease;
-}
-
-.time-text {
-  font-size: 1.5rem;
-  font-weight: 500;
-  color: #697368;
-  transition: all 0.4s ease;
-  opacity: 0;
-  transform: translateX(-20px);
 }
 
 .time-visible {
@@ -262,7 +149,7 @@ const scheduleItems = [
   transform: translateX(0);
 }
 
-.schedule-item-active .time-text.time-visible {
+.schedule-item-active .time-visible {
   color: #736D4F;
 }
 
@@ -279,81 +166,77 @@ const scheduleItems = [
 }
 
 @media (max-width: 768px) {
-  .schedule-item {
-    grid-template-columns: 80px 40px 1fr;
-    gap: 1rem;
-    margin-bottom: 2rem;
+  .grid {
+    grid-template-columns: 80px 40px 1fr !important;
+    gap: 1rem !important;
+    margin-bottom: 2rem !important;
   }
   
-  .schedule-item-reverse {
-    grid-template-columns: 80px 40px 1fr;
+  .schedule-item-reverse .flex:first-child {
+    order: 1 !important;
+    text-align: center !important;
   }
   
-  .schedule-item-reverse .schedule-time {
-    order: 1;
-    text-align: center;
+  .schedule-item-reverse .flex:nth-child(2) {
+    order: 2 !important;
   }
   
-  .schedule-item-reverse .schedule-connector {
-    order: 2;
+  .schedule-item-reverse .flex:last-child {
+    order: 3 !important;
+    text-align: left !important;
+    flex-direction: row !important;
   }
   
-  .schedule-item-reverse .schedule-content {
-    order: 3;
-    text-align: left;
-    flex-direction: row;
-  }
-  
-  .schedule-content {
+  .flex.gap-4 {
     text-align: left !important;
   }
   
-  .time-text {
-    font-size: 1.125rem;
+  .text-2xl {
+    font-size: 1.125rem !important;
   }
   
-  .schedule-dot {
-    width: 10px;
-    height: 10px;
+  .w-3.h-3 {
+    width: 10px !important;
+    height: 10px !important;
   }
   
-  .schedule-line {
-    width: 1px;
-    height: 60px;
+  .w-0\.5.h-20 {
+    width: 1px !important;
+    height: 60px !important;
   }
   
-  .schedule-image {
-    width: 71px;
-    height: 71px;
+  .w-\[94px\].h-\[94px\] {
+    width: 71px !important;
+    height: 71px !important;
   }
   
-  .schedule-title {
-    font-size: 1.125rem;
+  .text-xl {
+    font-size: 1.125rem !important;
   }
   
-  .schedule-description {
-    font-size: 0.8rem;
+  .text-sm {
+    font-size: 0.8rem !important;
   }
 }
 
 @media (max-width: 480px) {
-  .schedule-item {
-    grid-template-columns: 70px 30px 1fr;
-    gap: 0.5rem;
+  .grid {
+    grid-template-columns: 70px 30px 1fr !important;
+    gap: 0.5rem !important;
   }
   
-  .time-text {
-    font-size: 1rem;
+  .text-2xl {
+    font-size: 1rem !important;
   }
   
-  .schedule-dot {
-    width: 8px;
-    height: 8px;
+  .w-3.h-3 {
+    width: 8px !important;
+    height: 8px !important;
   }
   
-  .schedule-image {
-    width: 58px;
-    height: 58px;
+  .w-\[94px\].h-\[94px\] {
+    width: 58px !important;
+    height: 58px !important;
   }
 }
 </style>
