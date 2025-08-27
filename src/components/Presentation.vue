@@ -12,9 +12,7 @@ defineProps<{
     <p class="text-4xl title-wedding title-section text-center">
       {{ title }}
     </p>  
-    <div class="w-1/2 mx-auto">
-      <p class="my-10 text-xl text-center" v-html="description"></p>
-    </div>
+    <p class="my-10 text-xl text-center" v-html="description"></p>
   </Container>
 </template>
 
