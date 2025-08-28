@@ -31,3 +31,7 @@ body {
   font-family: 'Sail', cursive;
   letter-spacing: .5px;
 }
+
+.text-green-color {
+  color: var(--green-color);
+}
