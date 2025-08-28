@@ -1,8 +1,7 @@
 <script setup lang="ts">
 import Hero from './components/Hero.vue';
-import Timer from './components/Timer.vue';
 import Events from './components/Events.vue';
-import Separator from './components/Separator.vue';
+import Schedule from './components/Schedule.vue';
 import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
 import Footer from './components/Footer.vue';
@@ -40,9 +39,9 @@ const handleMusicPreference = (withMusic: boolean) => {
   />
 
   <!-- Background para secciones intermedias -->
-  <!-- <div class="background-leaves">
+  <div class="background-leaves">
     <img :src="backgroundLeaves" alt="" class="bg-image" />
-  </div> -->
+  </div>
 
   <Events
     title="Ceremonia"
@@ -51,13 +50,11 @@ const handleMusicPreference = (withMusic: boolean) => {
     startDate="2026-09-15T18:00:00"
   />
 
-  <Separator />
+  <Schedule />
 
   <Gallery
     title="Nuestra Galería de amor"
   />
-
-  <Separator />
 
   <Gifts
     title="Regalos"

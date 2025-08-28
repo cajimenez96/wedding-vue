@@ -1,9 +1,7 @@
 <script lang="ts" setup>
-import Separator from './Separator.vue';
 import Button from './Button.vue';
-import Event from '../assets/lottie/event.json';
-import { Vue3Lottie } from 'vue3-lottie'
 import Container from './Container.vue';
+import Separator from './Separator.vue';
 
 defineProps<{
   title: string;
@@ -47,19 +45,13 @@ defineProps<{
 
 .events-buttons-container {
   display: flex;
-  gap: 0.5rem;
+  flex-direction: column;
+  gap: 1rem;
   width: 100%;
   margin-top: 1.25rem;
 }
 
-@media (max-width: 768px) {
-  .events-buttons-container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .events-buttons-container :deep(button) {
-    width: 100%;
-  }
+.events-buttons-container :deep(button) {
+  width: 100%;
 }
 </style>

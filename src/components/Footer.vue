@@ -27,8 +27,8 @@ const currentYear = new Date().getFullYear();
 
 <style scoped>
 .footer-section {
-  background: var(--green-color);
-  color: var(--white);
+  background: var(--alabaster-color);
+  color: var(--green-color);
   padding: 3rem 2rem 2rem;
   text-align: center;
 }
@@ -50,7 +50,7 @@ const currentYear = new Date().getFullYear();
 .footer-title {
   font-family: 'Sail', cursive;
   font-size: 2.5rem;
-  color: var(--white);
+  color: var(--green-color);
   margin: 0;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
