@@ -9,7 +9,7 @@ defineProps<{
 
 <template>
   <section :class="[
-    'w-full flex items-center',
+    'w-full min-h-[490px] flex items-center',
     variant === 'green' ? 'green-container' : 'light-container',
     ]">
     <div :class="['w-full md:w-1/2 px-5 py-8 mx-auto', customClass]">
