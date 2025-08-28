@@ -2,6 +2,7 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 import { Vue3Lottie } from 'vue3-lottie'
 import Calendar from '../assets/lottie/calendar.json';
+import Container from './Container.vue';
 
 const props = defineProps<{
   title?: string;
@@ -42,8 +43,9 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="container-timer w-full">
-    <div>
+  <Container variant="light">
+    <p class="text-4xl title-wedding title-section text-center text-green-color">{{ title }}</p>
+    <!-- <div>
       <div class="mx-auto mb-10">
         <Vue3Lottie :animationData="Calendar" :height="80" :width="80" />
       </div>
@@ -85,8 +87,8 @@ onUnmounted(() => {
           <p class="text-4xl font-bold title-wedding title">¡Es hoy!</p>
         </div>
       </div>
-    </div>
-  </section>
+    </div> -->
+  </Container>
 </template>
 
 <style scoped>

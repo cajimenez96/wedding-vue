@@ -2,6 +2,7 @@
 
 :root {
     --green-color: #4A6360;
+    --alabaster-color: #f5efe5;
     --gold-color: #BFA880;
     --brown-color: #8b6f47;
     --cream-bg: #f8f6f3;
@@ -28,6 +29,9 @@ body {
 
 .title-section {
   font-family: 'Sail', cursive;
-  color: var(--brown-color);
   letter-spacing: .5px;
+}
+
+.text-green-color {
+  color: var(--green-color);
 }
