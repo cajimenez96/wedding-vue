@@ -2,7 +2,6 @@
 import Hero from './components/Hero.vue';
 import Events from './components/Events.vue';
 import Schedule from './components/Schedule.vue';
-import Separator from './components/Separator.vue';
 import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
 import Footer from './components/Footer.vue';
@@ -44,8 +43,6 @@ const handleMusicPreference = (withMusic: boolean) => {
     <img :src="backgroundLeaves" alt="" class="bg-image" />
   </div>
 
-  <Separator />
-
   <Events
     title="Ceremonia"
     description="La Casona de Campo es un salón de eventos al aire libre que tiene todo lo que necesita para crear una ocasión especial e inolvidable para usted y sus invitados. "
@@ -53,17 +50,11 @@ const handleMusicPreference = (withMusic: boolean) => {
     startDate="2026-09-15T18:00:00"
   />
 
-  <Separator />
-
   <Schedule />
-
-  <Separator />
 
   <Gallery
     title="Nuestra Galería de amor"
   />
-
-  <Separator />
 
   <Gifts
     title="Regalos"

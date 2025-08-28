@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import { Vue3Lottie } from 'vue3-lottie'
-import Gift from '../assets/lottie/gift.json';
 import Button from './Button.vue';
 import Container from './Container.vue';
 import { ref } from 'vue';
@@ -20,7 +18,6 @@ const handleClose = () => {
 <template>
   <Container variant="green">
     <div class="flex flex-col gap-10 justify-center items-center text-center">
-      <Vue3Lottie :animationData="Gift" :height="80" :width="80" />
       <h2 class="text-4xl title-wedding title-section">{{ title }}</h2>
       <div class="flex flex-col px-5 md:w-lg">
         <div class="border-t border-b border-gray-300 py-5 mt-10 flex flex-col gap-4">
@@ -35,9 +32,10 @@ const handleClose = () => {
   </Container>
 
   <!-- Gifts Modal siguiendo el patrón de MusicModal -->
-  <div v-if="showModal" class="modal-overlay">
+  <div v-if="showModal" class="modal-overlay" @click.self="handleClose">
     <div class="modal-container">
       <div class="modal-content">
+        <button class="modal-close" @click="handleClose">×</button>
         <div class="modal-icon">
           <i class="fas fa-gift" aria-hidden="true"></i>
         </div>
@@ -125,30 +123,30 @@ const handleClose = () => {
 }
 
 .modal-content {
-  padding: 2rem;
+  padding: 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .modal-icon {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   background: linear-gradient(135deg, var(--green-color), var(--gold-color));
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--white);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   box-shadow: 0 8px 20px rgba(74, 99, 96, 0.3);
 }
 
 .modal-title {
   font-family: 'Sail', cursive;
-  font-size: 1.8rem;
+  font-size: 1.5rem;
   color: var(--text-dark);
   margin: 0;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
@@ -165,23 +163,23 @@ const handleClose = () => {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin: 1rem 0;
+  gap: 1rem;
+  margin: 0.5rem 0;
 }
 
 .gift-option {
   background: rgba(74, 99, 96, 0.05);
   border: 1px solid rgba(74, 99, 96, 0.1);
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   text-align: left;
 }
 
 .gift-option-title {
   font-weight: 600;
   color: var(--green-color);
-  margin: 0 0 0.75rem 0;
-  font-size: 1.1rem;
+  margin: 0 0 0.5rem 0;
+  font-size: 1rem;
 }
 
 .gift-option-details {
@@ -226,6 +224,23 @@ const handleClose = () => {
   background: var(--gold-color);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(191, 168, 128, 0.4);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-medium);
+  transition: color 0.3s ease;
+  z-index: 10;
+}
+
+.modal-close:hover {
+  color: var(--green-color);
 }
 
 .me-2 {

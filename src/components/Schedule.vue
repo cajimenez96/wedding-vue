@@ -10,9 +10,12 @@ import festivity from '../assets/images/festivity.webp';
 
 const activeIndex = ref(-1);
 const isMobile = ref(false);
+const isTablet = ref(false);
 
 const checkMobile = () => {
-  isMobile.value = window.innerWidth <= 768;
+  const width = window.innerWidth;
+  isMobile.value = width <= 768;
+  isTablet.value = width > 768 && width <= 1024;
 };
 
 const handleScroll = () => {
@@ -85,7 +88,7 @@ const scheduleItems = [
 </script>
 
 <template>
-  <Container variant="green">
+  <Container variant="green" customClass="md:w-4/5 lg:w-3/4">
     <section class="flex flex-col justify-center items-center text-center mb-10">
     <div class="flex flex-col gap-10 justify-center items-center">
       <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
@@ -95,20 +98,23 @@ const scheduleItems = [
           v-for="(item, index) in scheduleItems" 
           :key="index"
           :class="[
-            'grid grid-cols-[1fr_60px_1fr] gap-8 mb-12 items-center', 
+            'grid grid-cols-[1fr_60px_1fr] gap-8 mb-12 items-center schedule-item', 
             { 'schedule-item-reverse': index % 2 === 1 },
             { 'schedule-item-active': activeIndex === index }
           ]"
-          @mouseenter="!isMobile && (activeIndex = index)"
-          @mouseleave="!isMobile && (activeIndex = -1)"
+          @mouseenter="!isMobile && !isTablet && (activeIndex = index)"
+          @mouseleave="!isMobile && !isTablet && (activeIndex = -1)"
         >
           <div class="flex justify-center items-center">
-            <span class="text-2xl font-medium text-[#697368] transition-all duration-400 opacity-0 -translate-x-5" :class="{ 'time-visible': activeIndex === index }">{{ item.time }}</span>
+            <span class="text-2xl font-medium text-white transition-all duration-400" :class="[
+              isMobile || isTablet ? 'opacity-70' : 'opacity-0 -translate-x-2',
+              { 'time-visible': activeIndex === index }
+            ]">{{ item.time }}</span>
           </div>
           
           <div class="flex flex-col items-center h-full relative">
-            <div class="w-3 h-3 bg-[#8B5A3C] rounded-full relative z-[2]"></div>
-            <div v-if="index < scheduleItems.length - 1" class="w-0.5 h-20 bg-[#8B5A3C] opacity-20 mt-2"></div>
+            <div class="w-3 h-3 bg-white rounded-full relative z-[2]"></div>
+            <div v-if="index < scheduleItems.length - 1" class="w-0.5 h-20 bg-white opacity-30 mt-2"></div>
           </div>
           
           <div 
@@ -118,11 +124,11 @@ const scheduleItems = [
             }]"
           >
             <div class="w-[94px] h-[94px] flex-shrink-0 transition-all duration-300 rounded-lg overflow-hidden schedule-image">
-              <img :src="item.image" :alt="item.title" class="w-full h-full object-contain object-center p-2" />
+              <img :src="item.image" :alt="item.title" class="w-full h-full object-contain object-center p-2 schedule-img" />
             </div>
             <div class="flex-1">
-              <h3 class="text-xl font-semibold text-[#697368] mb-1 transition-colors duration-300 schedule-title">{{ item.title }}</h3>
-              <p class="text-sm text-gray-500 leading-tight transition-colors duration-300 schedule-description">{{ item.description }}</p>
+              <h3 class="text-xl font-semibold text-white mb-1 transition-colors duration-300 schedule-title">{{ item.title }}</h3>
+              <p class="text-sm text-gray-200 leading-tight transition-colors duration-300 schedule-description">{{ item.description }}</p>
             </div>
           </div>
         </div>
@@ -153,21 +159,62 @@ const scheduleItems = [
 }
 
 .schedule-item-active .time-visible {
-  color: #736D4F;
+  color: var(--gold-color);
 }
 
 .schedule-item-active .schedule-title {
-  color: #D97706;
+  color: var(--gold-color);
 }
 
 .schedule-item-active .schedule-description {
-  color: #374151;
+  color: white;
+}
+
+.schedule-img {
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+
+.schedule-item:hover .schedule-img,
+.schedule-item-active .schedule-img {
+  filter: none;
 }
 
 .schedule-item-active .schedule-image {
   transform: scale(1.05);
 }
 
+/* Tablet breakpoint - mantiene el diseño desktop pero con ajustes */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .relative.max-w-6xl {
+    max-width: 95% !important;
+    margin: 0 auto;
+  }
+  
+  .grid {
+    gap: 1.25rem !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  .text-2xl {
+    font-size: 1.125rem !important;
+  }
+  
+  .w-\[94px\].h-\[94px\] {
+    width: 75px !important;
+    height: 75px !important;
+  }
+  
+  .text-xl {
+    font-size: 1rem !important;
+  }
+  
+  .text-sm {
+    font-size: 0.85rem !important;
+  }
+}
+
+/* Mobile breakpoint */
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 80px 40px 1fr !important;

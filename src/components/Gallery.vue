@@ -1,8 +1,6 @@
 <script lang="ts" setup>
 import CustomCarousel from './CustomCarousel.vue';
 import Container from './Container.vue';
-import { Vue3Lottie } from 'vue3-lottie'
-import Camera from '../assets/lottie/camera.json';
 
 defineProps<{
   title?: string;
@@ -20,12 +18,11 @@ const images = Object.entries(imageModules).map(([path, mod]) => {
 </script>
 
 <template>
-  <Container variant="light">
+  <Container variant="light" customClass="md:w-[65%]">
     <div class="text-center">
-      <Vue3Lottie :animationData="Camera" :height="80" :width="80" />
-      <h2 class="text-4xl title-wedding title-section mt-10">{{ title }}</h2>
+      <h2 class="text-4xl title-wedding title-section text-green-color">{{ title }}</h2>
     </div>
-    <div class="w-[95%] md:w-3/5 mx-auto my-20">
+    <div class="w-[95%] md:w-4/5 mx-auto my-20">
       <CustomCarousel :images="images" />
     </div>
   </Container>

@@ -9,10 +9,10 @@ defineProps<{
 
 <template>
   <section :class="[
-    'w-full min-h-[490px] flex items-center',
+    'w-full flex items-center',
     variant === 'green' ? 'green-container' : 'light-container',
     ]">
-    <div :class="['w-full md:w-1/2 px-5 py-10 mx-auto', customClass]">
+    <div :class="['w-full md:w-1/2 px-5 py-8 mx-auto', customClass]">
       <slot/>
     </div>
   </section>
