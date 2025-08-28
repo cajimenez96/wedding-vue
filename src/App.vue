@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import Hero from './components/Hero.vue';
-import Timer from './components/Timer.vue';
 import Events from './components/Events.vue';
 import Schedule from './components/Schedule.vue';
 import Separator from './components/Separator.vue';
@@ -10,6 +9,7 @@ import Footer from './components/Footer.vue';
 import MusicPlayer from './components/MusicPlayer.vue';
 import MusicModal from './components/MusicModal.vue';
 import ScrollToTop from './components/ScrollToTop.vue';
+import Presentation from './components/Presentation.vue';
 import backgroundLeaves from './assets/images/background-leafs.webp';
 
 import { ref } from 'vue';
@@ -34,10 +34,9 @@ const handleMusicPreference = (withMusic: boolean) => {
     @confirm="handleConfirm"
   />
 
-  <Timer
-    title="Cuenta regresiva para el gran día"
-    description='Faltan pocos días para nuestra boda. <br>¡Estamos emocionados de compartir este momento especial contigo!'
-    weddingDate="2026-05-09T14:00:00"
+  <Presentation
+    title="La medida del amor es amar sin medida"
+    description='Nos complace invitarte a acompañarnos en el día más especial de nuestras vidas, cuando uniremos nuestros corazones en matrimonio. <br><br>Tu presencia hará de este momento un recuerdo inolvidable.'
   />
 
   <!-- Background para secciones intermedias -->

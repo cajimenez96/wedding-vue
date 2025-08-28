@@ -1,5 +1,6 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import Container from './Container.vue';
 import mainEvent from '../assets/images/mainEvent.webp';
 import dishes from '../assets/images/dishes.webp';
 import cake from '../assets/images/cake.webp';
@@ -84,7 +85,8 @@ const scheduleItems = [
 </script>
 
 <template>
-  <section class="flex flex-col justify-center items-center text-center min-h-[690px] mx-auto mb-10 px-8">
+  <Container variant="green">
+    <section class="flex flex-col justify-center items-center text-center mb-10">
     <div class="flex flex-col gap-10 justify-center items-center">
       <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
       
@@ -126,7 +128,8 @@ const scheduleItems = [
         </div>
       </div>
     </div>
-  </section>
+    </section>
+  </Container>
 </template>
 
 <style scoped>
