@@ -19,7 +19,7 @@ const checkMobile = () => {
 };
 
 const handleScroll = () => {
-  if (!isMobile.value) return;
+  if (!isMobile.value && !isTablet.value) return;
   
   const items = document.querySelectorAll('.schedule-item');
   const scrollTop = window.scrollY;
