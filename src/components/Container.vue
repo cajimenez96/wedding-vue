@@ -1,22 +1,31 @@
 <script lang="ts" setup>
+type Variant = 'green' | 'light';
 defineProps<{
+  variant?: Variant;
   customClass?: string;
 }>();
 
 </script>
 
 <template>
-  <div :class="['container mx-auto p-4', customClass]">
-    <slot/>
-  </div>
+  <section :class="[
+    'w-full min-h-[490px] flex items-center',
+    variant === 'green' ? 'green-container' : 'light-container',
+    ]">
+    <div :class="['w-full md:w-1/2 px-5 py-8 mx-auto', customClass]">
+      <slot/>
+    </div>
+  </section>
 </template>
 
 <style scoped>
-.container {
-  background: var(--white);
-  padding: 2.5rem 2rem;
-  border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+.green-container {
+  background: var(--green-color);
+  color: var(--alabaster-color);
 }
 
+.light-container {
+  background: var(--alabaster-color);
+  color: var(--green-color);
+}
 </style>

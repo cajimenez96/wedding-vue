@@ -1,20 +1,17 @@
 @import "tailwindcss";
 
 :root {
-    --primary-color: #697368;
-    --secondary-color: #F2F2F0;
-    --accent-color: #736D4F;
-    --gold-color: #BFB78F;
-    --cream-color: #BFB39B;
+    --green-color: #4A6360;
+    --alabaster-color: #f5efe5;
+    --gold-color: #BFA880;
+    --brown-color: #8b6f47;
+    --cream-bg: #f8f6f3;
+    --light-cream: #faf9f7;
     --text-dark: #2c2c2c;
     --text-medium: #697368;
     --text-light: #736D4F;
     --white: #F2F2F0;
     --background: #F2F2F0;
-    
-    /* Legacy compatibility */
-    --green-color: #697368;
-    --brown-color: #736D4F;
 }
 
 body {
@@ -33,6 +30,9 @@ body {
 
 .title-section {
   font-family: 'Sail', cursive;
-  color: var(--accent-color);
   letter-spacing: .5px;
+}
+
+.text-green-color {
+  color: var(--green-color);
 }

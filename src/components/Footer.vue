@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer-section">
+  <footer ref="footerRef" :class="['footer-section', { 'animate-in': isVisible }]">
     <div class="footer-content">
       <div class="footer-message">
         <h3 class="footer-title">¡Gracias por acompañarnos!</h3>
@@ -13,24 +13,54 @@
         Con amor, {{ groom }} & {{ bride }} • {{ currentYear }}
       </p>
     </div>
+    <div class="footer-decoration">
+      <img :src="bakDecImage" alt="" class="footer-decoration-image" />
+    </div>
   </footer>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted, onUnmounted } from 'vue';
+import bakDecImage from '../assets/images/back/bak_dec-1.webp';
+
 defineProps<{
   groom?: string;
   bride?: string;
 }>();
 
 const currentYear = new Date().getFullYear();
+const footerRef = ref<HTMLElement>();
+const isVisible = ref(false);
+
+const handleScroll = () => {
+  if (!footerRef.value) return;
+  
+  const rect = footerRef.value.getBoundingClientRect();
+  const windowHeight = window.innerHeight;
+  
+  if (rect.top <= windowHeight * 0.8) {
+    isVisible.value = true;
+  }
+};
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+  handleScroll(); // Check initial state
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
 </script>
 
 <style scoped>
 .footer-section {
-  background: var(--green-color);
-  color: var(--white);
+  background: var(--alabaster-color);
+  color: var(--green-color);
   padding: 3rem 2rem 2rem;
   text-align: center;
+  position: relative;
+  overflow: hidden;
 }
 
 .footer-content {
@@ -39,6 +69,8 @@ const currentYear = new Date().getFullYear();
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  position: relative;
+  z-index: 2;
 }
 
 .footer-message {
@@ -50,7 +82,7 @@ const currentYear = new Date().getFullYear();
 .footer-title {
   font-family: 'Sail', cursive;
   font-size: 2.5rem;
-  color: var(--white);
+  color: var(--green-color);
   margin: 0;
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.2);
 }
@@ -75,6 +107,26 @@ const currentYear = new Date().getFullYear();
   letter-spacing: 1px;
 }
 
+.footer-decoration {
+  position: absolute;
+  bottom: -75%;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+  width: 100%;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  transform: translateY(20px);
+}
+
+.footer-decoration-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  transform: translateY(15%);
+}
+
 @media (max-width: 768px) {
   .footer-section {
     padding: 2rem 1rem 1.5rem;
@@ -91,5 +143,20 @@ const currentYear = new Date().getFullYear();
   .footer-copyright {
     font-size: 0.8rem;
   }
+  
+  .footer-decoration {
+    bottom: -85%;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer-decoration {
+    bottom: -95%;
+  }
+}
+
+.footer-section.animate-in .footer-decoration {
+  opacity: 0.084;
+  transform: translateY(0);
 }
 </style>

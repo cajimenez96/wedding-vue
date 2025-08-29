@@ -1,7 +1,5 @@
 <script lang="ts" setup>
 import { onMounted, onUnmounted, ref } from 'vue';
-import { Vue3Lottie } from 'vue3-lottie'
-import Calendar from '../assets/lottie/calendar.json';
 
 const props = defineProps<{
   title?: string;
@@ -32,6 +30,7 @@ const formatTime = () => {
 
 let interval: number | undefined;
 onMounted(() => {
+  formatTime(); // Ejecutar inmediatamente
   interval = window.setInterval(formatTime, 1000);
 })
 
@@ -42,51 +41,38 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <section class="container-timer w-full">
-    <div>
-      <div class="mx-auto mb-10">
-        <Vue3Lottie :animationData="Calendar" :height="80" :width="80" />
+  <div class="mt-5 w-full flex justify-center items-center">
+    <div class="flex justify-center items-center gap-4" v-if="!isNow">
+      <div class="md:px-5 text-center">
+        <p class="number">{{ days }}</p>
+        <p class="data">Dias</p>
       </div>
-      <div class="w-full justify-center items-center md:text-center flex flex-col gap-10 p-8">
-        <p class="text-4xl title-wedding title-section">{{ title }}</p>
-        <p class="text-xl" v-html="description"></p>
+
+      <div class="border-box" />
+    
+      <div class="md:px-5 text-center">
+        <p class="number">{{ hours }}</p>
+        <p class="data">Horas</p>
       </div>
-      <div class="mt-5 w-full flex justify-center items-center">
-        <div class="flex justify-center items-center gap-8" v-if="!isNow">
-          <div class="flex justify-center items-center gap-4">
-            <div class="md:px-5 text-center">
-              <p class="number">{{ days }}</p>
-              <p class="data">Dias</p>
-            </div>
 
-            <div class="border-box" />
-          
-            <div class="md:px-5 text-center">
-              <p class="number">{{ hours }}</p>
-              <p class="data">Horas</p>
-            </div>
+      <div class="border-box" />
+    
+      <div class="md:px-5 text-center">
+        <p class="number">{{ minutes }}</p>
+        <p class="data">Minutos</p>
+      </div>
 
-            <div class="border-box" />
-          
-            <div class="md:px-5 text-center">
-              <p class="number">{{ minutes }}</p>
-              <p class="data">Minutos</p>
-            </div>
-
-            <div class="border-box" />
-          
-            <div class="md:px-5 text-center">
-              <p class="number">{{ seconds }}</p>
-              <p class="data">Segundos</p>
-            </div>
-          </div>
-        </div>
-        <div v-else>
-          <p class="text-4xl font-bold title-wedding title">¡Es hoy!</p>
-        </div>
+      <div class="border-box" />
+    
+      <div class="md:px-5 text-center">
+        <p class="number">{{ seconds }}</p>
+        <p class="data">Segundos</p>
       </div>
     </div>
-  </section>
+    <div v-else>
+      <p class="text-4xl font-bold title-wedding title">¡Es hoy!</p>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -99,22 +85,25 @@ onUnmounted(() => {
 .border-box::after {
   content: ":";
   font-family: 'Sail', cursive;
-  color: var(--green-color);
+  color: var(--white);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 .number {
   font-family: 'Sail', cursive;
-  font-size: 5rem;
+  font-size: 3rem;
   font-weight: lighter;
-  color: var(--green-color);
+  color: var(--white);
   line-height: 1;
   margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 .data {
   font-size: .6rem;
   text-transform: uppercase;
   letter-spacing: .5px;
-  color: var(--text-light);
+  color: var(--white);
   font-weight: 400;
+  opacity: 0.9;
 }
 
 @media (max-width: 768px) {

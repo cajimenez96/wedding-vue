@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Button from "./Button.vue";
+import Timer from "./Timer.vue";
 
 defineProps<{
   groom: string;
@@ -30,6 +31,7 @@ const emit = defineEmits<{
         </h1>
         <p class="hero-date">{{ date }}</p>
       </div>
+      <Timer weddingDate="2026-05-09T14:00:00" />
       <div class="hero-button-container">
         <Button variant="primary" @click="emit('confirm')">
           <i class="fas fa-heart me-2" aria-hidden="true"></i>
@@ -134,5 +136,24 @@ const emit = defineEmits<{
   opacity: 0.95;
   letter-spacing: 1px;
   color: var(--white);
+}
+
+/* Estilos para el Timer en el Hero */
+:deep(.timer) {
+  margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  :deep(.number) {
+    font-size: 2rem !important;
+  }
+  
+  :deep(.data) {
+    font-size: 0.5rem !important;
+  }
+  
+  :deep(.border-box::after) {
+    font-size: 1.5rem;
+  }
 }
 </style>
