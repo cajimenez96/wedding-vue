@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-type Variant = 'primary' | 'outline' | 'link';
+type Variant = 'primary' | 'outline' | 'link' | 'white';
 
 defineProps<{
   variant?: Variant;
@@ -15,6 +15,7 @@ const emit = defineEmits(['click']);
       'h-full w-full border-none py-4 cursor-pointer rounded-3xl text-lg button',
       variant === 'primary' && 'primary',
       variant === 'outline' && 'outline',
+      variant === 'white' && 'white',
     ]"
     @click="emit('click')"
   >
@@ -50,5 +51,20 @@ const emit = defineEmits(['click']);
   color: var(--white);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(74, 99, 96, 0.3);
+}
+
+.white {
+  background: var(--white);
+  color: var(--green-color);
+  border: 2px solid var(--white);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.white:hover {
+  background: var(--gold-color);
+  border-color: var(--gold-color);
+  color: var(--white);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(191, 168, 128, 0.3);
 }
 </style>

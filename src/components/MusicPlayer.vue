@@ -83,7 +83,6 @@ interface Song {
 }
 
 const props = defineProps<{
-  title?: string;
   initialMuted?: boolean;
 }>();
 
@@ -108,7 +107,6 @@ watch(() => props.initialMuted, (newValue) => {
     } else {
       volume.value = previousVolume.value > 0 ? previousVolume.value : 70;
     }
-    // updateVolume será llamado en onMounted
     if (audioPlayer.value) {
       audioPlayer.value.volume = volume.value / 100;
     }
@@ -137,7 +135,7 @@ const loadMusicFiles = async () => {
       };
     });
   } catch (error) {
-    // No se encontraron archivos de música en assets/music/
+    
   }
 };
 

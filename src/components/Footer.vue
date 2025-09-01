@@ -121,10 +121,24 @@ onUnmounted(() => {
 }
 
 .footer-decoration-image {
-  width: 100%;
+  width: 85%;
   height: auto;
   object-fit: cover;
   transform: translateY(15%);
+  margin: 0 auto;
+  display: block;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .footer-decoration {
+    bottom: -35%;
+  }
+  
+  .footer-decoration-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
 }
 
 @media (max-width: 768px) {
@@ -145,18 +159,28 @@ onUnmounted(() => {
   }
   
   .footer-decoration {
-    bottom: -85%;
+    bottom: -35%;
+  }
+  
+  .footer-decoration-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 }
 
 @media (max-width: 480px) {
   .footer-decoration {
-    bottom: -95%;
+    bottom: -5%;
+  }
+  
+  .footer-decoration-image {
+    width: 120%;
   }
 }
 
 .footer-section.animate-in .footer-decoration {
-  opacity: 0.084;
+  opacity: 0.068;
   transform: translateY(0);
 }
 </style>

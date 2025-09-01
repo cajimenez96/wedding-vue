@@ -43,7 +43,6 @@ const handleChoice = (withMusic: boolean) => {
 };
 
 onMounted(() => {
-  // Mostrar modal después de un pequeño delay
   setTimeout(() => {
     showModal.value = true;
   }, 500);

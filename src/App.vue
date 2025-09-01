@@ -16,7 +16,7 @@ import { ref } from 'vue';
 const musicMuted = ref(true);
 
 const handleConfirm = () => {
-  console.log('Asistencia confirmada');
+  
 };
 
 const handleMusicPreference = (withMusic: boolean) => {

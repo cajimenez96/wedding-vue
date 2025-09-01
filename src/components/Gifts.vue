@@ -25,8 +25,8 @@ const handleClose = () => {
         </div>
       </div>
 
-      <div class="w-4/5">
-        <Button variant="primary" @click="showModal = true">Más información</Button>
+      <div class="gifts-button-container">
+        <Button variant="white" @click="showModal = true">Más información</Button>
       </div>
     </div>
   </Container>
@@ -245,6 +245,25 @@ const handleClose = () => {
 
 .me-2 {
   margin-right: 0.5rem;
+}
+
+.gifts-button-container {
+  width: calc(100% - 2rem);
+  max-width: 300px;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .gifts-button-container {
+    width: calc(100vw - 2rem);
+    padding: 0 1rem;
+  }
+  
+  .gifts-button-container :deep(.button) {
+    white-space: nowrap;
+    min-width: 280px;
+  }
 }
 
 @media (max-width: 480px) {
