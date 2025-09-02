@@ -89,51 +89,51 @@ const scheduleItems = [
 
 <template>
   <Container variant="green" customClass="md:w-4/5 lg:w-3/4">
-    <section class="flex flex-col justify-center items-center text-center mb-10">
-    <div class="flex flex-col gap-10 justify-center items-center">
-      <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
-      
-      <div class="relative max-w-6xl w-full">
-        <div 
-          v-for="(item, index) in scheduleItems" 
-          :key="index"
-          :class="[
-            'grid grid-cols-[1fr_60px_1fr] gap-8 mb-12 items-center schedule-item', 
-            { 'schedule-item-reverse': index % 2 === 1 },
-            { 'schedule-item-active': activeIndex === index }
-          ]"
-          @mouseenter="!isMobile && !isTablet && (activeIndex = index)"
-          @mouseleave="!isMobile && !isTablet && (activeIndex = -1)"
-        >
-          <div class="flex justify-center items-center">
-            <span class="text-2xl font-medium text-white transition-all duration-400" :class="[
-              isMobile || isTablet ? 'opacity-70' : 'opacity-0 -translate-x-2',
-              { 'time-visible': activeIndex === index }
-            ]">{{ item.time }}</span>
-          </div>
-          
-          <div class="flex flex-col items-center h-full relative">
-            <div class="w-3 h-3 bg-white rounded-full relative z-[2]"></div>
-            <div v-if="index < scheduleItems.length - 1" class="w-0.5 h-20 bg-white opacity-30 mt-2"></div>
-          </div>
-          
+    <section class="schedule-section flex flex-col justify-center items-center text-center mb-10">
+      <div class="flex flex-col gap-10 justify-center items-center">
+        <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
+        
+        <div class="relative max-w-6xl w-full">
           <div 
-            :class="['flex gap-4 items-center', {
-              'text-left': ['Cóctel', 'Recepción', 'Fiesta'].includes(item.title),
-              'text-right': ['Ceremonia', 'Almuerzo', 'Fin de fiesta'].includes(item.title)
-            }]"
+            v-for="(item, index) in scheduleItems" 
+            :key="index"
+            :class="[
+              'grid grid-cols-[1fr_60px_1fr] gap-8 mb-12 items-center schedule-item', 
+              { 'schedule-item-reverse': index % 2 === 1 },
+              { 'schedule-item-active': activeIndex === index }
+            ]"
+            @mouseenter="!isMobile && !isTablet && (activeIndex = index)"
+            @mouseleave="!isMobile && !isTablet && (activeIndex = -1)"
           >
-            <div class="w-[94px] h-[94px] flex-shrink-0 transition-all duration-300 rounded-lg overflow-hidden schedule-image">
-              <img :src="item.image" :alt="item.title" class="w-full h-full object-contain object-center p-2 schedule-img" />
+            <div class="flex justify-center items-center">
+              <span class="text-2xl font-medium text-white transition-all duration-400" :class="[
+                isMobile || isTablet ? 'opacity-70' : 'opacity-0 -translate-x-2',
+                { 'time-visible': activeIndex === index }
+              ]">{{ item.time }}</span>
             </div>
-            <div class="flex-1">
-              <h3 class="text-xl font-semibold text-white mb-1 transition-colors duration-300 schedule-title">{{ item.title }}</h3>
-              <p class="text-sm text-gray-200 leading-tight transition-colors duration-300 schedule-description">{{ item.description }}</p>
+            
+            <div class="flex flex-col items-center h-full relative">
+              <div class="w-3 h-3 bg-white rounded-full relative z-[2]"></div>
+              <div v-if="index < scheduleItems.length - 1" class="w-0.5 h-20 bg-white opacity-30 mt-2"></div>
+            </div>
+            
+            <div 
+              :class="['flex gap-4 items-center', {
+                'text-left': ['Cóctel', 'Recepción', 'Fiesta'].includes(item.title),
+                'text-right': ['Ceremonia', 'Almuerzo', 'Fin de fiesta'].includes(item.title)
+              }]"
+            >
+              <div class="w-[94px] h-[94px] flex-shrink-0 transition-all duration-300 rounded-lg overflow-hidden schedule-image">
+                <img :src="item.image" :alt="item.title" class="w-full h-full object-contain object-center p-2 schedule-img" />
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold text-white mb-1 transition-colors duration-300 schedule-title">{{ item.title }}</h3>
+                <p class="text-sm text-gray-200 leading-tight transition-colors duration-300 schedule-description">{{ item.description }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </section>
   </Container>
 </template>
@@ -268,6 +268,7 @@ const scheduleItems = [
     font-size: 0.8rem !important;
   }
 }
+
 
 @media (max-width: 480px) {
   .grid {

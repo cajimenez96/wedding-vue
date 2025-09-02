@@ -84,11 +84,11 @@ const audioPlayer = ref<HTMLAudioElement>();
 const isPlaying = ref(false);
 const currentTime = ref(0);
 const duration = ref(0);
-const volume = ref(0);
+const volume = ref(70);
 const songs = ref<Song[]>([]);
 const currentSongIndex = ref(0);
 const isMinimized = ref(true);
-const isMuted = ref(true);
+const isMuted = ref(false);
 const previousVolume = ref(70);
 
 watch(() => props.initialMuted, (newValue) => {
@@ -193,8 +193,18 @@ onMounted(() => {
     isMuted.value = props.initialMuted;
     if (props.initialMuted) {
       volume.value = 0;
+    } else {
+      volume.value = 70;
     }
   }
+  
+  setTimeout(() => {
+    if (!isMuted.value && currentSong.value && audioPlayer.value) {
+      audioPlayer.value.volume = volume.value / 100;
+      audioPlayer.value.play().catch(() => {});
+      isPlaying.value = true;
+    }
+  }, 2000);
   
   updateVolume();
 });

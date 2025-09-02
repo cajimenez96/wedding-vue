@@ -13,7 +13,7 @@ import backgroundLeaves from './assets/images/background-leafs.webp';
 
 import { ref } from 'vue';
 
-const musicMuted = ref(true);
+const musicMuted = ref(false);
 
 const handleConfirm = () => {
   
