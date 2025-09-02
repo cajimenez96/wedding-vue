@@ -11,12 +11,10 @@ const props = defineProps<{
   startDate?: string;
 }>();
 
-const showTimer = ref(false);
+const showDesktopTimer = ref(false);
+const showMobileTimer = ref(false);
 const timerContainer = ref(null);
-const currentSlide = ref(0);
 
-let touchStartX = 0;
-let touchEndX = 0;
 let isHovering = false;
 let hoverTimeout: number | null = null;
 
@@ -25,7 +23,7 @@ const handleMouseEnter = () => {
   if (hoverTimeout) clearTimeout(hoverTimeout);
   hoverTimeout = setTimeout(() => {
     if (isHovering) {
-      showTimer.value = true;
+      showDesktopTimer.value = true;
     }
   }, 150);
 };
@@ -33,23 +31,11 @@ const handleMouseEnter = () => {
 const handleMouseLeave = () => {
   isHovering = false;
   if (hoverTimeout) clearTimeout(hoverTimeout);
-  showTimer.value = false;
+  showDesktopTimer.value = false;
 };
 
-const handleTouchStart = (e: TouchEvent) => {
-  touchStartX = e.changedTouches[0].screenX;
-};
-
-const handleTouchEnd = (e: TouchEvent) => {
-  touchEndX = e.changedTouches[0].screenX;
-  handleSwipe();
-};
-
-const handleSwipe = () => {
-  const swipeDistance = touchEndX - touchStartX;
-  if (Math.abs(swipeDistance) > 50) {
-    currentSlide.value = currentSlide.value === 0 ? 1 : 0;
-  }
+const toggleMobileTimer = () => {
+  showMobileTimer.value = !showMobileTimer.value;
 };
 </script>
 
@@ -66,59 +52,53 @@ const handleSwipe = () => {
     >
       <div class="date-time-grid">
         <div></div>
-        <div class="flex flex-col items-center gap-2 date-time-item" :class="{ 'hidden': showTimer }">
+        <div class="flex flex-col items-center gap-2 date-time-item" :class="{ 'hidden': showDesktopTimer }">
           <p class="text-3xl font-medium time-style">09</p>
           <p class="text-xl font-normal text-center">mayo</p>
         </div>
-        <div class="flex items-center justify-center date-time-separator" :class="{ 'hidden': showTimer }">
+        <div class="flex items-center justify-center date-time-separator" :class="{ 'hidden': showDesktopTimer }">
           <div class="w-0.5 h-16 bg-[#E5E7EB]"></div>
         </div>
-        <div class="flex flex-col items-center gap-2 date-time-item" :class="{ 'hidden': showTimer }">
+        <div class="flex flex-col items-center gap-2 date-time-item" :class="{ 'hidden': showDesktopTimer }">
           <p class="text-3xl font-medium time-style">14:00</p>
           <p class="text-xl font-normal text-center">hs</p>
         </div>
         <div></div>
         
-        <div class="timer-overlay" :class="{ 'show': showTimer }">
+        <div class="timer-overlay" :class="{ 'show': showDesktopTimer }">
           <Timer weddingDate="2026-05-09T14:00:00" />
         </div>
       </div>
     </div>
     
     <div 
-      class="carousel-container mobile-version"
-      @touchstart="handleTouchStart"
-      @touchend="handleTouchEnd"
+      class="mobile-timer-section mobile-version"
+      @click="toggleMobileTimer"
     >
-      <div class="carousel-wrapper" :style="{ transform: `translateX(-${currentSlide * 100}%)` }">
-        <div class="carousel-slide">
-          <div class="date-time-grid">
-            <div></div>
-            <div class="flex flex-col items-center gap-2">
-              <p class="text-3xl font-medium time-style">09</p>
-              <p class="text-xl font-normal text-center">mayo</p>
-            </div>
-            <div class="flex items-center justify-center">
-              <div class="w-0.5 h-16 bg-[#E5E7EB]"></div>
-            </div>
-            <div class="flex flex-col items-center gap-2">
-              <p class="text-3xl font-medium time-style">14:00</p>
-              <p class="text-xl font-normal text-center">hs</p>
-            </div>
-            <div></div>
+      <div v-if="!showMobileTimer" class="mobile-date-time">
+        <div class="mobile-date-time-grid">
+          <div class="mobile-date-item">
+            <p class="text-3xl font-medium time-style">09</p>
+            <p class="text-xl font-normal text-center">mayo</p>
+          </div>
+          <div class="mobile-separator">
+            <div class="w-0.5 h-16 bg-[#E5E7EB]"></div>
+          </div>
+          <div class="mobile-date-item">
+            <p class="text-3xl font-medium time-style">14:00</p>
+            <p class="text-xl font-normal text-center">hs</p>
           </div>
         </div>
-        
-        <div class="carousel-slide">
-          <div class="timer-mobile">
-            <Timer weddingDate="2026-05-09T14:00:00" />
-          </div>
+        <div class="tap-indicator">
+          <p class="text-sm text-gray-500 text-center mt-2">Toca para ver temporizador</p>
         </div>
       </div>
-      
-      <div class="carousel-indicators">
-        <div class="indicator" :class="{ 'active': currentSlide === 0 }"></div>
-        <div class="indicator" :class="{ 'active': currentSlide === 1 }"></div>
+
+      <div v-else class="mobile-timer">
+        <Timer weddingDate="2026-05-09T14:00:00" />
+        <div class="tap-indicator">
+          <p class="text-sm text-gray-500 text-center mt-2">Toca para ver fecha y hora</p>
+        </div>
       </div>
     </div>
     <div class="border-t border-b border-gray-300 py-5 mt-10 flex flex-col gap-4">
@@ -220,74 +200,79 @@ const handleSwipe = () => {
   display: none;
 }
 
-.carousel-container {
+.mobile-version .mobile-timer-section {
   position: relative;
-  height: 80px;
-  overflow: hidden;
+  min-height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-  padding: 0 2rem;
+  padding: 1rem;
+  transition: all 0.3s ease;
 }
 
-.carousel-wrapper {
-  display: flex;
-  width: 200%;
-  height: 100%;
-  transition: transform 0.3s ease;
+.mobile-version .mobile-timer-section:hover {
+  background-color: rgba(0, 0, 0, 0.02);
+  border-radius: 8px;
 }
 
-.carousel-slide {
-  width: 50%;
+.mobile-date-time,
+.mobile-timer {
+  width: 100%;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.timer-mobile {
+.mobile-date-time-grid {
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  gap: 3rem;
   width: 100%;
 }
 
-.timer-mobile :deep(.number) {
+.mobile-date-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  width: 80px;
+  flex-shrink: 0;
+}
+
+.mobile-separator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mobile-timer :deep(.number) {
   color: var(--green-color) !important;
   text-shadow: none !important;
 }
 
-.timer-mobile :deep(.data) {
+.mobile-timer :deep(.data) {
   color: var(--green-color) !important;
 }
 
-.timer-mobile :deep(.border-box::after) {
+.mobile-timer :deep(.border-box::after) {
   color: var(--green-color) !important;
 }
 
-.carousel-indicators {
-  display: flex;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.indicator {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #E5E7EB;
-  transition: background 0.3s ease;
-}
-
-.indicator.active {
-  background: var(--green-color);
+.tap-indicator {
+  margin-top: 0.5rem;
+  opacity: 0.7;
 }
 
 @media (max-width: 1024px) {
   .desktop-version {
-    display: none;
+    display: none !important;
   }
   
   .mobile-version {
-    display: block;
+    display: block !important;
   }
 }
 
@@ -330,6 +315,22 @@ const handleSwipe = () => {
   
   .timer-overlay :deep(.data) {
     font-size: 0.5rem !important;
+  }
+
+  .mobile-timer :deep(.number) {
+    font-size: 2rem !important;
+  }
+
+  .mobile-timer :deep(.data) {
+    font-size: 0.5rem !important;
+  }
+
+  .mobile-date-time-grid {
+    gap: 2rem;
+  }
+
+  .mobile-date-item {
+    width: 70px;
   }
 }
 </style>
