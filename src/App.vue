@@ -47,7 +47,8 @@ onMounted(() => {
 
 </script>
 
-<template >
+<template>
+  <div class="app-container">
   <Hero
     groom="Alejandro"
     bride="Candelaria"
@@ -92,10 +93,16 @@ onMounted(() => {
   <MusicPlayer :initial-muted="musicMuted" />
   <MusicModal @music-preference="handleMusicPreference" @modal-closed="handleModalClosed" />
   <ScrollToTop />
-
+  </div>
 </template>
 
 <style scoped>
+.app-container {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .background-leaves {
   position: fixed;
   top: 0;

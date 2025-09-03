@@ -22,7 +22,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   <section
     ref="heroRef"
     id="inicio"
-    class="h-screen w-screen flex flex-col items-center justify-center bg-cover bg-center relative hero-bg"
+    class="h-screen w-screen flex flex-col items-center justify-center bg-cover bg-center relative hero-bg overflow-hidden"
   >
     <!-- Hero-top decoration -->
     <div v-if="showDecoration && heroAnimationsVisible" class="hero-decoration-top animate-slide-in">
@@ -196,10 +196,24 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   will-change: transform, opacity;
 }
 
+@media (max-width: 1024px) and (min-width: 769px) {
+  .hero-decoration-top img,
+  .hero-decoration-bot img {
+    max-width: 300px;
+  }
+}
+
 @media (max-width: 768px) {
   .hero-decoration-top img,
   .hero-decoration-bot img {
-    max-width: 245px;
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-decoration-top img,
+  .hero-decoration-bot img {
+    max-width: 120px;
   }
 }
 

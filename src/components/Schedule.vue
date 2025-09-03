@@ -99,7 +99,7 @@ const scheduleItems = [
 </script>
 
 <template>
-  <Container variant="green" customClass="md:w-4/5 lg:w-3/4 relative">
+  <Container variant="green" customClass="md:w-4/5 lg:w-3/4 relative schedule-container">
     <div class="schedule-background-left" :class="{ 'animate-slide-left': showBackgroundImages }">
       <img :src="backgroundLeafsLeft" alt="" class="leafs-left-image" />
     </div>
@@ -368,17 +368,21 @@ const scheduleItems = [
 }
 
 @media (max-width: 768px) {
+  .schedule-container :deep(.container) {
+    overflow-x: hidden;
+  }
+
   .schedule-background-left,
   .schedule-background-right {
-    width: 180px;
+    width: 150px;
   }
   
   .schedule-background-left {
-    left: -30px;
+    left: -10px;
   }
   
   .schedule-background-right {
-    right: -30px;
+    right: -10px;
   }
 
   .leafs-left-image {
@@ -414,15 +418,15 @@ const scheduleItems = [
 
   .schedule-background-left,
   .schedule-background-right {
-    width: 160px;
+    width: 120px;
   }
   
   .schedule-background-left {
-    left: -20px;
+    left: 0px;
   }
   
   .schedule-background-right {
-    right: -20px;
+    right: 0px;
   }
 
   .leafs-left-image {
