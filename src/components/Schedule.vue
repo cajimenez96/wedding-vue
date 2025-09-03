@@ -1,5 +1,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, onUnmounted } from 'vue';
+import { useScrollAnimation } from '../composables/useScrollAnimation';
+import { debounce, throttle } from '../utils/debounce';
 import Container from './Container.vue';
 import mainEvent from '../assets/images/mainEvent.webp';
 import dishes from '../assets/images/dishes.webp';
@@ -7,10 +9,14 @@ import cake from '../assets/images/cake.webp';
 import songs from '../assets/images/songs.webp';
 import photo from '../assets/images/photo.webp';
 import festivity from '../assets/images/festivity.webp';
+import backgroundLeafsLeft from '../assets/images/back_lef-left.webp';
+import backgroundLeafsRight from '../assets/images/back_lef-right.webp';
 
 const activeIndex = ref(-1);
 const isMobile = ref(false);
 const isTablet = ref(false);
+const scheduleRef = ref<HTMLElement>();
+const { isVisible: showBackgroundImages } = useScrollAnimation(scheduleRef, 0.6); // Easier to trigger
 
 const checkMobile = () => {
   const width = window.innerWidth;
@@ -18,33 +24,38 @@ const checkMobile = () => {
   isTablet.value = width > 768 && width <= 1024;
 };
 
+const debouncedCheckMobile = debounce(checkMobile, 150);
+
 const handleScroll = () => {
-  if (!isMobile.value && !isTablet.value) return;
-  
-  const items = document.querySelectorAll('.schedule-item');
-  const scrollTop = window.scrollY;
-  const windowHeight = window.innerHeight;
-  
-  items.forEach((item, index) => {
-    const rect = item.getBoundingClientRect();
-    const itemTop = rect.top + scrollTop;
-    const itemCenter = itemTop + rect.height / 2;
+  // Handle mobile/tablet active item logic
+  if (isMobile.value || isTablet.value) {
+    const items = document.querySelectorAll('.schedule-item');
+    const scrollTop = window.scrollY;
+    const windowHeight = window.innerHeight;
     
-    if (itemCenter >= scrollTop && itemCenter <= scrollTop + windowHeight * 0.6) {
-      activeIndex.value = index;
-    }
-  });
+    items.forEach((item, index) => {
+      const rect = item.getBoundingClientRect();
+      const itemTop = rect.top + scrollTop;
+      const itemCenter = itemTop + rect.height / 2;
+      
+      if (itemCenter >= scrollTop && itemCenter <= scrollTop + windowHeight * 0.6) {
+        activeIndex.value = index;
+      }
+    });
+  }
 };
+
+const throttledHandleScroll = throttle(handleScroll, 16);
 
 onMounted(() => {
   checkMobile();
-  window.addEventListener('resize', checkMobile);
-  window.addEventListener('scroll', handleScroll);
+  window.addEventListener('resize', debouncedCheckMobile);
+  window.addEventListener('scroll', throttledHandleScroll, { passive: true });
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', checkMobile);
-  window.removeEventListener('scroll', handleScroll);
+  window.removeEventListener('resize', debouncedCheckMobile);
+  window.removeEventListener('scroll', throttledHandleScroll);
 });
 
 const scheduleItems = [
@@ -88,52 +99,58 @@ const scheduleItems = [
 </script>
 
 <template>
-  <Container variant="green" customClass="md:w-4/5 lg:w-3/4">
-    <section class="flex flex-col justify-center items-center text-center mb-10">
-    <div class="flex flex-col gap-10 justify-center items-center">
-      <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
-      
-      <div class="relative max-w-6xl w-full">
-        <div 
-          v-for="(item, index) in scheduleItems" 
-          :key="index"
-          :class="[
-            'grid grid-cols-[1fr_60px_1fr] gap-8 mb-12 items-center schedule-item', 
-            { 'schedule-item-reverse': index % 2 === 1 },
-            { 'schedule-item-active': activeIndex === index }
-          ]"
-          @mouseenter="!isMobile && !isTablet && (activeIndex = index)"
-          @mouseleave="!isMobile && !isTablet && (activeIndex = -1)"
-        >
-          <div class="flex justify-center items-center">
-            <span class="text-2xl font-medium text-white transition-all duration-400" :class="[
-              isMobile || isTablet ? 'opacity-70' : 'opacity-0 -translate-x-2',
-              { 'time-visible': activeIndex === index }
-            ]">{{ item.time }}</span>
-          </div>
-          
-          <div class="flex flex-col items-center h-full relative">
-            <div class="w-3 h-3 bg-white rounded-full relative z-[2]"></div>
-            <div v-if="index < scheduleItems.length - 1" class="w-0.5 h-20 bg-white opacity-30 mt-2"></div>
-          </div>
-          
+  <Container variant="green" customClass="md:w-4/5 lg:w-3/4 relative schedule-container">
+    <div class="schedule-background-left" :class="{ 'animate-slide-left': showBackgroundImages }">
+      <img :src="backgroundLeafsLeft" alt="" class="leafs-left-image" />
+    </div>
+    <div class="schedule-background-right" :class="{ 'animate-slide-right': showBackgroundImages }">
+      <img :src="backgroundLeafsRight" alt="" class="leafs-right-image" />
+    </div>
+    <section ref="scheduleRef" class="schedule-section flex flex-col justify-center items-center text-center mb-10 relative z-10">
+      <div class="flex flex-col gap-10 justify-center items-center">
+        <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
+        
+        <div class="relative max-w-6xl w-full">
           <div 
-            :class="['flex gap-4 items-center', {
-              'text-left': ['Cóctel', 'Recepción', 'Fiesta'].includes(item.title),
-              'text-right': ['Ceremonia', 'Almuerzo', 'Fin de fiesta'].includes(item.title)
-            }]"
+            v-for="(item, index) in scheduleItems" 
+            :key="index"
+            :class="[
+              'grid grid-cols-[1fr_60px_1fr] gap-8 mb-12 items-center schedule-item', 
+              { 'schedule-item-reverse': index % 2 === 1 },
+              { 'schedule-item-active': activeIndex === index }
+            ]"
+            @mouseenter="!isMobile && !isTablet && (activeIndex = index)"
+            @mouseleave="!isMobile && !isTablet && (activeIndex = -1)"
           >
-            <div class="w-[94px] h-[94px] flex-shrink-0 transition-all duration-300 rounded-lg overflow-hidden schedule-image">
-              <img :src="item.image" :alt="item.title" class="w-full h-full object-contain object-center p-2 schedule-img" />
+            <div class="flex justify-center items-center">
+              <span class="text-2xl font-medium text-white transition-all duration-400" :class="[
+                isMobile || isTablet ? 'opacity-70' : 'opacity-0 -translate-x-2',
+                { 'time-visible': activeIndex === index }
+              ]">{{ item.time }}</span>
             </div>
-            <div class="flex-1">
-              <h3 class="text-xl font-semibold text-white mb-1 transition-colors duration-300 schedule-title">{{ item.title }}</h3>
-              <p class="text-sm text-gray-200 leading-tight transition-colors duration-300 schedule-description">{{ item.description }}</p>
+            
+            <div class="flex flex-col items-center h-full relative">
+              <div class="w-3 h-3 bg-white rounded-full relative z-[2]"></div>
+              <div v-if="index < scheduleItems.length - 1" class="w-0.5 h-20 bg-white opacity-30 mt-2"></div>
+            </div>
+            
+            <div 
+              :class="['flex gap-4 items-center', {
+                'text-left': ['Cóctel', 'Recepción', 'Fiesta'].includes(item.title),
+                'text-right': ['Ceremonia', 'Almuerzo', 'Fin de fiesta'].includes(item.title)
+              }]"
+            >
+              <div class="w-[94px] h-[94px] flex-shrink-0 transition-all duration-300 rounded-lg overflow-hidden schedule-image">
+                <img :src="item.image" :alt="item.title" class="w-full h-full object-contain object-center p-2 schedule-img" />
+              </div>
+              <div class="flex-1">
+                <h3 class="text-xl font-semibold text-white mb-1 transition-colors duration-300 schedule-title">{{ item.title }}</h3>
+                <p class="text-sm text-gray-200 leading-tight transition-colors duration-300 schedule-description">{{ item.description }}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
     </section>
   </Container>
 </template>
@@ -269,6 +286,116 @@ const scheduleItems = [
   }
 }
 
+.schedule-background-left {
+  position: absolute;
+  top: 0;
+  left: -250px;
+  width: 350px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all 1.2s ease-out;
+}
+
+.schedule-background-right {
+  position: absolute;
+  top: 0;
+  right: -250px;
+  width: 350px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 1.2s ease-out;
+}
+
+.animate-slide-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-slide-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.leafs-left-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  filter: brightness(2) contrast(0.8);
+  padding-right: 50px;
+}
+
+.leafs-right-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left;
+  opacity: 0.2;
+  mix-blend-mode: overlay;
+  filter: brightness(2) contrast(0.8);
+  padding-left: 50px;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .schedule-background-left,
+  .schedule-background-right {
+    width: 280px;
+  }
+  
+  .schedule-background-left {
+    left: -165px;
+  }
+  
+  .schedule-background-right {
+    right: -165px;
+  }
+
+  .leafs-left-image {
+    padding-right: 30px;
+  }
+
+  .leafs-right-image {
+    padding-left: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .schedule-container :deep(.container) {
+    overflow-x: hidden;
+  }
+
+  .schedule-background-left,
+  .schedule-background-right {
+    width: 150px;
+  }
+  
+  .schedule-background-left {
+    left: -10px;
+  }
+  
+  .schedule-background-right {
+    right: -10px;
+  }
+
+  .leafs-left-image {
+    padding-right: 20px;
+    opacity: 0.15;
+  }
+
+  .leafs-right-image {
+    padding-left: 20px;
+    opacity: 0.15;
+  }
+}
+
 @media (max-width: 480px) {
   .grid {
     grid-template-columns: 70px 30px 1fr !important;
@@ -287,6 +414,29 @@ const scheduleItems = [
   .w-\[94px\].h-\[94px\] {
     width: 58px !important;
     height: 58px !important;
+  }
+
+  .schedule-background-left,
+  .schedule-background-right {
+    width: 120px;
+  }
+  
+  .schedule-background-left {
+    left: 0px;
+  }
+  
+  .schedule-background-right {
+    right: 0px;
+  }
+
+  .leafs-left-image {
+    padding-right: 15px;
+    opacity: 0.12;
+  }
+
+  .leafs-right-image {
+    padding-left: 15px;
+    opacity: 0.12;
   }
 }
 </style>

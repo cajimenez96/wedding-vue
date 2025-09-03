@@ -2,8 +2,6 @@
 import { onMounted, onUnmounted, ref } from 'vue';
 
 const props = defineProps<{
-  title?: string;
-  description?: string;
   weddingDate: string;
 }>();
 
@@ -76,12 +74,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-.container-timer {
-  height: 690px;    
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 .border-box::after {
   content: ":";
   font-family: 'Sail', cursive;
@@ -107,10 +99,6 @@ onUnmounted(() => {
 }
 
 @media (max-width: 768px) {
-  .container-timer {
-    height: auto;
-    padding: 20px;
-  }
   .title {
     font-size: 2rem;
   }

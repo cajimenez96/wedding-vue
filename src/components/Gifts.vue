@@ -17,16 +17,16 @@ const handleClose = () => {
 
 <template>
   <Container variant="green">
-    <div class="flex flex-col gap-10 justify-center items-center text-center">
+    <div class="flex flex-col gap-6 justify-center items-center text-center">
       <h2 class="text-4xl title-wedding title-section">{{ title }}</h2>
       <div class="flex flex-col px-5 md:w-lg">
-        <div class="border-t border-b border-gray-300 py-5 mt-10 flex flex-col gap-4">
-          <p class="text-xl" v-html="description"></p>
+        <div class="border-t border-b border-gray-300 py-5 my-4 flex flex-col gap-4 items-center">
+          <p class="text-xl text-center" v-html="description"></p>
         </div>
       </div>
 
-      <div class="w-4/5">
-        <Button variant="primary" @click="showModal = true">Más información</Button>
+      <div class="gifts-button-container">
+        <Button variant="white" @click="showModal = true">Más información</Button>
       </div>
     </div>
   </Container>
@@ -245,6 +245,25 @@ const handleClose = () => {
 
 .me-2 {
   margin-right: 0.5rem;
+}
+
+.gifts-button-container {
+  width: calc(100% - 2rem);
+  max-width: 300px;
+  padding: 0 1rem;
+  margin: 0 auto;
+}
+
+@media (max-width: 767px) {
+  .gifts-button-container {
+    width: calc(100vw - 2rem);
+    padding: 0 1rem;
+  }
+  
+  .gifts-button-container :deep(.button) {
+    white-space: nowrap;
+    min-width: 280px;
+  }
 }
 
 @media (max-width: 480px) {

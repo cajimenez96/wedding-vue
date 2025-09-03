@@ -1,9 +1,7 @@
 <template>
   <div class="music-player">
     <div class="player-wrapper">
-      <!-- Player Container -->
       <div class="player-container" :class="{ 'minimized': isMinimized }">
-        <!-- Minimized view -->
         <div v-if="isMinimized" class="minimized-player">
           <button 
             @click="togglePlay" 
@@ -16,8 +14,6 @@
             ></i>
           </button>
         </div>
-
-        <!-- Full view -->
         <div v-else class="full-player">
           <button 
             @click="togglePlay" 
@@ -48,8 +44,6 @@
           </button>
         </div>
       </div>
-
-      <!-- Separate Minimize/Maximize Button Container -->
       <div class="control-container">
         <button @click="toggleMinimize" class="toggle-button">
           <i 
@@ -83,7 +77,6 @@ interface Song {
 }
 
 const props = defineProps<{
-  title?: string;
   initialMuted?: boolean;
 }>();
 
@@ -91,14 +84,13 @@ const audioPlayer = ref<HTMLAudioElement>();
 const isPlaying = ref(false);
 const currentTime = ref(0);
 const duration = ref(0);
-const volume = ref(0); // Empezar en 0 porque está muted
+const volume = ref(70);
 const songs = ref<Song[]>([]);
 const currentSongIndex = ref(0);
 const isMinimized = ref(true);
-const isMuted = ref(true); // Empezar muted por defecto
+const isMuted = ref(false);
 const previousVolume = ref(70);
 
-// Watch para cambios en la prop initialMuted
 watch(() => props.initialMuted, (newValue) => {
   if (newValue !== undefined) {
     isMuted.value = newValue;
@@ -108,7 +100,6 @@ watch(() => props.initialMuted, (newValue) => {
     } else {
       volume.value = previousVolume.value > 0 ? previousVolume.value : 70;
     }
-    // updateVolume será llamado en onMounted
     if (audioPlayer.value) {
       audioPlayer.value.volume = volume.value / 100;
     }
@@ -125,8 +116,7 @@ const currentSong = computed(() => {
 
 const loadMusicFiles = async () => {
   try {
-    // Cargar archivos de música desde la carpeta assets
-    const musicModules = import.meta.glob('../assets/music/*.(mp3|wav|ogg)', { eager: true });
+    const musicModules = import.meta.glob('../assets/music/*.{mp3,wav,ogg}', { eager: true });
     songs.value = Object.entries(musicModules).map(([path, mod]) => {
       const filename = path.split('/').pop() || path;
       const title = filename.split('.')[0].replace(/[-_]/g, ' ');
@@ -137,7 +127,7 @@ const loadMusicFiles = async () => {
       };
     });
   } catch (error) {
-    // No se encontraron archivos de música en assets/music/
+    
   }
 };
 
@@ -199,13 +189,22 @@ const toggleMute = () => {
 onMounted(() => {
   loadMusicFiles();
   
-  // Aplicar configuración inicial de mute
   if (props.initialMuted !== undefined) {
     isMuted.value = props.initialMuted;
     if (props.initialMuted) {
       volume.value = 0;
+    } else {
+      volume.value = 70;
     }
   }
+  
+  setTimeout(() => {
+    if (!isMuted.value && currentSong.value && audioPlayer.value) {
+      audioPlayer.value.volume = volume.value / 100;
+      audioPlayer.value.play().catch(() => {});
+      isPlaying.value = true;
+    }
+  }, 2000);
   
   updateVolume();
 });

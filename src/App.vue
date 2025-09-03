@@ -9,27 +9,51 @@ import MusicPlayer from './components/MusicPlayer.vue';
 import MusicModal from './components/MusicModal.vue';
 import ScrollToTop from './components/ScrollToTop.vue';
 import Presentation from './components/Presentation.vue';
-import backgroundLeaves from './assets/images/background-leafs.webp';
+import backgroundLeaves from './assets/images/back_lef-top.webp';
 
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
+import { useImageOptimization } from './composables/useImageOptimization';
 
-const musicMuted = ref(true);
+const musicMuted = ref(false);
+const showHeroDecoration = ref(false);
+const { preloadCriticalImages } = useImageOptimization();
 
 const handleConfirm = () => {
-  console.log('Asistencia confirmada');
+  
 };
 
 const handleMusicPreference = (withMusic: boolean) => {
   musicMuted.value = !withMusic;
 };
 
+const handleModalClosed = () => {
+  showHeroDecoration.value = true;
+};
+
+// Preload critical images on app mount
+onMounted(() => {
+  // Don't block the modal with preloading
+  setTimeout(() => {
+    const criticalImages = [
+      '/src/assets/images/married-main.webp',
+      '/src/assets/images/Hero-top.webp',
+      '/src/assets/images/Hero-bot.webp'
+    ];
+    preloadCriticalImages(criticalImages).catch(() => {
+      // Ignore preload errors
+    });
+  }, 100);
+});
+
 </script>
 
-<template >
+<template>
+  <div class="app-container">
   <Hero
     groom="Alejandro"
     bride="Candelaria"
     date="09 de Mayo, 2026"
+    :show-decoration="showHeroDecoration"
     @confirm="handleConfirm"
   />
 
@@ -67,12 +91,18 @@ const handleMusicPreference = (withMusic: boolean) => {
   />
 
   <MusicPlayer :initial-muted="musicMuted" />
-  <MusicModal @music-preference="handleMusicPreference" />
+  <MusicModal @music-preference="handleMusicPreference" @modal-closed="handleModalClosed" />
   <ScrollToTop />
-
+  </div>
 </template>
 
 <style scoped>
+.app-container {
+  overflow-x: hidden;
+  width: 100%;
+  min-height: 100vh;
+}
+
 .background-leaves {
   position: fixed;
   top: 0;

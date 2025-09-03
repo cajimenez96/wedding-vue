@@ -20,8 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import bakDecImage from '../assets/images/back/bak_dec-1.webp';
+import { useScrollAnimation } from '../composables/useScrollAnimation';
 
 defineProps<{
   groom?: string;
@@ -30,27 +31,7 @@ defineProps<{
 
 const currentYear = new Date().getFullYear();
 const footerRef = ref<HTMLElement>();
-const isVisible = ref(false);
-
-const handleScroll = () => {
-  if (!footerRef.value) return;
-  
-  const rect = footerRef.value.getBoundingClientRect();
-  const windowHeight = window.innerHeight;
-  
-  if (rect.top <= windowHeight * 0.8) {
-    isVisible.value = true;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-  handleScroll(); // Check initial state
-});
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
+const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold to trigger earlier
 </script>
 
 <style scoped>
@@ -121,10 +102,24 @@ onUnmounted(() => {
 }
 
 .footer-decoration-image {
-  width: 100%;
+  width: 85%;
   height: auto;
   object-fit: cover;
   transform: translateY(15%);
+  margin: 0 auto;
+  display: block;
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .footer-decoration {
+    bottom: -35%;
+  }
+  
+  .footer-decoration-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+  }
 }
 
 @media (max-width: 768px) {
@@ -145,18 +140,28 @@ onUnmounted(() => {
   }
   
   .footer-decoration {
-    bottom: -85%;
+    bottom: -35%;
+  }
+  
+  .footer-decoration-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
   }
 }
 
 @media (max-width: 480px) {
   .footer-decoration {
-    bottom: -95%;
+    bottom: -5%;
+  }
+  
+  .footer-decoration-image {
+    width: 120%;
   }
 }
 
 .footer-section.animate-in .footer-decoration {
-  opacity: 0.084;
+  opacity: 0.15;
   transform: translateY(0);
 }
 </style>

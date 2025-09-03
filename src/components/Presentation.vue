@@ -9,7 +9,7 @@ defineProps<{
 </script>
 
 <template>
-  <Container variant="green">
+  <Container variant="green" class="presentation-container">
     <div class="presentation-decoration">
       <img :src="decImage" alt="" class="presentation-decoration-image" />
     </div>
@@ -21,6 +21,11 @@ defineProps<{
 </template>
 
 <style scoped>
+.presentation-container {
+  position: relative;
+  z-index: 10;
+}
+
 .presentation-decoration {
   display: flex;
   justify-content: center;
