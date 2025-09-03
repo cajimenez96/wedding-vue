@@ -33,6 +33,7 @@ import { ref, onMounted } from 'vue';
 
 const emit = defineEmits<{
   (e: 'music-preference', value: boolean): void;
+  (e: 'modal-closed'): void;
 }>();
 
 const showModal = ref(false);
@@ -40,6 +41,7 @@ const showModal = ref(false);
 const handleChoice = (withMusic: boolean) => {
   showModal.value = false;
   emit('music-preference', withMusic);
+  emit('modal-closed');
 };
 
 onMounted(() => {

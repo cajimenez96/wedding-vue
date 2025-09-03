@@ -20,8 +20,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import bakDecImage from '../assets/images/back/bak_dec-1.webp';
+import { useScrollAnimation } from '../composables/useScrollAnimation';
 
 defineProps<{
   groom?: string;
@@ -30,27 +31,7 @@ defineProps<{
 
 const currentYear = new Date().getFullYear();
 const footerRef = ref<HTMLElement>();
-const isVisible = ref(false);
-
-const handleScroll = () => {
-  if (!footerRef.value) return;
-  
-  const rect = footerRef.value.getBoundingClientRect();
-  const windowHeight = window.innerHeight;
-  
-  if (rect.top <= windowHeight * 0.8) {
-    isVisible.value = true;
-  }
-};
-
-onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-  handleScroll(); // Check initial state
-});
-
-onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
+const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold to trigger earlier
 </script>
 
 <style scoped>
@@ -180,7 +161,7 @@ onUnmounted(() => {
 }
 
 .footer-section.animate-in .footer-decoration {
-  opacity: 0.068;
+  opacity: 0.15;
   transform: translateY(0);
 }
 </style>
