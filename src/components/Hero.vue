@@ -3,7 +3,7 @@ import { ref } from 'vue';
 import Button from "./Button.vue";
 import { useScrollAnimation } from '../composables/useScrollAnimation';
 
-const props = defineProps<{
+defineProps<{
   groom: string;
   bride: string;
   date: string;
