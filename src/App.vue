@@ -4,6 +4,7 @@ import Events from './components/Events.vue';
 import Schedule from './components/Schedule.vue';
 import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
+import DressCode from './components/DressCode.vue';
 import Footer from './components/Footer.vue';
 import MusicPlayer from './components/MusicPlayer.vue';
 import MusicModal from './components/MusicModal.vue';
@@ -15,15 +16,14 @@ import { ref, onMounted } from 'vue';
 import { useImageOptimization } from './composables/useImageOptimization';
 
 const musicMuted = ref(false);
+const canAutoPlayMusic = ref(false);
 const showHeroDecoration = ref(false);
 const { preloadCriticalImages } = useImageOptimization();
 
-const handleConfirm = () => {
-  
-};
 
 const handleMusicPreference = (withMusic: boolean) => {
   musicMuted.value = !withMusic;
+  canAutoPlayMusic.value = true;
 };
 
 const handleModalClosed = () => {
@@ -54,7 +54,6 @@ onMounted(() => {
     bride="Candelaria"
     date="09 de Mayo, 2026"
     :show-decoration="showHeroDecoration"
-    @confirm="handleConfirm"
   />
 
   <Presentation
@@ -80,6 +79,11 @@ onMounted(() => {
     title="Nuestra Galería de amor"
   />
 
+  <DressCode
+    title="Código de vestimenta"
+    description="Para que todos nos veamos elegantes y en armonía en nuestro día especial,<br>hemos preparado algunas sugerencias de vestimenta."
+  />
+
   <Gifts
     title="Regalos"
     description="Tu presencia es lo más importante para nosotros.<br>Si además querés hacernos un regalo te contamos cómo hacerlo."
@@ -90,7 +94,7 @@ onMounted(() => {
     bride="Candelaria"
   />
 
-  <MusicPlayer :initial-muted="musicMuted" />
+  <MusicPlayer :initial-muted="musicMuted" :can-auto-play="canAutoPlayMusic" />
   <MusicModal @music-preference="handleMusicPreference" @modal-closed="handleModalClosed" />
   <ScrollToTop />
   </div>

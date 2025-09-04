@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import Button from "./Button.vue";
+import { watch, ref } from 'vue';
 import { useScrollAnimation } from '../composables/useScrollAnimation';
+import Button from "./Button.vue";
 
-defineProps<{
+const props = defineProps<{
   groom: string;
   bride: string;
   date: string;
@@ -15,7 +15,36 @@ const emit = defineEmits<{
 }>();
 
 const heroRef = ref<HTMLElement>();
-const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, true); // Initially visible
+const { isVisible: showAnimations } = useScrollAnimation(heroRef, 0.3);
+
+// Trigger animations based on scroll visibility
+watch(showAnimations, (isVisible) => {
+  setTimeout(() => {
+    const topEl = document.querySelector('.hero-decoration-top');
+    const botEl = document.querySelector('.hero-decoration-bot');
+    
+    if (isVisible) {
+      if (topEl) topEl.classList.add('animate-slide-in');
+      if (botEl) botEl.classList.add('animate-slide-in-bot');
+    } else {
+      if (topEl) topEl.classList.remove('animate-slide-in');
+      if (botEl) botEl.classList.remove('animate-slide-in-bot');
+    }
+  }, 100);
+}, { immediate: true });
+
+// Also trigger on showDecoration prop for manual control
+watch(() => props.showDecoration, (newValue) => {
+  if (newValue && showAnimations.value) {
+    setTimeout(() => {
+      const topEl = document.querySelector('.hero-decoration-top');
+      const botEl = document.querySelector('.hero-decoration-bot');
+      
+      if (topEl) topEl.classList.add('animate-slide-in');
+      if (botEl) botEl.classList.add('animate-slide-in-bot');
+    }, 100);
+  }
+});
 </script>
 
 <template>
@@ -24,8 +53,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
     id="inicio"
     class="h-screen w-screen flex flex-col items-center justify-center bg-cover bg-center relative hero-bg overflow-hidden"
   >
-    <!-- Hero-top decoration -->
-    <div v-if="showDecoration && heroAnimationsVisible" class="hero-decoration-top animate-slide-in">
+    <div class="hero-decoration-top">
       <img 
         src="../assets/images/Hero-top.webp" 
         alt="" 
@@ -34,8 +62,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
       />
     </div>
     
-    <!-- Hero-bot decoration -->
-    <div v-if="showDecoration && heroAnimationsVisible" class="hero-decoration-bot animate-slide-in-bot">
+    <div class="hero-decoration-bot">
       <img 
         src="../assets/images/Hero-bot.webp" 
         alt="" 
@@ -43,6 +70,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
         decoding="sync"
       />
     </div>
+    
     <div class="text-center flex flex-col items-center gap-20 fade-in">
       <div class="flex flex-col gap-5">
         <p class="uppercase text-md font-light title-wedding">Nos casamos</p>
@@ -76,8 +104,8 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
 .hero-bg {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url("../assets/images/married-main.webp");
-  background-size: center;
-  background-position: top;
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -140,7 +168,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   
   .hero-button-container :deep(.button) {
     white-space: nowrap;
-    min-width: 280px;
+    min-width: 300px;
     font-size: 1rem;
     padding: 1rem 1.5rem;
   }
@@ -166,7 +194,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 5;
   pointer-events: none;
   contain: layout style paint;
 }
@@ -175,7 +203,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   width: auto;
   height: auto;
   max-width: 408px;
-  opacity: 0.5;
+  opacity: 0.8;
   will-change: transform, opacity;
 }
 
@@ -183,7 +211,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   position: absolute;
   bottom: 0;
   right: 0;
-  z-index: 1;
+  z-index: 5;
   pointer-events: none;
   contain: layout style paint;
 }
@@ -192,7 +220,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   width: auto;
   height: auto;
   max-width: 408px;
-  opacity: 0.5;
+  opacity: 0.8;
   will-change: transform, opacity;
 }
 
@@ -206,23 +234,33 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
 @media (max-width: 768px) {
   .hero-decoration-top img,
   .hero-decoration-bot img {
-    max-width: 180px;
+    max-width: 365px;
   }
 }
 
 @media (max-width: 480px) {
   .hero-decoration-top img,
   .hero-decoration-bot img {
-    max-width: 120px;
+    max-width: 243px;
   }
 }
 
+.hero-decoration-top:not(.animate-slide-in) {
+  opacity: 0;
+  transform: translate(-100%, -100%);
+}
+
+.hero-decoration-bot:not(.animate-slide-in-bot) {
+  opacity: 0;
+  transform: translate(100%, 100%);
+}
+
 .animate-slide-in {
-  animation: slideInFromCorner 1.5s ease-out;
+  animation: slideInFromCorner 1.5s ease-out forwards;
 }
 
 .animate-slide-in-bot {
-  animation: slideInFromBottomCorner 1.5s ease-out;
+  animation: slideInFromBottomCorner 1.5s ease-out forwards;
 }
 
 @keyframes slideInFromCorner {
@@ -232,7 +270,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   }
   100% {
     transform: translate(0, 0);
-    opacity: 1;
+    opacity: 0.8;
   }
 }
 
@@ -243,7 +281,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   }
   100% {
     transform: translate(0, 0);
-    opacity: 1;
+    opacity: 0.8;
   }
 }
 

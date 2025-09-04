@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-type Variant = 'primary' | 'outline' | 'link' | 'white';
+type Variant = 'primary' | 'outline' | 'white';
 
 defineProps<{
   variant?: Variant;

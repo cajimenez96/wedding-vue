@@ -16,7 +16,7 @@ const activeIndex = ref(-1);
 const isMobile = ref(false);
 const isTablet = ref(false);
 const scheduleRef = ref<HTMLElement>();
-const { isVisible: showBackgroundImages } = useScrollAnimation(scheduleRef, 0.6); // Easier to trigger
+const { isVisible: showBackgroundImages } = useScrollAnimation(scheduleRef, 0.6);
 
 const checkMobile = () => {
   const width = window.innerWidth;
@@ -99,14 +99,14 @@ const scheduleItems = [
 </script>
 
 <template>
-  <Container variant="green" customClass="md:w-4/5 lg:w-3/4 relative schedule-container">
+  <Container variant="green" customClass="md:w-4/5 lg:w-3/4 relative">
     <div class="schedule-background-left" :class="{ 'animate-slide-left': showBackgroundImages }">
       <img :src="backgroundLeafsLeft" alt="" class="leafs-left-image" />
     </div>
     <div class="schedule-background-right" :class="{ 'animate-slide-right': showBackgroundImages }">
       <img :src="backgroundLeafsRight" alt="" class="leafs-right-image" />
     </div>
-    <section ref="scheduleRef" class="schedule-section flex flex-col justify-center items-center text-center mb-10 relative z-10">
+    <section ref="scheduleRef" class="schedule-section flex flex-col justify-center items-center text-center py-10 relative z-10">
       <div class="flex flex-col gap-10 justify-center items-center">
         <h2 class="text-4xl title-wedding title-section mb-10">Programa del día</h2>
         
@@ -368,21 +368,17 @@ const scheduleItems = [
 }
 
 @media (max-width: 768px) {
-  .schedule-container :deep(.container) {
-    overflow-x: hidden;
-  }
-
   .schedule-background-left,
   .schedule-background-right {
-    width: 150px;
+    width: 180px;
   }
   
   .schedule-background-left {
-    left: -10px;
+    left: -30px;
   }
   
   .schedule-background-right {
-    right: -10px;
+    right: -30px;
   }
 
   .leafs-left-image {
@@ -418,15 +414,15 @@ const scheduleItems = [
 
   .schedule-background-left,
   .schedule-background-right {
-    width: 120px;
+    width: 160px;
   }
   
   .schedule-background-left {
-    left: 0px;
+    left: -20px;
   }
   
   .schedule-background-right {
-    right: 0px;
+    right: -20px;
   }
 
   .leafs-left-image {

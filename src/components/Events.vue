@@ -101,7 +101,7 @@ const toggleMobileTimer = () => {
         </div>
       </div>
     </div>
-    <div class="border-t border-b border-gray-300 py-5 mt-10 flex flex-col gap-4">
+    <div class="border-t border-b border-gray-300 py-5 my-10 flex flex-col gap-4">
       <p class="text-2xl text-center font-medium">{{ props.location }}</p>
       <p class="text-xl text-center" v-html="props.description"></p>
     </div>
@@ -289,7 +289,7 @@ const toggleMobileTimer = () => {
 
 @media (max-width: 1024px) {
   .timer-overlay {
-    min-width: 280px;
+    min-width: 300px;
     padding: 1.5rem;
   }
   

@@ -44,7 +44,7 @@ export function useImageOptimization() {
     try {
       await Promise.all(promises);
     } catch (error) {
-      console.warn('Some images failed to preload:', error);
+      // Images failed to preload, continue silently
     }
   };
 

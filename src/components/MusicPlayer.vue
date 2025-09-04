@@ -78,6 +78,7 @@ interface Song {
 
 const props = defineProps<{
   initialMuted?: boolean;
+  canAutoPlay?: boolean;
 }>();
 
 const audioPlayer = ref<HTMLAudioElement>();
@@ -199,7 +200,7 @@ onMounted(() => {
   }
   
   setTimeout(() => {
-    if (!isMuted.value && currentSong.value && audioPlayer.value) {
+    if (!isMuted.value && currentSong.value && audioPlayer.value && props.canAutoPlay) {
       audioPlayer.value.volume = volume.value / 100;
       audioPlayer.value.play().catch(() => {});
       isPlaying.value = true;

@@ -262,7 +262,7 @@ const handleClose = () => {
   
   .gifts-button-container :deep(.button) {
     white-space: nowrap;
-    min-width: 280px;
+    min-width: 300px;
   }
 }
 
