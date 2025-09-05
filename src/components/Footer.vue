@@ -161,7 +161,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
 }
 
 .footer-section.animate-in .footer-decoration {
-  opacity: 0.12;
+  opacity: 0.15;
   transform: translateY(0);
 }
 

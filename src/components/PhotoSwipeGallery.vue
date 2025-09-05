@@ -1,12 +1,11 @@
 <template>
   <div class="photoswipe-gallery">
     <div class="gallery-container">
-      <div class="gallery-overflow-container">
-        <div 
-          ref="galleryRef" 
-          class="justified-gallery"
-          :style="{ transform: `translateX(-${currentPage * 100}%)` }"
-        >
+      <div 
+        ref="galleryRef" 
+        class="justified-gallery"
+        :style="{ transform: `translateX(-${currentPage * 100}%)` }"
+      >
         <div 
           v-for="(page, pageIndex) in paginatedImages" 
           :key="pageIndex"
@@ -28,7 +27,6 @@
               loading="lazy"
             />
           </a>
-        </div>
         </div>
       </div>
     </div>
@@ -191,12 +189,6 @@ onMounted(() => {
 }
 
 .gallery-container {
-  overflow: visible;
-  width: 100%;
-  padding: 30px 0;
-}
-
-.gallery-overflow-container {
   overflow: hidden;
   width: 100%;
 }
@@ -216,7 +208,6 @@ onMounted(() => {
   box-sizing: border-box;
   flex-shrink: 0;
   min-width: 100%;
-  margin: 40px 0;
 }
 
 .gallery-item {

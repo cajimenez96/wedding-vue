@@ -254,7 +254,7 @@ onMounted(() => {
   }
   
   setTimeout(() => {
-    if (!isMuted.value && currentSong.value && audioPlayer.value && props.canAutoPlay) {
+    if (!isMuted.value && currentSong.value && audioPlayer.value) {
       audioPlayer.value.volume = volume.value / 100;
       audioPlayer.value.play().catch(() => {});
       isPlaying.value = true;

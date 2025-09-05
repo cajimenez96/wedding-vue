@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue';
-import { useScrollAnimation } from '../composables/useScrollAnimation';
+import { ref } from 'vue';
 import Button from "./Button.vue";
+import { useScrollAnimation } from '../composables/useScrollAnimation';
 
-const props = defineProps<{
+defineProps<{
   groom: string;
   bride: string;
   date: string;
@@ -15,36 +15,7 @@ const emit = defineEmits<{
 }>();
 
 const heroRef = ref<HTMLElement>();
-const { isVisible: showAnimations } = useScrollAnimation(heroRef, 0.3);
-
-// Trigger animations based on scroll visibility
-watch(showAnimations, (isVisible) => {
-  setTimeout(() => {
-    const topEl = document.querySelector('.hero-decoration-top');
-    const botEl = document.querySelector('.hero-decoration-bot');
-    
-    if (isVisible) {
-      if (topEl) topEl.classList.add('animate-slide-in');
-      if (botEl) botEl.classList.add('animate-slide-in-bot');
-    } else {
-      if (topEl) topEl.classList.remove('animate-slide-in');
-      if (botEl) botEl.classList.remove('animate-slide-in-bot');
-    }
-  }, 100);
-}, { immediate: true });
-
-// Also trigger on showDecoration prop for manual control
-watch(() => props.showDecoration, (newValue) => {
-  if (newValue && showAnimations.value) {
-    setTimeout(() => {
-      const topEl = document.querySelector('.hero-decoration-top');
-      const botEl = document.querySelector('.hero-decoration-bot');
-      
-      if (topEl) topEl.classList.add('animate-slide-in');
-      if (botEl) botEl.classList.add('animate-slide-in-bot');
-    }, 100);
-  }
-});
+const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, true); // Initially visible
 </script>
 
 <template>
@@ -53,7 +24,8 @@ watch(() => props.showDecoration, (newValue) => {
     id="inicio"
     class="h-screen w-screen flex flex-col items-center justify-center bg-cover bg-center relative hero-bg overflow-hidden"
   >
-    <div class="hero-decoration-top">
+    <!-- Hero-top decoration -->
+    <div v-if="showDecoration && heroAnimationsVisible" class="hero-decoration-top animate-slide-in">
       <img 
         src="../assets/images/Hero-top.webp" 
         alt="" 
@@ -62,7 +34,8 @@ watch(() => props.showDecoration, (newValue) => {
       />
     </div>
     
-    <div class="hero-decoration-bot">
+    <!-- Hero-bot decoration -->
+    <div v-if="showDecoration && heroAnimationsVisible" class="hero-decoration-bot animate-slide-in-bot">
       <img 
         src="../assets/images/Hero-bot.webp" 
         alt="" 
@@ -70,7 +43,6 @@ watch(() => props.showDecoration, (newValue) => {
         decoding="sync"
       />
     </div>
-    
     <div class="text-center flex flex-col items-center gap-20 fade-in">
       <div class="flex flex-col gap-5">
         <p class="uppercase text-md font-light title-wedding">Nos casamos</p>
@@ -194,7 +166,7 @@ watch(() => props.showDecoration, (newValue) => {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 5;
+  z-index: 1;
   pointer-events: none;
   contain: layout style paint;
 }
@@ -203,7 +175,7 @@ watch(() => props.showDecoration, (newValue) => {
   width: auto;
   height: auto;
   max-width: 408px;
-  opacity: 0.8;
+  opacity: 0.5;
   will-change: transform, opacity;
 }
 
@@ -211,7 +183,7 @@ watch(() => props.showDecoration, (newValue) => {
   position: absolute;
   bottom: 0;
   right: 0;
-  z-index: 5;
+  z-index: 1;
   pointer-events: none;
   contain: layout style paint;
 }
@@ -220,7 +192,7 @@ watch(() => props.showDecoration, (newValue) => {
   width: auto;
   height: auto;
   max-width: 408px;
-  opacity: 0.8;
+  opacity: 0.5;
   will-change: transform, opacity;
 }
 
@@ -234,33 +206,23 @@ watch(() => props.showDecoration, (newValue) => {
 @media (max-width: 768px) {
   .hero-decoration-top img,
   .hero-decoration-bot img {
-    max-width: 365px;
+    max-width: 180px;
   }
 }
 
 @media (max-width: 480px) {
   .hero-decoration-top img,
   .hero-decoration-bot img {
-    max-width: 243px;
+    max-width: 120px;
   }
 }
 
-.hero-decoration-top:not(.animate-slide-in) {
-  opacity: 0;
-  transform: translate(-100%, -100%);
-}
-
-.hero-decoration-bot:not(.animate-slide-in-bot) {
-  opacity: 0;
-  transform: translate(100%, 100%);
-}
-
 .animate-slide-in {
-  animation: slideInFromCorner 1.5s ease-out forwards;
+  animation: slideInFromCorner 1.5s ease-out;
 }
 
 .animate-slide-in-bot {
-  animation: slideInFromBottomCorner 1.5s ease-out forwards;
+  animation: slideInFromBottomCorner 1.5s ease-out;
 }
 
 @keyframes slideInFromCorner {
@@ -270,7 +232,7 @@ watch(() => props.showDecoration, (newValue) => {
   }
   100% {
     transform: translate(0, 0);
-    opacity: 0.8;
+    opacity: 1;
   }
 }
 
@@ -281,7 +243,7 @@ watch(() => props.showDecoration, (newValue) => {
   }
   100% {
     transform: translate(0, 0);
-    opacity: 0.8;
+    opacity: 1;
   }
 }
 
