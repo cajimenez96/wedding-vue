@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 
 interface Song {
   title: string;
@@ -78,6 +78,7 @@ interface Song {
 
 const props = defineProps<{
   initialMuted?: boolean;
+  canAutoPlay?: boolean;
 }>();
 
 const audioPlayer = ref<HTMLAudioElement>();
@@ -165,6 +166,60 @@ const onSongEnded = () => {
   currentTime.value = 0;
 };
 
+const nextTrack = () => {
+  if (songs.value.length === 0) return;
+  
+  currentSongIndex.value = (currentSongIndex.value + 1) % songs.value.length;
+  currentTime.value = 0;
+  
+  if (audioPlayer.value && currentSong.value) {
+    const wasPlaying = isPlaying.value;
+    audioPlayer.value.src = currentSong.value.url;
+    audioPlayer.value.load();
+    
+    if (wasPlaying) {
+      setTimeout(() => {
+        audioPlayer.value?.play();
+        isPlaying.value = true;
+      }, 100);
+    }
+  }
+};
+
+const previousTrack = () => {
+  if (songs.value.length === 0) return;
+  
+  currentSongIndex.value = currentSongIndex.value === 0 
+    ? songs.value.length - 1 
+    : currentSongIndex.value - 1;
+  currentTime.value = 0;
+  
+  if (audioPlayer.value && currentSong.value) {
+    const wasPlaying = isPlaying.value;
+    audioPlayer.value.src = currentSong.value.url;
+    audioPlayer.value.load();
+    
+    if (wasPlaying) {
+      setTimeout(() => {
+        audioPlayer.value?.play();
+        isPlaying.value = true;
+      }, 100);
+    }
+  }
+};
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.ctrlKey) {
+    if (event.key === 'F1') {
+      event.preventDefault();
+      nextTrack();
+    } else if (event.key === 'F2') {
+      event.preventDefault();
+      previousTrack();
+    }
+  }
+};
+
 const toggleMinimize = () => {
   isMinimized.value = !isMinimized.value;
 };
@@ -207,6 +262,13 @@ onMounted(() => {
   }, 2000);
   
   updateVolume();
+  
+  // Add keyboard event listeners
+  window.addEventListener('keydown', handleKeydown);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', handleKeydown);
 });
 </script>
 

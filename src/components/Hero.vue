@@ -76,8 +76,8 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
 .hero-bg {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url("../assets/images/married-main.webp");
-  background-size: center;
-  background-position: top;
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -140,7 +140,7 @@ const { isVisible: heroAnimationsVisible } = useScrollAnimation(heroRef, 0.1, tr
   
   .hero-button-container :deep(.button) {
     white-space: nowrap;
-    min-width: 280px;
+    min-width: 300px;
     font-size: 1rem;
     padding: 1rem 1.5rem;
   }

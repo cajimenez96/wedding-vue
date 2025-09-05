@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-type Variant = 'green' | 'light';
+type Variant = 'green' | 'light' | 'gold';
 defineProps<{
   variant?: Variant;
   customClass?: string;
@@ -9,8 +9,9 @@ defineProps<{
 
 <template>
   <section :class="[
-    'w-full min-h-[490px] flex items-center',
-    variant === 'green' ? 'green-container' : 'light-container',
+    'w-full min-h-[580px] flex items-center',
+    variant === 'green' ? 'green-container' : 
+    variant === 'gold' ? 'gold-container' : 'light-container',
     ]">
     <div :class="['w-full md:w-1/2 px-5 py-8 mx-auto', customClass]">
       <slot/>
@@ -27,5 +28,10 @@ defineProps<{
 .light-container {
   background: var(--alabaster-color);
   color: var(--green-color);
+}
+
+.gold-container {
+  background: var(--gold-color);
+  color: var(--alabaster-color);
 }
 </style>

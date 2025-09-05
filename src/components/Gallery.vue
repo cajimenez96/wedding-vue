@@ -63,6 +63,3 @@ onMounted(() => {
   </Container>
 </template>
 
-<style scoped>
-
-</style>
