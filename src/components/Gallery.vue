@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue';
 import PhotoSwipeGallery from './PhotoSwipeGallery.vue';
 import Container from './Container.vue';
 
@@ -6,13 +7,43 @@ defineProps<{
   title?: string;
 }>();
 
-const imageModules = import.meta.glob('../assets/carousel/*.jpg', { eager: true });
-const images = Object.entries(imageModules).map(([path, mod]) => {
-  const id = path.split('/').pop() || path;
-  return {
-    url: (mod as any).default,
-    id,
-  };
+const images = ref<Array<{url: string, id: string}>>([]);
+const isLoading = ref(true);
+
+// Load images with the original method but improved error handling
+const loadImages = async () => {
+  try {
+    const imageModules = import.meta.glob('../assets/carousel/*.jpg', { eager: false });
+    const loadedImages = await Promise.all(
+      Object.entries(imageModules).map(async ([path, loader]) => {
+        try {
+          const mod = await loader();
+          const id = path.split('/').pop() || path;
+          return {
+            url: (mod as any).default,
+            id,
+          };
+        } catch (error) {
+          console.warn(`Failed to load image: ${path}`, error);
+          return null;
+        }
+      })
+    );
+    
+    // Filter out null values (failed loads)
+    images.value = loadedImages.filter(img => img !== null) as Array<{url: string, id: string}>;
+    isLoading.value = false;
+  } catch (error) {
+    console.error('Failed to load gallery images:', error);
+    isLoading.value = false;
+  }
+};
+
+onMounted(() => {
+  // Load images after a short delay to not block initial render
+  setTimeout(() => {
+    loadImages();
+  }, 1000);
 });
 
 </script>
@@ -23,7 +54,11 @@ const images = Object.entries(imageModules).map(([path, mod]) => {
       <h2 class="text-4xl title-wedding title-section text-green-color">{{ title }}</h2>
     </div>
     <div class="w-full mx-auto">
-      <PhotoSwipeGallery :images="images" />
+      <div v-if="isLoading" class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
+        <span class="ml-3 text-green-600">Cargando galería...</span>
+      </div>
+      <PhotoSwipeGallery v-else :images="images" />
     </div>
   </Container>
 </template>

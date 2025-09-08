@@ -20,6 +20,9 @@ const canAutoPlayMusic = ref(false);
 const showHeroDecoration = ref(false);
 const { preloadCriticalImages } = useImageOptimization();
 
+const handleConfirm = () => {
+  
+};
 
 const handleMusicPreference = (withMusic: boolean) => {
   musicMuted.value = !withMusic;
@@ -54,6 +57,7 @@ onMounted(() => {
     bride="Candelaria"
     date="09 de Mayo, 2026"
     :show-decoration="showHeroDecoration"
+    @confirm="handleConfirm"
   />
 
   <Presentation
@@ -94,7 +98,7 @@ onMounted(() => {
     bride="Candelaria"
   />
 
-  <MusicPlayer :initial-muted="musicMuted" :can-auto-play="canAutoPlayMusic" />
+  <MusicPlayer :initial-muted="musicMuted" />
   <MusicModal @music-preference="handleMusicPreference" @modal-closed="handleModalClosed" />
   <ScrollToTop />
   </div>

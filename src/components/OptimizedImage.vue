@@ -32,6 +32,7 @@ const handleLoad = () => {
 
 const handleError = () => {
   hasError.value = true;
+  console.warn(`Failed to load image: ${optimizedSrc.value}`);
 };
 
 onMounted(() => {
