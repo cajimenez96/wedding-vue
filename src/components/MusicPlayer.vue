@@ -96,13 +96,29 @@ watch(() => props.initialMuted, (newValue) => {
   if (newValue !== undefined) {
     isMuted.value = newValue;
     if (newValue) {
+      // User chose "Sin música" - mute and pause
       previousVolume.value = volume.value > 0 ? volume.value : 70;
       volume.value = 0;
+      if (audioPlayer.value) {
+        audioPlayer.value.volume = 0;
+        if (isPlaying.value) {
+          audioPlayer.value.pause();
+          isPlaying.value = false;
+        }
+      }
     } else {
+      // User chose "Con música" - unmute and start playing
       volume.value = previousVolume.value > 0 ? previousVolume.value : 70;
-    }
-    if (audioPlayer.value) {
-      audioPlayer.value.volume = volume.value / 100;
+      if (audioPlayer.value) {
+        audioPlayer.value.volume = volume.value / 100;
+        // Start playing after a delay to ensure audio is ready
+        setTimeout(() => {
+          if (audioPlayer.value && currentSong.value && !isPlaying.value) {
+            audioPlayer.value.play().catch(() => {});
+            isPlaying.value = true;
+          }
+        }, 1500);
+      }
     }
   }
 }, { immediate: true });
@@ -271,7 +287,7 @@ onMounted(() => {
   }
   
   setTimeout(() => {
-    if (!isMuted.value && currentSong.value && audioPlayer.value && props.canAutoPlay) {
+    if (!isMuted.value && currentSong.value && audioPlayer.value) {
       audioPlayer.value.volume = volume.value / 100;
       audioPlayer.value.play().catch(() => {});
       isPlaying.value = true;
