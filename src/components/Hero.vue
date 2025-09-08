@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue';
+import { watch, ref, onMounted } from 'vue';
 import { useScrollAnimation } from '../composables/useScrollAnimation';
 import Button from "./Button.vue";
 
@@ -16,34 +16,58 @@ const emit = defineEmits<{
 
 const heroRef = ref<HTMLElement>();
 const { isVisible: showAnimations } = useScrollAnimation(heroRef, 0.3);
+const imagesLoaded = ref(false);
+const topImageRef = ref<HTMLImageElement>();
+const botImageRef = ref<HTMLImageElement>();
 
-// Trigger animations based on scroll visibility
-watch(showAnimations, (isVisible) => {
-  setTimeout(() => {
-    const topEl = document.querySelector('.hero-decoration-top');
-    const botEl = document.querySelector('.hero-decoration-bot');
+// Track image loading
+const checkImagesLoaded = () => {
+  const topImg = topImageRef.value;
+  const botImg = botImageRef.value;
+  
+  if (topImg && botImg) {
+    const topLoaded = topImg.complete && topImg.naturalHeight !== 0;
+    const botLoaded = botImg.complete && botImg.naturalHeight !== 0;
     
-    if (isVisible) {
-      if (topEl) topEl.classList.add('animate-slide-in');
-      if (botEl) botEl.classList.add('animate-slide-in-bot');
-    } else {
-      if (topEl) topEl.classList.remove('animate-slide-in');
-      if (botEl) botEl.classList.remove('animate-slide-in-bot');
+    if (topLoaded && botLoaded) {
+      imagesLoaded.value = true;
+      triggerAnimations();
     }
-  }, 100);
+  }
+};
+
+const triggerAnimations = () => {
+  if (!imagesLoaded.value) return;
+  
+  const topEl = document.querySelector('.hero-decoration-top');
+  const botEl = document.querySelector('.hero-decoration-bot');
+  
+  if (showAnimations.value) {
+    if (topEl) topEl.classList.add('animate-slide-in');
+    if (botEl) botEl.classList.add('animate-slide-in-bot');
+  } else {
+    if (topEl) topEl.classList.remove('animate-slide-in');
+    if (botEl) botEl.classList.remove('animate-slide-in-bot');
+  }
+};
+
+// Trigger animations based on scroll visibility and image loading
+watch(showAnimations, () => {
+  if (imagesLoaded.value) {
+    triggerAnimations();
+  }
 }, { immediate: true });
 
 // Also trigger on showDecoration prop for manual control
 watch(() => props.showDecoration, (newValue) => {
-  if (newValue && showAnimations.value) {
-    setTimeout(() => {
-      const topEl = document.querySelector('.hero-decoration-top');
-      const botEl = document.querySelector('.hero-decoration-bot');
-      
-      if (topEl) topEl.classList.add('animate-slide-in');
-      if (botEl) botEl.classList.add('animate-slide-in-bot');
-    }, 100);
+  if (newValue && imagesLoaded.value && showAnimations.value) {
+    triggerAnimations();
   }
+});
+
+onMounted(() => {
+  // Start animations immediately if images are already loaded
+  setTimeout(checkImagesLoaded, 50);
 });
 </script>
 
@@ -55,19 +79,25 @@ watch(() => props.showDecoration, (newValue) => {
   >
     <div class="hero-decoration-top">
       <img 
+        ref="topImageRef"
         src="../assets/images/Hero-top.webp" 
         alt="" 
         loading="eager"
         decoding="sync"
+        @load="checkImagesLoaded"
+        @error="checkImagesLoaded"
       />
     </div>
     
     <div class="hero-decoration-bot">
       <img 
+        ref="botImageRef"
         src="../assets/images/Hero-bot.webp" 
         alt="" 
         loading="eager"
         decoding="sync"
+        @load="checkImagesLoaded"
+        @error="checkImagesLoaded"
       />
     </div>
     
@@ -105,7 +135,7 @@ watch(() => props.showDecoration, (newValue) => {
   background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url("../assets/images/married-main.webp");
   background-size: cover;
-  background-position: center;
+  background-position: center top;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
@@ -197,6 +227,9 @@ watch(() => props.showDecoration, (newValue) => {
   z-index: 5;
   pointer-events: none;
   contain: layout style paint;
+  opacity: 0;
+  transform: translate(-100%, -100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .hero-decoration-top img {
@@ -214,6 +247,9 @@ watch(() => props.showDecoration, (newValue) => {
   z-index: 5;
   pointer-events: none;
   contain: layout style paint;
+  opacity: 0;
+  transform: translate(100%, 100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
 .hero-decoration-bot img {
@@ -245,15 +281,6 @@ watch(() => props.showDecoration, (newValue) => {
   }
 }
 
-.hero-decoration-top:not(.animate-slide-in) {
-  opacity: 0;
-  transform: translate(-100%, -100%);
-}
-
-.hero-decoration-bot:not(.animate-slide-in-bot) {
-  opacity: 0;
-  transform: translate(100%, 100%);
-}
 
 .animate-slide-in {
   animation: slideInFromCorner 1.5s ease-out forwards;

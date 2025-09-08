@@ -127,8 +127,25 @@ const loadMusicFiles = async () => {
         title: title.charAt(0).toUpperCase() + title.slice(1)
       };
     });
-  } catch (error) {
     
+    // Validate first song can be loaded
+    if (songs.value.length > 0 && audioPlayer.value) {
+      audioPlayer.value.addEventListener('error', handleAudioError);
+    }
+  } catch (error) {
+    console.warn('Failed to load music files:', error);
+    // Fallback: hide player if no music available
+    if (songs.value.length === 0) {
+      isMinimized.value = true;
+    }
+  }
+};
+
+const handleAudioError = (event: Event) => {
+  console.warn('Audio loading error:', event);
+  // Try next track if current fails
+  if (songs.value.length > 1) {
+    nextTrack();
   }
 };
 
@@ -269,6 +286,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   window.removeEventListener('keydown', handleKeydown);
+  if (audioPlayer.value) {
+    audioPlayer.value.removeEventListener('error', handleAudioError);
+  }
 });
 </script>
 
