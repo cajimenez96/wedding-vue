@@ -69,25 +69,29 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
+import { useMusic } from '../composables/useMusic';
 
-interface Song {
-  title: string;
-  url: string;
-  id: string;
-}
+// interface Song {
+//   title: string;
+//   url: string;
+//   id: string;
+// }
 
 const props = defineProps<{
   initialMuted?: boolean;
   canAutoPlay?: boolean;
 }>();
 
+// Usar composable de música con Cloudinary
+const { songs, currentSong, nextTrack, previousTrack } = useMusic();
+
 const audioPlayer = ref<HTMLAudioElement>();
 const isPlaying = ref(false);
 const currentTime = ref(0);
 const duration = ref(0);
 const volume = ref(70);
-const songs = ref<Song[]>([]);
-const currentSongIndex = ref(0);
+// const songs = ref<Song[]>([]); // Ahora viene del composable
+// const currentSongIndex = ref(0); // Ahora viene del composable
 const isMinimized = ref(true);
 const isMuted = ref(false);
 const previousVolume = ref(70);
@@ -127,41 +131,52 @@ const progress = computed(() => {
   return duration.value > 0 ? (currentTime.value / duration.value) * 100 : 0;
 });
 
-const currentSong = computed(() => {
-  return songs.value[currentSongIndex.value] || null;
-});
+// const currentSong = computed(() => {
+//   return songs.value[currentSongIndex.value] || null;
+// }); // Ahora viene del composable
 
-const loadMusicFiles = async () => {
-  try {
-    const musicModules = import.meta.glob('../assets/music/*.{mp3,wav,ogg}', { eager: true });
-    songs.value = Object.entries(musicModules).map(([path, mod]) => {
-      const filename = path.split('/').pop() || path;
-      const title = filename.split('.')[0].replace(/[-_]/g, ' ');
-      return {
-        url: (mod as any).default,
-        id: filename,
-        title: title.charAt(0).toUpperCase() + title.slice(1)
-      };
-    });
-    
-    // Validate first song can be loaded
-    if (songs.value.length > 0 && audioPlayer.value) {
-      audioPlayer.value.addEventListener('error', handleAudioError);
-    }
-  } catch (error) {
-    console.warn('Failed to load music files:', error);
-    // Fallback: hide player if no music available
-    if (songs.value.length === 0) {
-      isMinimized.value = true;
-    }
+// COMENTADO: Carga de archivos locales - ahora usamos Cloudinary
+// const loadMusicFiles = async () => {
+//   try {
+//     const musicModules = import.meta.glob('../assets/music/*.{mp3,wav,ogg}', { eager: true });
+//     songs.value = Object.entries(musicModules).map(([path, mod]) => {
+//       const filename = path.split('/').pop() || path;
+//       const title = filename.split('.')[0].replace(/[-_]/g, ' ');
+//       return {
+//         url: (mod as any).default,
+//         id: filename,
+//         title: title.charAt(0).toUpperCase() + title.slice(1)
+//       };
+//     });
+//     
+//     // Validate first song can be loaded
+//     if (songs.value.length > 0 && audioPlayer.value) {
+//       audioPlayer.value.addEventListener('error', handleAudioError);
+//     }
+//   } catch (error) {
+//     console.warn('Failed to load music files:', error);
+//     // Fallback: hide player if no music available
+//     if (songs.value.length === 0) {
+//       isMinimized.value = true;
+//     }
+//   }
+// };
+
+// Función simplificada para validar que las canciones de Cloudinary están disponibles
+const validateCloudinaryMusic = () => {
+  if (songs.value.length > 0 && audioPlayer.value) {
+    audioPlayer.value.addEventListener('error', handleAudioError);
+  } else {
+    console.warn('No Cloudinary music tracks available');
+    isMinimized.value = true;
   }
 };
 
 const handleAudioError = (event: Event) => {
-  console.warn('Audio loading error:', event);
+  console.warn('Audio loading error from Cloudinary:', event);
   // Try next track if current fails
   if (songs.value.length > 1) {
-    nextTrack();
+    handleNextTrack();
   }
 };
 
@@ -199,10 +214,51 @@ const onSongEnded = () => {
   currentTime.value = 0;
 };
 
-const nextTrack = () => {
-  if (songs.value.length === 0) return;
-  
-  currentSongIndex.value = (currentSongIndex.value + 1) % songs.value.length;
+// COMENTADO: Funciones de navegación - ahora en el composable
+// const nextTrack = () => {
+//   if (songs.value.length === 0) return;
+//   
+//   currentSongIndex.value = (currentSongIndex.value + 1) % songs.value.length;
+//   currentTime.value = 0;
+//   
+//   if (audioPlayer.value && currentSong.value) {
+//     const wasPlaying = isPlaying.value;
+//     audioPlayer.value.src = currentSong.value.url;
+//     audioPlayer.value.load();
+//     
+//     if (wasPlaying) {
+//       setTimeout(() => {
+//         audioPlayer.value?.play();
+//         isPlaying.value = true;
+//       }, 100);
+//     }
+//   }
+// };
+
+// const previousTrack = () => {
+//   if (songs.value.length === 0) return;
+//   
+//   currentSongIndex.value = currentSongIndex.value === 0 
+//     ? songs.value.length - 1 
+//     : currentSongIndex.value - 1;
+//   currentTime.value = 0;
+//   
+//   if (audioPlayer.value && currentSong.value) {
+//     const wasPlaying = isPlaying.value;
+//     audioPlayer.value.src = currentSong.value.url;
+//     audioPlayer.value.load();
+//     
+//     if (wasPlaying) {
+//       setTimeout(() => {
+//         audioPlayer.value?.play();
+//         isPlaying.value = true;
+//       }, 100);
+//     }
+//   }
+// };
+
+// Funciones auxiliares para manejar cambios de pista
+const handleTrackChange = () => {
   currentTime.value = 0;
   
   if (audioPlayer.value && currentSong.value) {
@@ -219,36 +275,24 @@ const nextTrack = () => {
   }
 };
 
-const previousTrack = () => {
-  if (songs.value.length === 0) return;
-  
-  currentSongIndex.value = currentSongIndex.value === 0 
-    ? songs.value.length - 1 
-    : currentSongIndex.value - 1;
-  currentTime.value = 0;
-  
-  if (audioPlayer.value && currentSong.value) {
-    const wasPlaying = isPlaying.value;
-    audioPlayer.value.src = currentSong.value.url;
-    audioPlayer.value.load();
-    
-    if (wasPlaying) {
-      setTimeout(() => {
-        audioPlayer.value?.play();
-        isPlaying.value = true;
-      }, 100);
-    }
-  }
+const handleNextTrack = () => {
+  nextTrack();
+  handleTrackChange();
+};
+
+const handlePreviousTrack = () => {
+  previousTrack();
+  handleTrackChange();
 };
 
 const handleKeydown = (event: KeyboardEvent) => {
   if (event.ctrlKey) {
     if (event.key === 'F1') {
       event.preventDefault();
-      nextTrack();
+      handleNextTrack();
     } else if (event.key === 'F2') {
       event.preventDefault();
-      previousTrack();
+      handlePreviousTrack();
     }
   }
 };
@@ -275,7 +319,8 @@ const toggleMute = () => {
 };
 
 onMounted(() => {
-  loadMusicFiles();
+  // loadMusicFiles(); // COMENTADO: Ahora usamos Cloudinary
+  validateCloudinaryMusic();
   
   if (props.initialMuted !== undefined) {
     isMuted.value = props.initialMuted;
