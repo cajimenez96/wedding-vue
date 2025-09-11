@@ -71,27 +71,19 @@
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
 import { useMusic } from '../composables/useMusic';
 
-// interface Song {
-//   title: string;
-//   url: string;
-//   id: string;
-// }
 
 const props = defineProps<{
   initialMuted?: boolean;
   canAutoPlay?: boolean;
 }>();
 
-// Usar composable de música con Cloudinary
-const { songs, currentSong, nextTrack, previousTrack } = useMusic();
+const { songs, currentSong, nextTrack } = useMusic();
 
 const audioPlayer = ref<HTMLAudioElement>();
 const isPlaying = ref(false);
 const currentTime = ref(0);
 const duration = ref(0);
 const volume = ref(70);
-// const songs = ref<Song[]>([]); // Ahora viene del composable
-// const currentSongIndex = ref(0); // Ahora viene del composable
 const isMinimized = ref(true);
 const isMuted = ref(false);
 const previousVolume = ref(70);
@@ -100,7 +92,6 @@ watch(() => props.initialMuted, (newValue) => {
   if (newValue !== undefined) {
     isMuted.value = newValue;
     if (newValue) {
-      // User chose "Sin música" - mute and pause
       previousVolume.value = volume.value > 0 ? volume.value : 70;
       volume.value = 0;
       if (audioPlayer.value) {
@@ -111,11 +102,9 @@ watch(() => props.initialMuted, (newValue) => {
         }
       }
     } else {
-      // User chose "Con música" - unmute and start playing
       volume.value = previousVolume.value > 0 ? previousVolume.value : 70;
       if (audioPlayer.value) {
         audioPlayer.value.volume = volume.value / 100;
-        // Start playing after a delay to ensure audio is ready
         setTimeout(() => {
           if (audioPlayer.value && currentSong.value && !isPlaying.value) {
             audioPlayer.value.play().catch(() => {});
@@ -131,38 +120,9 @@ const progress = computed(() => {
   return duration.value > 0 ? (currentTime.value / duration.value) * 100 : 0;
 });
 
-// const currentSong = computed(() => {
-//   return songs.value[currentSongIndex.value] || null;
-// }); // Ahora viene del composable
 
-// COMENTADO: Carga de archivos locales - ahora usamos Cloudinary
-// const loadMusicFiles = async () => {
-//   try {
-//     const musicModules = import.meta.glob('../assets/music/*.{mp3,wav,ogg}', { eager: true });
-//     songs.value = Object.entries(musicModules).map(([path, mod]) => {
-//       const filename = path.split('/').pop() || path;
-//       const title = filename.split('.')[0].replace(/[-_]/g, ' ');
-//       return {
-//         url: (mod as any).default,
-//         id: filename,
-//         title: title.charAt(0).toUpperCase() + title.slice(1)
-//       };
-//     });
-//     
-//     // Validate first song can be loaded
-//     if (songs.value.length > 0 && audioPlayer.value) {
-//       audioPlayer.value.addEventListener('error', handleAudioError);
-//     }
-//   } catch (error) {
-//     console.warn('Failed to load music files:', error);
-//     // Fallback: hide player if no music available
-//     if (songs.value.length === 0) {
-//       isMinimized.value = true;
-//     }
-//   }
-// };
 
-// Función simplificada para validar que las canciones de Cloudinary están disponibles
+// Validación de música Cloudinary
 const validateCloudinaryMusic = () => {
   if (songs.value.length > 0 && audioPlayer.value) {
     audioPlayer.value.addEventListener('error', handleAudioError);
@@ -174,7 +134,6 @@ const validateCloudinaryMusic = () => {
 
 const handleAudioError = (event: Event) => {
   console.warn('Audio loading error from Cloudinary:', event);
-  // Try next track if current fails
   if (songs.value.length > 1) {
     handleNextTrack();
   }
@@ -214,50 +173,8 @@ const onSongEnded = () => {
   currentTime.value = 0;
 };
 
-// COMENTADO: Funciones de navegación - ahora en el composable
-// const nextTrack = () => {
-//   if (songs.value.length === 0) return;
-//   
-//   currentSongIndex.value = (currentSongIndex.value + 1) % songs.value.length;
-//   currentTime.value = 0;
-//   
-//   if (audioPlayer.value && currentSong.value) {
-//     const wasPlaying = isPlaying.value;
-//     audioPlayer.value.src = currentSong.value.url;
-//     audioPlayer.value.load();
-//     
-//     if (wasPlaying) {
-//       setTimeout(() => {
-//         audioPlayer.value?.play();
-//         isPlaying.value = true;
-//       }, 100);
-//     }
-//   }
-// };
 
-// const previousTrack = () => {
-//   if (songs.value.length === 0) return;
-//   
-//   currentSongIndex.value = currentSongIndex.value === 0 
-//     ? songs.value.length - 1 
-//     : currentSongIndex.value - 1;
-//   currentTime.value = 0;
-//   
-//   if (audioPlayer.value && currentSong.value) {
-//     const wasPlaying = isPlaying.value;
-//     audioPlayer.value.src = currentSong.value.url;
-//     audioPlayer.value.load();
-//     
-//     if (wasPlaying) {
-//       setTimeout(() => {
-//         audioPlayer.value?.play();
-//         isPlaying.value = true;
-//       }, 100);
-//     }
-//   }
-// };
-
-// Funciones auxiliares para manejar cambios de pista
+// Manejo de cambios de pista
 const handleTrackChange = () => {
   currentTime.value = 0;
   
@@ -280,22 +197,6 @@ const handleNextTrack = () => {
   handleTrackChange();
 };
 
-const handlePreviousTrack = () => {
-  previousTrack();
-  handleTrackChange();
-};
-
-const handleKeydown = (event: KeyboardEvent) => {
-  if (event.ctrlKey) {
-    if (event.key === 'F1') {
-      event.preventDefault();
-      handleNextTrack();
-    } else if (event.key === 'F2') {
-      event.preventDefault();
-      handlePreviousTrack();
-    }
-  }
-};
 
 const toggleMinimize = () => {
   isMinimized.value = !isMinimized.value;
@@ -305,12 +206,10 @@ const toggleMute = () => {
   if (!audioPlayer.value) return;
   
   if (isMuted.value) {
-    // Unmute
     volume.value = previousVolume.value;
     audioPlayer.value.volume = volume.value / 100;
     isMuted.value = false;
   } else {
-    // Mute
     previousVolume.value = volume.value;
     volume.value = 0;
     audioPlayer.value.volume = 0;
@@ -319,7 +218,6 @@ const toggleMute = () => {
 };
 
 onMounted(() => {
-  // loadMusicFiles(); // COMENTADO: Ahora usamos Cloudinary
   validateCloudinaryMusic();
   
   if (props.initialMuted !== undefined) {
@@ -340,13 +238,9 @@ onMounted(() => {
   }, 2000);
   
   updateVolume();
-  
-  // Add keyboard event listeners
-  window.addEventListener('keydown', handleKeydown);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
   if (audioPlayer.value) {
     audioPlayer.value.removeEventListener('error', handleAudioError);
   }

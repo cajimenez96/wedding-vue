@@ -7,7 +7,7 @@ export interface Song {
   id: string;
 }
 
-// Función para mezclar array aleatoriamente (Fisher-Yates shuffle)
+// Fisher-Yates shuffle
 const shuffleArray = <T>(array: T[]): T[] => {
   const shuffled = [...array];
   for (let i = shuffled.length - 1; i > 0; i--) {
@@ -18,7 +18,6 @@ const shuffleArray = <T>(array: T[]): T[] => {
 };
 
 export const useMusic = () => {
-  // Mezclar las canciones aleatoriamente cada vez que se carga
   const songs = ref<Song[]>(shuffleArray(MUSIC_TRACKS));
   const currentSongIndex = ref(0);
 

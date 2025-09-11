@@ -20,7 +20,7 @@ const imagesLoaded = ref(false);
 const topImageRef = ref<HTMLImageElement>();
 const botImageRef = ref<HTMLImageElement>();
 
-// Track image loading
+// Control de carga de imágenes
 const checkImagesLoaded = () => {
   const topImg = topImageRef.value;
   const botImg = botImageRef.value;
@@ -51,14 +51,13 @@ const triggerAnimations = () => {
   }
 };
 
-// Trigger animations based on scroll visibility and image loading
+// Activación de animaciones
 watch(showAnimations, () => {
   if (imagesLoaded.value) {
     triggerAnimations();
   }
 }, { immediate: true });
 
-// Also trigger on showDecoration prop for manual control
 watch(() => props.showDecoration, (newValue) => {
   if (newValue && imagesLoaded.value && showAnimations.value) {
     triggerAnimations();
@@ -66,7 +65,6 @@ watch(() => props.showDecoration, (newValue) => {
 });
 
 onMounted(() => {
-  // Start animations immediately if images are already loaded
   setTimeout(checkImagesLoaded, 50);
 });
 </script>

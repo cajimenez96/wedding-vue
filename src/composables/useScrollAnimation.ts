@@ -10,11 +10,9 @@ export function useScrollAnimation(elementRef: Ref<HTMLElement | undefined>, thr
     const rect = elementRef.value.getBoundingClientRect();
     const windowHeight = window.innerHeight;
     
-    // Show animations when section enters viewport
     if (rect.top <= windowHeight * threshold && rect.bottom >= windowHeight * 0.2) {
       isVisible.value = true;
     }
-    // Hide animations when section completely leaves viewport
     else if (rect.bottom < 0 || rect.top > windowHeight) {
       isVisible.value = false;
     }

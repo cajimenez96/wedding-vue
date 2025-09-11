@@ -27,7 +27,6 @@ const checkMobile = () => {
 const debouncedCheckMobile = debounce(checkMobile, 150);
 
 const handleScroll = () => {
-  // Handle mobile/tablet active item logic
   if (isMobile.value || isTablet.value) {
     const items = document.querySelectorAll('.schedule-item');
     const scrollTop = window.scrollY;
