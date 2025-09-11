@@ -69,25 +69,21 @@
 
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
+import { useMusic } from '../composables/useMusic';
 
-interface Song {
-  title: string;
-  url: string;
-  id: string;
-}
 
 const props = defineProps<{
   initialMuted?: boolean;
   canAutoPlay?: boolean;
 }>();
 
+const { songs, currentSong, nextTrack } = useMusic();
+
 const audioPlayer = ref<HTMLAudioElement>();
 const isPlaying = ref(false);
 const currentTime = ref(0);
 const duration = ref(0);
 const volume = ref(70);
-const songs = ref<Song[]>([]);
-const currentSongIndex = ref(0);
 const isMinimized = ref(true);
 const isMuted = ref(false);
 const previousVolume = ref(70);
@@ -98,11 +94,24 @@ watch(() => props.initialMuted, (newValue) => {
     if (newValue) {
       previousVolume.value = volume.value > 0 ? volume.value : 70;
       volume.value = 0;
+      if (audioPlayer.value) {
+        audioPlayer.value.volume = 0;
+        if (isPlaying.value) {
+          audioPlayer.value.pause();
+          isPlaying.value = false;
+        }
+      }
     } else {
       volume.value = previousVolume.value > 0 ? previousVolume.value : 70;
-    }
-    if (audioPlayer.value) {
-      audioPlayer.value.volume = volume.value / 100;
+      if (audioPlayer.value) {
+        audioPlayer.value.volume = volume.value / 100;
+        setTimeout(() => {
+          if (audioPlayer.value && currentSong.value && !isPlaying.value) {
+            audioPlayer.value.play().catch(() => {});
+            isPlaying.value = true;
+          }
+        }, 1500);
+      }
     }
   }
 }, { immediate: true });
@@ -111,24 +120,22 @@ const progress = computed(() => {
   return duration.value > 0 ? (currentTime.value / duration.value) * 100 : 0;
 });
 
-const currentSong = computed(() => {
-  return songs.value[currentSongIndex.value] || null;
-});
 
-const loadMusicFiles = async () => {
-  try {
-    const musicModules = import.meta.glob('../assets/music/*.{mp3,wav,ogg}', { eager: true });
-    songs.value = Object.entries(musicModules).map(([path, mod]) => {
-      const filename = path.split('/').pop() || path;
-      const title = filename.split('.')[0].replace(/[-_]/g, ' ');
-      return {
-        url: (mod as any).default,
-        id: filename,
-        title: title.charAt(0).toUpperCase() + title.slice(1)
-      };
-    });
-  } catch (error) {
-    
+
+// Validación de música Cloudinary
+const validateCloudinaryMusic = () => {
+  if (songs.value.length > 0 && audioPlayer.value) {
+    audioPlayer.value.addEventListener('error', handleAudioError);
+  } else {
+    console.warn('No Cloudinary music tracks available');
+    isMinimized.value = true;
+  }
+};
+
+const handleAudioError = (event: Event) => {
+  console.warn('Audio loading error from Cloudinary:', event);
+  if (songs.value.length > 1) {
+    handleNextTrack();
   }
 };
 
@@ -166,10 +173,9 @@ const onSongEnded = () => {
   currentTime.value = 0;
 };
 
-const nextTrack = () => {
-  if (songs.value.length === 0) return;
-  
-  currentSongIndex.value = (currentSongIndex.value + 1) % songs.value.length;
+
+// Manejo de cambios de pista
+const handleTrackChange = () => {
   currentTime.value = 0;
   
   if (audioPlayer.value && currentSong.value) {
@@ -186,39 +192,11 @@ const nextTrack = () => {
   }
 };
 
-const previousTrack = () => {
-  if (songs.value.length === 0) return;
-  
-  currentSongIndex.value = currentSongIndex.value === 0 
-    ? songs.value.length - 1 
-    : currentSongIndex.value - 1;
-  currentTime.value = 0;
-  
-  if (audioPlayer.value && currentSong.value) {
-    const wasPlaying = isPlaying.value;
-    audioPlayer.value.src = currentSong.value.url;
-    audioPlayer.value.load();
-    
-    if (wasPlaying) {
-      setTimeout(() => {
-        audioPlayer.value?.play();
-        isPlaying.value = true;
-      }, 100);
-    }
-  }
+const handleNextTrack = () => {
+  nextTrack();
+  handleTrackChange();
 };
 
-const handleKeydown = (event: KeyboardEvent) => {
-  if (event.ctrlKey) {
-    if (event.key === 'F1') {
-      event.preventDefault();
-      nextTrack();
-    } else if (event.key === 'F2') {
-      event.preventDefault();
-      previousTrack();
-    }
-  }
-};
 
 const toggleMinimize = () => {
   isMinimized.value = !isMinimized.value;
@@ -228,12 +206,10 @@ const toggleMute = () => {
   if (!audioPlayer.value) return;
   
   if (isMuted.value) {
-    // Unmute
     volume.value = previousVolume.value;
     audioPlayer.value.volume = volume.value / 100;
     isMuted.value = false;
   } else {
-    // Mute
     previousVolume.value = volume.value;
     volume.value = 0;
     audioPlayer.value.volume = 0;
@@ -242,7 +218,7 @@ const toggleMute = () => {
 };
 
 onMounted(() => {
-  loadMusicFiles();
+  validateCloudinaryMusic();
   
   if (props.initialMuted !== undefined) {
     isMuted.value = props.initialMuted;
@@ -262,13 +238,12 @@ onMounted(() => {
   }, 2000);
   
   updateVolume();
-  
-  // Add keyboard event listeners
-  window.addEventListener('keydown', handleKeydown);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('keydown', handleKeydown);
+  if (audioPlayer.value) {
+    audioPlayer.value.removeEventListener('error', handleAudioError);
+  }
 });
 </script>
 

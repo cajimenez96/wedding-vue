@@ -10,7 +10,7 @@ defineProps<{
 const images = ref<Array<{url: string, id: string}>>([]);
 const isLoading = ref(true);
 
-// Load images with the original method but improved error handling
+// Carga de imágenes
 const loadImages = async () => {
   try {
     const imageModules = import.meta.glob('../assets/carousel/*.jpg', { eager: false });
@@ -30,7 +30,6 @@ const loadImages = async () => {
       })
     );
     
-    // Filter out null values (failed loads)
     images.value = loadedImages.filter(img => img !== null) as Array<{url: string, id: string}>;
     isLoading.value = false;
   } catch (error) {
@@ -40,7 +39,6 @@ const loadImages = async () => {
 };
 
 onMounted(() => {
-  // Load images after a short delay to not block initial render
   setTimeout(() => {
     loadImages();
   }, 1000);

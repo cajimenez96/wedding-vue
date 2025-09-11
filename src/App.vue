@@ -33,9 +33,8 @@ const handleModalClosed = () => {
   showHeroDecoration.value = true;
 };
 
-// Preload critical images on app mount
+// Preload de imágenes críticas
 onMounted(() => {
-  // Don't block the modal with preloading
   setTimeout(() => {
     const criticalImages = [
       '/src/assets/images/married-main.webp',
@@ -43,7 +42,6 @@ onMounted(() => {
       '/src/assets/images/Hero-bot.webp'
     ];
     preloadCriticalImages(criticalImages).catch(() => {
-      // Ignore preload errors
     });
   }, 100);
 });
