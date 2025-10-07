@@ -114,7 +114,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
   .footer-decoration {
     bottom: -35%;
   }
-  
+
   .footer-decoration-image {
     width: 100%;
     height: auto;
@@ -126,23 +126,23 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
   .footer-section {
     padding: 2rem 1rem 1.5rem;
   }
-  
+
   .footer-title {
     font-size: 2rem;
   }
-  
+
   .footer-text {
     font-size: 1rem;
   }
-  
+
   .footer-copyright {
     font-size: 0.8rem;
   }
-  
+
   .footer-decoration {
     bottom: -35%;
   }
-  
+
   .footer-decoration-image {
     width: 100%;
     height: auto;
@@ -154,7 +154,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
   .footer-decoration {
     bottom: -5%;
   }
-  
+
   .footer-decoration-image {
     width: 120%;
   }

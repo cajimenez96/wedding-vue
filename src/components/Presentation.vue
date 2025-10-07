@@ -1,6 +1,5 @@
 <script lang="ts" setup>
 import Container from './Container.vue';
-import decImage from '../assets/images/back/dec-1.webp';
 
 defineProps<{
   title: string;
@@ -10,13 +9,14 @@ defineProps<{
 
 <template>
   <Container variant="green" class="presentation-container">
-    <div class="presentation-decoration">
-      <img :src="decImage" alt="" class="presentation-decoration-image" />
-    </div>
-    <p class="text-4xl title-wedding title-section text-center">
+      <p class="text-4xl title-wedding title-section text-center mx-auto max-w-4xl px-5">
       {{ title }}
-    </p>  
-    <p class="my-10 text-xl text-center" v-html="description"></p>
+    </p>
+    <div class="flex flex-col px-5 max-w-3xl mx-auto mt-6">
+      <div class="border-t border-b border-gray-300 py-6 my-6 flex flex-col gap-4 items-center">
+        <p class="text-xl text-center leading-relaxed" v-html="description"></p>
+      </div>
+    </div>
   </Container>
 </template>
 
@@ -26,27 +26,4 @@ defineProps<{
   z-index: 10;
 }
 
-.presentation-decoration {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.presentation-decoration-image {
-  width: 15rem;
-  height: auto;
-  opacity: 0.8;
-}
-
-@media (max-width: 768px) {
-  .presentation-decoration-image {
-    width: 12rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .presentation-decoration-image {
-    width: 10rem;
-  }
-}
 </style>

@@ -83,7 +83,7 @@ const props = defineProps<{
 const galleryRef = ref<HTMLElement>();
 const processedImages = ref<ImageItem[]>([]);
 const currentPage = ref(0);
-const imagesPerPage = 6; // 3 columnas * 2 filas
+const imagesPerPage = 3; // 3 imágenes por página
 
 const totalPages = computed(() => Math.ceil(processedImages.value.length / imagesPerPage));
 
@@ -201,9 +201,10 @@ onMounted(() => {
 .gallery-page {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  gap: 8px;
   width: 100%;
-  max-width: 1200px;
+  max-width: 1000px;
+  margin: 0 auto;
   padding: 0 20px;
   box-sizing: border-box;
   flex-shrink: 0;
@@ -211,13 +212,17 @@ onMounted(() => {
 }
 
 .gallery-item {
-  height: 200px;
+  height: 250px;
   overflow: hidden;
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 1/1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .gallery-item:hover {
@@ -230,6 +235,7 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  object-position: center;
 }
 
 .gallery-item:hover .gallery-image {
@@ -303,24 +309,28 @@ onMounted(() => {
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .gallery-page {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    max-width: 800px;
   }
-  
+
   .gallery-item {
     height: 180px;
+    aspect-ratio: 1/1;
   }
 }
 
 @media (max-width: 768px) {
   .gallery-page {
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
+    gap: 6px;
     padding: 0 16px;
+    max-width: 600px;
   }
-  
+
   .gallery-item {
-    height: 150px;
+    height: 160px;
+    aspect-ratio: 1/1;
     border-radius: 8px;
   }
   
@@ -339,12 +349,14 @@ onMounted(() => {
 @media (max-width: 480px) {
   .gallery-page {
     grid-template-columns: 1fr;
-    gap: 6px;
+    gap: 4px;
     padding: 0 12px;
+    max-width: 400px;
   }
-  
+
   .gallery-item {
-    height: 200px;
+    height: 280px;
+    aspect-ratio: 1/1;
   }
   
   .pagination-btn {
