@@ -12,7 +12,7 @@ const emit = defineEmits(['click']);
 <template>
   <button
     :class="[
-      'h-full w-full border-none py-4 cursor-pointer rounded-3xl text-lg button',
+      'w-full border-none cursor-pointer rounded-3xl text-lg button',
       variant === 'primary' && 'primary',
       variant === 'outline' && 'outline',
       variant === 'white' && 'white',
@@ -25,8 +25,13 @@ const emit = defineEmits(['click']);
 
 <style scoped>
 .button {
+  height: 63.2px;
   letter-spacing: 1px;
   transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5rem;
 }
 
 .primary {

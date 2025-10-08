@@ -60,7 +60,8 @@ const props = defineProps<{
   grid-template-columns: 1fr auto auto auto 1fr;
   align-items: center;
   gap: 3rem;
-  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .date-time-grid > div:nth-child(3) {
@@ -85,27 +86,45 @@ const props = defineProps<{
 
 .events-buttons-container :deep(button) {
   flex: 1;
+  height: 63.2px !important;
 }
 
 @media (max-width: 1024px) {
   .events-buttons-container {
     flex-direction: column;
-    max-width: none;
+    max-width: 300px;
+    gap: 1rem;
   }
 
   .events-buttons-container :deep(button) {
     width: 100%;
+    height: 63.2px !important;
+    min-height: 63.2px !important;
+    max-height: 63.2px !important;
   }
 }
 
 @media (max-width: 768px) {
   .date-time-grid {
     gap: 2rem;
+    max-width: 320px;
   }
 
   .date-time-grid > div:nth-child(2),
   .date-time-grid > div:nth-child(4) {
     width: 70px;
+  }
+
+  .events-buttons-container {
+    max-width: 280px;
+    gap: 1rem;
+  }
+
+  .events-buttons-container :deep(button) {
+    width: 100%;
+    height: 63.2px !important;
+    min-height: 63.2px !important;
+    max-height: 63.2px !important;
   }
 }
 </style>

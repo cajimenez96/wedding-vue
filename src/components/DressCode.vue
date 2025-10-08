@@ -289,6 +289,7 @@ const handleClose = () => {
   width: 268px;
   position: relative;
   z-index: 1;
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {

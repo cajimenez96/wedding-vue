@@ -14,7 +14,7 @@ defineProps<{
 </script>
 
 <template>
-  <Container variant="white">
+  <Container variant="white" size="wide">
     <div class="countdown-content">
       <!-- Nombres de los novios y fecha -->
       <div v-if="groom && bride && date" class="names-date-section text-center mb-10 -mb-6">
@@ -126,7 +126,7 @@ defineProps<{
 @media (max-width: 768px) {
   .timer-wrapper {
     padding: 0.5rem 0 1.5rem 0;
-    margin-top: -1rem;
+    margin-top: 0;
   }
 
   .timer-container {
@@ -141,6 +141,34 @@ defineProps<{
 
   :deep(.data) {
     font-size: 0.5rem !important;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .countdown-title .desktop-layout {
+    display: none;
+  }
+
+  .countdown-title .mobile-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .countdown-title .groom-name,
+  .countdown-title .bride-name {
+    display: block;
+  }
+
+  .countdown-title .ampersand {
+    display: block;
+    font-size: 2.5rem;
+    opacity: 0.8;
+  }
+
+  .countdown-date {
+    font-size: 1.2rem;
   }
 }
 

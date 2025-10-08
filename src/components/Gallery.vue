@@ -39,9 +39,7 @@ const loadImages = async () => {
 };
 
 onMounted(() => {
-  setTimeout(() => {
-    loadImages();
-  }, 1000);
+  loadImages();
 });
 
 </script>

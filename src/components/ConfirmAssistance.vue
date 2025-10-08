@@ -23,7 +23,7 @@ defineProps<{
 
       <div class="confirm-button-container">
         <a
-          href="https://docs.google.com/forms/d/1laBmwC4L_0Teh4e_u5qrvFD_ziwLCkRHABvhaQZ22i4/viewform?edit_requested=true"
+          href="https://docs.google.com/forms/d/e/1FAIpQLScOpkVBWVGbN88ihi--89fNh3-eStIgA6tzTdP037o93OFh1w/viewform"
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -49,33 +49,38 @@ defineProps<{
 }
 
 .confirm-button-container {
-  width: 300px;
+  width: 268px;
   margin: 2rem auto 0;
   display: flex;
   justify-content: center;
 }
 
 .confirm-button-container :deep(.button) {
-  width: 100%;
-  white-space: nowrap;
+  width: 268px;
+  position: relative;
+  z-index: 1;
 }
 
 @media (max-width: 767px) {
   .confirm-button-container {
-    width: 300px;
+    width: 268px;
     margin: 1.5rem auto 0;
   }
 
   .confirm-button-container :deep(.button) {
     white-space: nowrap;
-    width: 100%;
+    width: 268px;
   }
 }
 
 @media (max-width: 480px) {
   .confirm-button-container {
-    width: 280px;
+    width: 268px;
     margin: 1.5rem auto 0;
+  }
+
+  .confirm-button-container :deep(.button) {
+    width: 268px;
   }
 }
 </style>
