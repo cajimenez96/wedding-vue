@@ -10,7 +10,6 @@ defineProps<{
 const images = ref<Array<{url: string, id: string}>>([]);
 const isLoading = ref(true);
 
-// Carga de imágenes
 const loadImages = async () => {
   try {
     const imageModules = import.meta.glob('../assets/carousel/*.jpg', { eager: false });
@@ -24,7 +23,6 @@ const loadImages = async () => {
             id,
           };
         } catch (error) {
-          console.warn(`Failed to load image: ${path}`, error);
           return null;
         }
       })
@@ -33,7 +31,6 @@ const loadImages = async () => {
     images.value = loadedImages.filter(img => img !== null) as Array<{url: string, id: string}>;
     isLoading.value = false;
   } catch (error) {
-    console.error('Failed to load gallery images:', error);
     isLoading.value = false;
   }
 };

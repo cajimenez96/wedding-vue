@@ -28,7 +28,6 @@ const handleMusicPreference = (withMusic: boolean) => {
 };
 
 
-// Preload de imágenes críticas
 onMounted(() => {
   setTimeout(() => {
     const criticalImages = [

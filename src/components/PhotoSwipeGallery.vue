@@ -83,7 +83,7 @@ const props = defineProps<{
 const galleryRef = ref<HTMLElement>();
 const processedImages = ref<ImageItem[]>([]);
 const currentPage = ref(0);
-const imagesPerPage = 3; // 3 imágenes por página
+const imagesPerPage = 3;
 
 const totalPages = computed(() => Math.ceil(processedImages.value.length / imagesPerPage));
 
@@ -133,7 +133,7 @@ const loadImageDimensions = (src: string): Promise<{ width: number; height: numb
       resolve({ width: img.naturalWidth, height: img.naturalHeight });
     };
     img.onerror = () => {
-      resolve({ width: 800, height: 600 }); // fallback dimensions
+      resolve({ width: 800, height: 600 });
     };
     img.src = src;
   });
@@ -255,7 +255,6 @@ onMounted(() => {
   transform: scale(1.1);
 }
 
-/* Pagination Controls */
 .pagination-controls {
   display: flex;
   align-items: center;
@@ -319,7 +318,6 @@ onMounted(() => {
   border-color: var(--gold-color);
 }
 
-/* Responsive adjustments */
 @media (max-width: 1024px) {
   .gallery-page {
     display: flex;
@@ -420,7 +418,6 @@ onMounted(() => {
   }
 }
 
-/* PhotoSwipe overrides */
 :global(.pswp) {
   --pswp-bg: rgba(0, 0, 0, 0.9);
 }

@@ -31,7 +31,7 @@ defineProps<{
 
 const currentYear = new Date().getFullYear();
 const footerRef = ref<HTMLElement>();
-const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold to trigger earlier
+const { isVisible } = useScrollAnimation(footerRef, 0.9);
 </script>
 
 <style scoped>

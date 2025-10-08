@@ -122,18 +122,15 @@ const progress = computed(() => {
 
 
 
-// Validación de música Cloudinary
 const validateCloudinaryMusic = () => {
   if (songs.value.length > 0 && audioPlayer.value) {
     audioPlayer.value.addEventListener('error', handleAudioError);
   } else {
-    console.warn('No Cloudinary music tracks available');
     isMinimized.value = true;
   }
 };
 
 const handleAudioError = (event: Event) => {
-  console.warn('Audio loading error from Cloudinary:', event);
   if (songs.value.length > 1) {
     handleNextTrack();
   }
@@ -174,7 +171,6 @@ const onSongEnded = () => {
 };
 
 
-// Manejo de cambios de pista
 const handleTrackChange = () => {
   currentTime.value = 0;
   
