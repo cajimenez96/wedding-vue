@@ -130,7 +130,7 @@ const validateCloudinaryMusic = () => {
   }
 };
 
-const handleAudioError = (event: Event) => {
+const handleAudioError = () => {
   if (songs.value.length > 1) {
     handleNextTrack();
   }
