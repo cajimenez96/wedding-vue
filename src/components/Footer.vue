@@ -31,7 +31,7 @@ defineProps<{
 
 const currentYear = new Date().getFullYear();
 const footerRef = ref<HTMLElement>();
-const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold to trigger earlier
+const { isVisible } = useScrollAnimation(footerRef, 0.9);
 </script>
 
 <style scoped>
@@ -42,6 +42,19 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
   text-align: center;
   position: relative;
   overflow: hidden;
+  border-top: 80px solid transparent;
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .footer-section {
+    padding-top: 25px;
+  }
+}
+
+@media (min-width: 1025px) {
+  .footer-section {
+    padding-top: calc(6rem + 10px);
+  }
 }
 
 .footer-content {
@@ -114,7 +127,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
   .footer-decoration {
     bottom: -35%;
   }
-  
+
   .footer-decoration-image {
     width: 100%;
     height: auto;
@@ -125,24 +138,25 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
 @media (max-width: 768px) {
   .footer-section {
     padding: 2rem 1rem 1.5rem;
+    border-top: none;
   }
-  
+
   .footer-title {
     font-size: 2rem;
   }
-  
+
   .footer-text {
     font-size: 1rem;
   }
-  
+
   .footer-copyright {
     font-size: 0.8rem;
   }
-  
+
   .footer-decoration {
     bottom: -35%;
   }
-  
+
   .footer-decoration-image {
     width: 100%;
     height: auto;
@@ -154,7 +168,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9); // Very high threshold
   .footer-decoration {
     bottom: -5%;
   }
-  
+
   .footer-decoration-image {
     width: 120%;
   }

@@ -2,8 +2,6 @@
 import Button from './Button.vue';
 import Container from './Container.vue';
 import { ref } from 'vue';
-import dec2Image from '../assets/images/back/dec-2.webp';
-import { useScrollAnimation } from '../composables/useScrollAnimation';
 
 defineProps<{
   title?: string;
@@ -11,8 +9,6 @@ defineProps<{
 }>();
 
 const showModal = ref(false);
-const dressCodeRef = ref<HTMLElement>();
-const { isVisible: showDecorationAnimation } = useScrollAnimation(dressCodeRef, 0.6);
 
 const handleClose = () => {
   showModal.value = false;
@@ -22,10 +18,7 @@ const handleClose = () => {
 <template>
   <div class="dress-code-section-container">
     <Container variant="gold">
-      <div ref="dressCodeRef" class="flex flex-col gap-6 justify-center items-center text-center">
-        <div class="decoration-image-container">
-          <img :src="dec2Image" alt="" class="decoration-image" :class="{ 'animate-decoration-in': showDecorationAnimation }" />
-        </div>
+      <div class="flex flex-col gap-6 justify-center items-center text-center">
         <h2 class="text-4xl title-wedding title-section">{{ title }}</h2>
         <div class="flex flex-col px-5 md:w-lg">
           <div class="border-t border-b border-gray-300 py-5 my-4 flex flex-col gap-4 items-center">
@@ -296,6 +289,7 @@ const handleClose = () => {
   width: 268px;
   position: relative;
   z-index: 1;
+  white-space: nowrap;
 }
 
 @media (max-width: 767px) {
@@ -359,67 +353,6 @@ const handleClose = () => {
   overflow: visible;
 }
 
-.decoration-image-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: fit-content;
-  height: 120px;
-  overflow: hidden;
-  margin: 0 auto;
-  margin-bottom: -40px;
-}
-
-.decoration-image {
-  width: 566px;
-  height: auto;
-  pointer-events: none;
-  opacity: 0;
-  display: block;
-  visibility: visible;
-  transition: all 1.2s ease-out;
-  transform: scale(0.43);
-  z-index: 0;
-}
-
-@media (max-width: 767px) {
-  .decoration-image {
-    width: 425px;
-  }
-  
-  .decoration-image-container {
-    height: 100px;
-    margin-bottom: -30px;
-  }
-  
-  .dress-code-button-container {
-    width: 268px;
-  }
-  
-}
-
-@media (max-width: 768px) {
-  .decoration-image {
-    width: 461px;
-  }
-  
-  .decoration-image-container {
-    height: 110px;
-    margin-bottom: -35px;
-  }
-  
-  .dress-code-button-container {
-    width: 268px;
-  }
-  
-}
-
-@media (min-width: 769px) {
-  .decoration-image {
-    width: 566px;
-  }
-}
-
 .text-green-custom {
   color: var(--green-color) !important;
 }
@@ -434,8 +367,4 @@ const handleClose = () => {
   transform: translateY(-2px);
 }
 
-.animate-decoration-in {
-  opacity: 0.5 !important;
-  transform: scale(0.57) !important;
-}
 </style>

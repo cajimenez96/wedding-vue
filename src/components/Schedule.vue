@@ -16,7 +16,7 @@ const activeIndex = ref(-1);
 const isMobile = ref(false);
 const isTablet = ref(false);
 const scheduleRef = ref<HTMLElement>();
-const { isVisible: showBackgroundImages } = useScrollAnimation(scheduleRef, 0.6); // Easier to trigger
+const { isVisible: showBackgroundImages } = useScrollAnimation(scheduleRef, 0.6);
 
 const checkMobile = () => {
   const width = window.innerWidth;
@@ -200,7 +200,6 @@ const scheduleItems = [
   transform: scale(1.05);
 }
 
-/* Tablet breakpoint - mantiene el diseño desktop pero con ajustes */
 @media (max-width: 1024px) and (min-width: 769px) {
   .relative.max-w-6xl {
     max-width: 95% !important;
@@ -230,7 +229,6 @@ const scheduleItems = [
   }
 }
 
-/* Mobile breakpoint */
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 80px 40px 1fr !important;

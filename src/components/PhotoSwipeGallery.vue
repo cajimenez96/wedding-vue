@@ -83,7 +83,7 @@ const props = defineProps<{
 const galleryRef = ref<HTMLElement>();
 const processedImages = ref<ImageItem[]>([]);
 const currentPage = ref(0);
-const imagesPerPage = 6; // 3 columnas * 2 filas
+const imagesPerPage = 3;
 
 const totalPages = computed(() => Math.ceil(processedImages.value.length / imagesPerPage));
 
@@ -133,7 +133,7 @@ const loadImageDimensions = (src: string): Promise<{ width: number; height: numb
       resolve({ width: img.naturalWidth, height: img.naturalHeight });
     };
     img.onerror = () => {
-      resolve({ width: 800, height: 600 }); // fallback dimensions
+      resolve({ width: 800, height: 600 });
     };
     img.src = src;
   });
@@ -188,6 +188,12 @@ onMounted(() => {
   width: 100%;
 }
 
+@media (min-width: 769px) {
+  .photoswipe-gallery {
+    padding-top: 20px;
+  }
+}
+
 .gallery-container {
   overflow: hidden;
   width: 100%;
@@ -199,25 +205,37 @@ onMounted(() => {
 }
 
 .gallery-page {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
+  display: flex;
+  flex-direction: row;
+  gap: 15px;
   width: 100%;
-  max-width: 1200px;
-  padding: 0 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 0;
   box-sizing: border-box;
   flex-shrink: 0;
   min-width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.gallery-page .gallery-item:first-child {
+  margin-left: 40px;
+}
+
+.gallery-page .gallery-item:last-child {
+  margin-right: 40px;
 }
 
 .gallery-item {
-  height: 200px;
+  height: 400px;
   overflow: hidden;
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 1/1;
 }
 
 .gallery-item:hover {
@@ -230,13 +248,13 @@ onMounted(() => {
   height: 100%;
   object-fit: cover;
   transition: transform 0.3s ease;
+  object-position: center;
 }
 
 .gallery-item:hover .gallery-image {
   transform: scale(1.1);
 }
 
-/* Pagination Controls */
 .pagination-controls {
   display: flex;
   align-items: center;
@@ -300,36 +318,63 @@ onMounted(() => {
   border-color: var(--gold-color);
 }
 
-/* Responsive adjustments */
 @media (max-width: 1024px) {
   .gallery-page {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    max-width: 1200px;
+    padding: 30px 0 20px 0;
+    align-items: center;
+    justify-content: center;
   }
-  
+
   .gallery-item {
-    height: 180px;
+    height: 220px;
+    aspect-ratio: 1/1;
+  }
+
+  .gallery-page .gallery-item:first-child {
+    margin-left: 30px;
+  }
+
+  .gallery-page .gallery-item:last-child {
+    margin-right: 30px;
   }
 }
 
 @media (max-width: 768px) {
   .gallery-page {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    padding: 0 16px;
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+    padding: 30px 0 20px 0;
+    max-width: 900px;
+    margin-left: 0;
+    align-items: center;
+    justify-content: center;
   }
-  
+
   .gallery-item {
-    height: 150px;
+    height: 200px;
+    aspect-ratio: 1/1;
     border-radius: 8px;
   }
-  
+
+  .gallery-page .gallery-item:first-child {
+    margin-left: 0;
+  }
+
+  .gallery-page .gallery-item:last-child {
+    margin-right: 0;
+  }
+
   .pagination-btn {
     width: 45px;
     height: 45px;
     font-size: 20px;
   }
-  
+
   .pagination-controls {
     margin-top: 30px;
     gap: 15px;
@@ -338,28 +383,41 @@ onMounted(() => {
 
 @media (max-width: 480px) {
   .gallery-page {
-    grid-template-columns: 1fr;
-    gap: 6px;
-    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 30px 0 20px 0;
+    max-width: 600px;
+    margin-left: 0;
+    align-items: center;
+    justify-content: center;
   }
-  
+
   .gallery-item {
-    height: 200px;
+    height: 280px;
+    aspect-ratio: 1/1;
   }
-  
+
+  .gallery-page .gallery-item:first-child {
+    margin-left: 0;
+  }
+
+  .gallery-page .gallery-item:last-child {
+    margin-right: 0;
+  }
+
   .pagination-btn {
     width: 40px;
     height: 40px;
     font-size: 18px;
   }
-  
+
   .pagination-dot {
     width: 14px;
     height: 14px;
   }
 }
 
-/* PhotoSwipe overrides */
 :global(.pswp) {
   --pswp-bg: rgba(0, 0, 0, 0.9);
 }

@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import Hero from './components/Hero.vue';
+import Countdown from './components/Countdown.vue';
 import Events from './components/Events.vue';
 import Schedule from './components/Schedule.vue';
 import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
 import DressCode from './components/DressCode.vue';
 import Footer from './components/Footer.vue';
+import ConfirmAssistance from './components/ConfirmAssistance.vue';
 import MusicPlayer from './components/MusicPlayer.vue';
 import MusicModal from './components/MusicModal.vue';
 import ScrollToTop from './components/ScrollToTop.vue';
@@ -17,29 +19,19 @@ import { useImageOptimization } from './composables/useImageOptimization';
 
 const musicMuted = ref(false);
 const canAutoPlayMusic = ref(false);
-const showHeroDecoration = ref(false);
 const { preloadCriticalImages } = useImageOptimization();
 
-const handleConfirm = () => {
-  
-};
 
 const handleMusicPreference = (withMusic: boolean) => {
   musicMuted.value = !withMusic;
   canAutoPlayMusic.value = true;
 };
 
-const handleModalClosed = () => {
-  showHeroDecoration.value = true;
-};
 
-// Preload de imágenes críticas
 onMounted(() => {
   setTimeout(() => {
     const criticalImages = [
-      '/src/assets/images/married-main.webp',
-      '/src/assets/images/Hero-top.webp',
-      '/src/assets/images/Hero-bot.webp'
+      '/src/assets/images/married-main.webp'
     ];
     preloadCriticalImages(criticalImages).catch(() => {
     });
@@ -50,12 +42,13 @@ onMounted(() => {
 
 <template>
   <div class="app-container">
-  <Hero
+  <Hero />
+
+  <Countdown
+    weddingDate="2026-05-09T14:00:00"
     groom="Alejandro"
     bride="Candelaria"
     date="09 de Mayo, 2026"
-    :show-decoration="showHeroDecoration"
-    @confirm="handleConfirm"
   />
 
   <Presentation
@@ -91,13 +84,18 @@ onMounted(() => {
     description="Tu presencia es lo más importante para nosotros.<br>Si además querés hacernos un regalo te contamos cómo hacerlo."
   />
 
+  <ConfirmAssistance
+    title="Confirmar Asistencia"
+    description="Tu presencia es el mejor regalo que podríamos recibir. Por favor, confirma tu asistencia antes del 15 de abril de 2026."
+  />
+
   <Footer
     groom="Alejandro"
     bride="Candelaria"
   />
 
   <MusicPlayer :initial-muted="musicMuted" />
-  <MusicModal @music-preference="handleMusicPreference" @modal-closed="handleModalClosed" />
+  <MusicModal @music-preference="handleMusicPreference" />
   <ScrollToTop />
   </div>
 </template>

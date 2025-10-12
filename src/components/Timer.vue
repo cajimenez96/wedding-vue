@@ -28,7 +28,7 @@ const formatTime = () => {
 
 let interval: number | undefined;
 onMounted(() => {
-  formatTime(); // Ejecutar inmediatamente
+  formatTime();
   interval = window.setInterval(formatTime, 1000);
 })
 
