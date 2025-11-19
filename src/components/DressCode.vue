@@ -44,7 +44,7 @@ const handleClose = () => {
           <i class="fas fa-user-tie" aria-hidden="true"></i>
         </div>
         
-        <h3 class="modal-title">Código de vestimenta</h3>
+        <h3 class="modal-title">Sugerencias de vestimenta</h3>
         
         <p class="modal-description">
           Para que todos nos veamos elegantes y en armonía, te sugerimos el siguiente código de vestimenta:
