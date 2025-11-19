@@ -66,7 +66,7 @@ onMounted(() => {
   <Events
     title="Ceremonia"
     description="La Casona de Campo es un salón de eventos al aire libre que tiene todo lo que necesita para crear una ocasión especial e inolvidable para usted y sus invitados. "
-    location="Casona Campo"
+    location="Casona de Campo"
     startDate="2026-09-15T18:00:00"
   />
 

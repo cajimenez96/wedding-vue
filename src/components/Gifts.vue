@@ -50,9 +50,9 @@ const handleClose = () => {
           <div class="gift-option">
             <h4 class="gift-option-title">Transferencia Bancaria</h4>
             <p class="gift-option-details">
-              CBU: 0000003100000000000000<br>
-              Alias: BODA.CANDELARIA.ALEJANDRO<br>
-              Titular: Candelaria & Alejandro
+              CVU: 0000003100056920810313<br>
+              Alias: ale.cande.2026<br>
+              Titular: Alejandro Adrian Vexler
             </p>
           </div>
           

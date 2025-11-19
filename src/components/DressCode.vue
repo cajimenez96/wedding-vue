@@ -18,7 +18,7 @@ const handleClose = () => {
 
 <template>
   <div class="dress-code-section-container">
-    <Container variant="gold">
+    <Container variant="green">
       <div class="flex flex-col gap-6 justify-center items-center text-center">
         <img :src="dressCodeImage" alt="Decoración" class="dress-code-decoration-image" />
         <h2 class="text-4xl title-wedding title-section">{{ title }}</h2>
@@ -364,8 +364,8 @@ const handleClose = () => {
 }
 
 .dress-code-button-container :deep(.button.white:hover) {
-  background-color: var(--green-color) !important;
-  border-color: var(--green-color) !important;
+  background-color: var(--gold-color) !important;
+  border-color: var(--gold-color) !important;
   transform: translateY(-2px);
 }
 .dress-code-decoration-image {
