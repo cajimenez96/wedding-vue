@@ -59,37 +59,37 @@ onUnmounted(() => {
 
 const scheduleItems = [
   {
-    time: '14:00',
+    time: '13:30',
     title: 'Cóctel',
     description: 'Bienvenida y aperitivos',
     image: dishes
   },
   {
-    time: '14:30',
+    time: '14:00',
     title: 'Ceremonia',
     description: 'Intercambio de votos y anillos',
     image: mainEvent
   },
   {
-    time: '15:00',
+    time: '14:30',
     title: 'Recepción',
     description: 'Felicitaciones y fotografías',
     image: photo
   },
   {
-    time: '16:00',
+    time: '15:30',
     title: 'Almuerzo',
     description: 'Menú especial de celebración',
     image: cake
   },
   {
-    time: '18:30',
+    time: '18:00',
     title: 'Fiesta',
     description: 'Música y baile',
     image: songs
   },
   {
-    time: '22:00',
+    time: '21:30',
     title: 'Fin de fiesta',
     description: 'Despedida y agradecimientos',
     image: festivity

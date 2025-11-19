@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Hero from './components/Hero.vue';
 import Countdown from './components/Countdown.vue';
 import Events from './components/Events.vue';
 import Schedule from './components/Schedule.vue';
 import Gallery from './components/Gallery.vue';
 import Gifts from './components/Gifts.vue';
+import Photos from './components/Photos.vue';
 import DressCode from './components/DressCode.vue';
 import Footer from './components/Footer.vue';
 import ConfirmAssistance from './components/ConfirmAssistance.vue';
@@ -52,8 +52,10 @@ onMounted(() => {
   />
 
   <Presentation
-    title="La medida del amor es amar sin medida"
-    description='Nos complace invitarte a acompañarnos en el día más especial de nuestras vidas, cuando uniremos nuestros corazones en matrimonio. <br><br>Tu presencia hará de este momento un recuerdo inolvidable.'
+    title="El amor no se explica, se celebra y"
+    subtitle="hoy lo celebramos con quienes amamos"
+    description='En este día en que nuestros corazones se eligen para siempre, queremos compartir la alegría con quienes forman parte de nuestra historia.
+                 Tu presencia hará este día aún más especial para nosotros.'
   />
 
   <!-- Background para secciones intermedias -->
@@ -76,7 +78,12 @@ onMounted(() => {
 
   <DressCode
     title="Código de vestimenta"
-    description="Para que todos nos veamos elegantes y en armonía en nuestro día especial,<br>hemos preparado algunas sugerencias de vestimenta."
+    description="ELEGANTE"
+  />
+
+  <Photos 
+    title="Compartí tus fotos"
+    description="¡Ayudanos a capturar cada momento especial!<br>Subí tus fotos de la boda y creemos juntos el álbum de este día inolvidable."
   />
 
   <Gifts

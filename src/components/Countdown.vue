@@ -1,6 +1,10 @@
 <script setup lang="ts">
-import Container from './Container.vue';
-import Timer from './Timer.vue';
+import { ref } from "vue";
+import { useScrollAnimation } from "../composables/useScrollAnimation";
+import Container from "./Container.vue";
+import Timer from "./Timer.vue";
+import backgroundLeafsLeft from "../assets/images/back_lef-left.webp";
+import backgroundLeafsRight from "../assets/images/back_lef-right.webp";
 
 defineProps<{
   title?: string;
@@ -11,28 +15,58 @@ defineProps<{
   date?: string;
 }>();
 
+const countdownRef = ref<HTMLElement>();
+const { isVisible: showBackgroundImages } = useScrollAnimation(
+  countdownRef,
+  0.6
+);
 </script>
 
 <template>
-  <Container variant="white" size="wide">
+  <Container
+    variant="white"
+    size="wide"
+    customClass="relative countdown-container min-h-screen flex items-center justify-center"
+  >
     <div class="countdown-content">
-      <!-- Nombres de los novios y fecha -->
-      <div v-if="groom && bride && date" class="names-date-section text-center mb-10 -mb-6">
-        <h1 class="countdown-title">
-          <span class="desktop-layout">{{ groom }} & {{ bride }}</span>
-          <span class="mobile-layout">
-            <span class="groom-name">{{ groom }}</span>
-            <span class="ampersand">&</span>
-            <span class="bride-name">{{ bride }}</span>
-          </span>
-        </h1>
-        <p class="countdown-date">{{ date }}</p>
+      <div
+        class="countdown-background-left"
+        :class="{ 'animate-slide-left': showBackgroundImages }"
+      >
+        <img :src="backgroundLeafsLeft" alt="" class="leafs-left-image" />
+      </div>
+      <div
+        class="countdown-background-right"
+        :class="{ 'animate-slide-right': showBackgroundImages }"
+      >
+        <img :src="backgroundLeafsRight" alt="" class="leafs-right-image" />
+      </div>
+      <div ref="countdownRef" class="countdown-content relative z-10">
+        <!-- Nombres de los novios y fecha -->
+        <div
+          v-if="groom && bride && date"
+          class="names-date-section text-center mb-10 -mb-6"
+        >
+          <h1 class="countdown-title">
+            <span class="desktop-layout">{{ groom }} & {{ bride }}</span>
+            <span class="mobile-layout">
+              <span class="groom-name">{{ groom }}</span>
+              <span class="ampersand">&</span>
+              <span class="bride-name">{{ bride }}</span>
+            </span>
+          </h1>
+          <p class="countdown-date">{{ date }}</p>
+        </div>
       </div>
 
       <!-- Título y descripción del countdown -->
       <div v-if="title" class="text-center mb-10">
         <h2 class="text-4xl title-wedding title-section">{{ title }}</h2>
-        <p v-if="description" class="text-xl text-center mt-4" v-html="description"></p>
+        <p
+          v-if="description"
+          class="text-xl text-center mt-4"
+          v-html="description"
+        ></p>
       </div>
 
       <!-- Temporizador -->
@@ -46,6 +80,69 @@ defineProps<{
 </template>
 
 <style scoped>
+/* Decoraciones laterales - Adaptadas para fondo blanco */
+.countdown-background-left {
+  position: absolute;
+  top: 0;
+  left: -550px;
+  width: 350px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(-100px);
+  transition: all 1.2s ease-out;
+}
+
+.countdown-background-right {
+  position: absolute;
+  top: 0;
+  right: -550px;
+  width: 350px;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateX(100px);
+  transition: all 1.2s ease-out;
+}
+
+.animate-slide-left {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-slide-right {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.leafs-left-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  filter: brightness(0.8) contrast(1.2) saturate(1.3);
+  padding-right: 50px;
+}
+
+.leafs-right-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: left;
+  opacity: 0.15;
+  mix-blend-mode: multiply;
+  filter: brightness(0.8) contrast(1.2) saturate(1.3);
+  padding-left: 50px;
+}
+
+.countdown-container :deep(.container) {
+  overflow-x: hidden;
+}
+
 .countdown-content {
   width: 100%;
   max-width: 800px;
@@ -224,6 +321,79 @@ defineProps<{
     max-width: 350px;
     padding: 1.75rem 1.25rem;
     border-radius: 10px;
+  }
+}
+
+@media (max-width: 1024px) and (min-width: 769px) {
+  .countdown-background-left,
+  .countdown-background-right {
+    width: 280px;
+  }
+  
+  .countdown-background-left {
+    left: -105px;
+  }
+  
+  .countdown-background-right {
+    right: -105px;
+  }
+
+  .leafs-left-image {
+    padding-right: 30px;
+  }
+
+  .leafs-right-image {
+    padding-left: 30px;
+  }
+}
+
+@media (max-width: 768px) {
+  .countdown-background-left,
+  .countdown-background-right {
+    width: 150px;
+  }
+  
+  .countdown-background-left {
+    left: 34px;
+  }
+  
+  .countdown-background-right {
+    right: 34px;
+  }
+
+  .leafs-left-image {
+    padding-right: 20px;
+    opacity: 0.12;
+  }
+
+  .leafs-right-image {
+    padding-left: 20px;
+    opacity: 0.12;
+  }
+}
+
+@media (max-width: 480px) {
+  .countdown-background-left,
+  .countdown-background-right {
+    width: 220px;
+  }
+  
+  .countdown-background-left {
+    left: -2px;
+  }
+  
+  .countdown-background-right {
+    right: -2px;
+  }
+
+  .leafs-left-image {
+    padding-right: 15px;
+    opacity: 0.1;
+  }
+
+  .leafs-right-image {
+    padding-left: 15px;
+    opacity: 0.1;
   }
 }
 </style>

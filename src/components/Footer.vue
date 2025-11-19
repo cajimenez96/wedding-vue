@@ -103,7 +103,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9);
 
 .footer-decoration {
   position: absolute;
-  bottom: -75%;
+  bottom: -70%;
   left: 0;
   right: 0;
   z-index: 1;
@@ -115,7 +115,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9);
 }
 
 .footer-decoration-image {
-  width: 85%;
+  width: 68%;
   height: auto;
   object-fit: cover;
   transform: translateY(15%);
@@ -125,7 +125,7 @@ const { isVisible } = useScrollAnimation(footerRef, 0.9);
 
 @media (max-width: 1024px) and (min-width: 769px) {
   .footer-decoration {
-    bottom: -35%;
+    bottom: -65%;
   }
 
   .footer-decoration-image {

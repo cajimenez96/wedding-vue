@@ -1,44 +1,14 @@
 <script lang="ts" setup>
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import PhotoSwipeGallery from './PhotoSwipeGallery.vue';
 import Container from './Container.vue';
+import { GALLERY_IMAGES } from '../config/cloudinaryGallery';
 
 defineProps<{
   title?: string;
 }>();
 
-const images = ref<Array<{url: string, id: string}>>([]);
-const isLoading = ref(true);
-
-const loadImages = async () => {
-  try {
-    const imageModules = import.meta.glob('../assets/carousel/*.jpg', { eager: false });
-    const loadedImages = await Promise.all(
-      Object.entries(imageModules).map(async ([path, loader]) => {
-        try {
-          const mod = await loader();
-          const id = path.split('/').pop() || path;
-          return {
-            url: (mod as any).default,
-            id,
-          };
-        } catch (error) {
-          return null;
-        }
-      })
-    );
-    
-    images.value = loadedImages.filter(img => img !== null) as Array<{url: string, id: string}>;
-    isLoading.value = false;
-  } catch (error) {
-    isLoading.value = false;
-  }
-};
-
-onMounted(() => {
-  loadImages();
-});
-
+const images = ref(GALLERY_IMAGES);
 </script>
 
 <template>
@@ -47,12 +17,7 @@ onMounted(() => {
       <h2 class="text-4xl title-wedding title-section text-green-color">{{ title }}</h2>
     </div>
     <div class="w-full mx-auto">
-      <div v-if="isLoading" class="flex justify-center items-center h-64">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600"></div>
-        <span class="ml-3 text-green-600">Cargando galería...</span>
-      </div>
-      <PhotoSwipeGallery v-else :images="images" />
+      <PhotoSwipeGallery :images="images" />
     </div>
   </Container>
 </template>
-

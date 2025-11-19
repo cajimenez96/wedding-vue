@@ -2,6 +2,7 @@
 import Button from './Button.vue';
 import Container from './Container.vue';
 import { ref } from 'vue';
+import dressCodeImage from '../assets/images/back/diamond.png';
 
 defineProps<{
   title?: string;
@@ -19,15 +20,16 @@ const handleClose = () => {
   <div class="dress-code-section-container">
     <Container variant="gold">
       <div class="flex flex-col gap-6 justify-center items-center text-center">
+        <img :src="dressCodeImage" alt="Decoración" class="dress-code-decoration-image" />
         <h2 class="text-4xl title-wedding title-section">{{ title }}</h2>
-        <div class="flex flex-col px-5 md:w-lg">
+        <div class="flex flex-col px-5 w-3/4 md:w-lg">
           <div class="border-t border-b border-gray-300 py-5 my-4 flex flex-col gap-4 items-center">
             <p class="text-xl text-center" v-html="description"></p>
           </div>
         </div>
 
         <div class="dress-code-button-container">
-          <Button variant="white" @click="showModal = true">Ver código de vestimenta</Button>
+          <Button variant="white" @click="showModal = true">Tips de vestimenta</Button>
         </div>
       </div>
     </Container>
@@ -366,5 +368,26 @@ const handleClose = () => {
   border-color: var(--green-color) !important;
   transform: translateY(-2px);
 }
+.dress-code-decoration-image {
+  width: 80px;
+  height: auto;
+}
 
+@media (max-width: 1024px) {
+  .dress-code-decoration-image {
+      width: 90px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dress-code-decoration-image {
+    width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .dress-code-decoration-image {
+    width: 80px;
+  }
+}
 </style>

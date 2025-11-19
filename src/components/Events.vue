@@ -34,13 +34,13 @@ const props = defineProps<{
       </div>
     </div>
 
-    <div class="border-t border-b border-gray-300 py-5 mt-10 flex flex-col gap-4">
+    <div class="border-t border-b border-gray-300 py-5 mt-10 mb-10 flex flex-col gap-4">
       <p class="text-2xl text-center font-medium">{{ props.location }}</p>
-      <p class="text-xl text-center" v-html="props.description"></p>
     </div>
     <div class="events-buttons-container">
-      <Button variant="outline">Confirmar asistencia</Button>
-      <Button variant="primary">Como llegar</Button>
+      <a href="https://maps.app.goo.gl/v9N3qguyrs23ttKP7">
+        <Button variant="primary">Como llegar</Button>
+      </a>
     </div>
   </Container>
 </template>
@@ -74,14 +74,10 @@ const props = defineProps<{
 }
 
 .events-buttons-container {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  margin-top: 1.25rem;
-  justify-content: center;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
+  width: calc(100% - 2rem);
+  max-width: 300px;
+  padding: 0 1rem;
+  margin: 0 auto;
 }
 
 .events-buttons-container :deep(button) {
