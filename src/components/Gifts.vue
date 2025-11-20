@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import Button from './Button.vue';
-import Container from './Container.vue';
-import { ref } from 'vue';
+import Button from "./Button.vue";
+import Container from "./Container.vue";
+import { ref } from "vue";
 
 defineProps<{
   title?: string;
@@ -9,9 +9,22 @@ defineProps<{
 }>();
 
 const showModal = ref(false);
+const copiedField = ref<string | null>(null);
 
 const handleClose = () => {
   showModal.value = false;
+};
+
+const copyToClipboard = async (text: string, fieldName: string) => {
+  try {
+    await navigator.clipboard.writeText(text);
+    copiedField.value = fieldName;
+    setTimeout(() => {
+      copiedField.value = null;
+    }, 2000);
+  } catch (err) {
+    console.error("Error al copiar:", err);
+  }
 };
 </script>
 
@@ -20,13 +33,17 @@ const handleClose = () => {
     <div class="flex flex-col gap-6 justify-center items-center text-center">
       <h2 class="text-4xl title-wedding title-section">{{ title }}</h2>
       <div class="flex flex-col px-5 md:w-lg">
-        <div class="border-t border-b border-gray-300 py-5 my-4 flex flex-col gap-4 items-center">
+        <div
+          class="border-t border-b border-gray-300 py-5 my-4 flex flex-col gap-4 items-center"
+        >
           <p class="text-xl text-center" v-html="description"></p>
         </div>
       </div>
 
       <div class="gifts-button-container">
-        <Button variant="white" @click="showModal = true">Más información</Button>
+        <Button variant="white" @click="showModal = true"
+          >Más información</Button
+        >
       </div>
     </div>
   </Container>
@@ -39,24 +56,61 @@ const handleClose = () => {
         <div class="modal-icon">
           <i class="fas fa-gift" aria-hidden="true"></i>
         </div>
-        
+
         <h3 class="modal-title">¡Gracias por ayudarnos!</h3>
-        
+
         <p class="modal-description">
-          Tu presencia es nuestro mejor regalo. Si querés hacernos un obsequio, aquí están nuestros datos:
+          Tu presencia es nuestro mejor regalo. Si querés hacernos un obsequio,
+          aquí están nuestros datos:
         </p>
-        
+
         <div class="gift-info">
-          <div class="gift-option">
-            <h4 class="gift-option-title">Transferencia Bancaria</h4>
-            <p class="gift-option-details">
-              CVU: 0000003100056920810313<br>
-              Alias: ale.cande.2026<br>
-              Titular: Alejandro Adrian Vexler
-            </p>
+          <div class="gift-info">
+            <div class="gift-option">
+              <h4 class="gift-option-title">Transferencia Bancaria</h4>
+              <div class="gift-option-details">
+                <div class="copy-row">
+                  <span><strong>CVU:</strong> 0000003100056920810313</span>
+                  <button
+                    @click="copyToClipboard('0000003100056920810313', 'cvu')"
+                    class="copy-button"
+                    :class="{ copied: copiedField === 'cvu' }"
+                    :title="copiedField === 'cvu' ? '¡Copiado!' : 'Copiar CVU'"
+                  >
+                    <i
+                      :class="
+                        copiedField === 'cvu' ? 'fas fa-check' : 'fas fa-copy'
+                      "
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                </div>
+                <div class="copy-row">
+                  <span><strong>Alias:</strong> ale.cande.2026</span>
+                  <button
+                    @click="copyToClipboard('ale.cande.2026', 'alias')"
+                    class="copy-button"
+                    :class="{ copied: copiedField === 'alias' }"
+                    :title="
+                      copiedField === 'alias' ? '¡Copiado!' : 'Copiar Alias'
+                    "
+                  >
+                    <i
+                      :class="
+                        copiedField === 'alias' ? 'fas fa-check' : 'fas fa-copy'
+                      "
+                      aria-hidden="true"
+                    ></i>
+                  </button>
+                </div>
+                <div class="copy-row">
+                  <span><strong>Titular:</strong> Alejandro Adrian Vexler</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        
+
         <div class="modal-buttons">
           <button @click="handleClose" class="modal-button primary">
             <i class="fas fa-heart me-2" aria-hidden="true"></i>
@@ -85,8 +139,12 @@ const handleClose = () => {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal-container {
@@ -104,11 +162,11 @@ const handleClose = () => {
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(30px) scale(0.95);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
@@ -137,7 +195,7 @@ const handleClose = () => {
 }
 
 .modal-title {
-  font-family: 'Sail', cursive;
+  font-family: "Sail", cursive;
   font-size: 1.5rem;
   color: var(--text-dark);
   margin: 0;
@@ -179,6 +237,57 @@ const handleClose = () => {
   margin: 0;
   line-height: 1.5;
   font-size: 0.95rem;
+}
+
+.copy-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.copy-row:last-child {
+  margin-bottom: 0;
+}
+
+.copy-button {
+  background: rgba(74, 99, 96, 0.1);
+  border: 1px solid rgba(74, 99, 96, 0.2);
+  border-radius: 6px;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--green-color);
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+}
+
+.copy-button:hover {
+  background: rgba(74, 99, 96, 0.15);
+  border-color: var(--green-color);
+  transform: scale(1.05);
+}
+
+.copy-button.copied {
+  background: var(--green-color);
+  border-color: var(--green-color);
+  color: white;
+  animation: pulse 0.3s ease-out;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
 }
 
 .modal-buttons {
@@ -251,7 +360,7 @@ const handleClose = () => {
     width: calc(100vw - 2rem);
     padding: 0 1rem;
   }
-  
+
   .gifts-button-container :deep(.button) {
     white-space: nowrap;
     min-width: 280px;
@@ -263,31 +372,31 @@ const handleClose = () => {
     padding: 1.5rem;
     gap: 1.25rem;
   }
-  
+
   .modal-title {
     font-size: 1.5rem;
   }
-  
+
   .modal-description {
     font-size: 0.9rem;
   }
-  
+
   .gift-option {
     padding: 1.25rem;
   }
-  
+
   .gift-option-title {
     font-size: 1rem;
   }
-  
+
   .gift-option-details {
     font-size: 0.9rem;
   }
-  
+
   .modal-buttons {
     flex-direction: column;
   }
-  
+
   .modal-button {
     min-width: auto;
     font-size: 0.9rem;
