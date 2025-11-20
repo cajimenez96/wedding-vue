@@ -22,7 +22,7 @@ export const GALLERY_IMAGES = [
   },
   {
     id: 'wedding-photo-6',
-    url: 'https://res.cloudinary.com/dllmxh3xk/image/upload/v1763471241/25__xnx0hy.jpg'
+    url: 'https://res.cloudinary.com/dllmxh3xk/image/upload/v1763603724/Recortada_p0e74t.jpg'
   },
     {
     id: 'wedding-photo-7',
