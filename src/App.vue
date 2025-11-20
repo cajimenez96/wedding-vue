@@ -93,7 +93,7 @@ onMounted(() => {
 
   <ConfirmAssistance
     title="Confirmar Asistencia"
-    description="Tu presencia es el mejor regalo que podríamos recibir. Por favor, confirma tu asistencia antes del 15 de abril de 2026."
+    description="Tu presencia es el mejor regalo que podríamos recibir. Por favor, confirma tu asistencia antes del 31 de Enero de 2026."
   />
 
   <Footer

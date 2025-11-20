@@ -8,7 +8,7 @@ defineProps<{
 }>();
 
 const handleUploadClick = () => {
-  window.open('https://nuestra-boda-beta.vercel.app/77538113-55af-474a-a8c2-ec0bc3b82610', '_blank');
+  window.open('https://pupaeventos.com/77538113-55af-474a-a8c2-ec0bc3b82610', '_blank');
 };
 </script>
 

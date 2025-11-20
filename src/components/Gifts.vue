@@ -55,14 +55,6 @@ const handleClose = () => {
               Titular: Alejandro Adrian Vexler
             </p>
           </div>
-          
-          <div class="gift-option">
-            <h4 class="gift-option-title">Lista de Regalos</h4>
-            <p class="gift-option-details">
-              También tenemos una lista de regalos en Falabella<br>
-              Código: CANDEALEJ2026
-            </p>
-          </div>
         </div>
         
         <div class="modal-buttons">
