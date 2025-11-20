@@ -228,18 +228,14 @@ onMounted(() => {
 }
 
 .gallery-item {
-  max-height: 400px;
-  max-width: 400px;
-  min-height: 200px;
-  min-width: 200px;
-  height: auto;
-  width: auto;
+  height: 400px;
   overflow: hidden;
   border-radius: 12px;
   cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   position: relative;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  aspect-ratio: 1/1;
 }
 
 .gallery-item:hover {
@@ -250,7 +246,7 @@ onMounted(() => {
 .gallery-image {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   transition: transform 0.3s ease;
   object-position: center;
 }

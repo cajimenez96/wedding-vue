@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Button from './Button.vue';
+// import Button from './Button.vue';
 import Container from './Container.vue';
 import { ref } from 'vue';
 import dressCodeImage from '../assets/images/back/diamond.png';
@@ -28,9 +28,9 @@ const handleClose = () => {
           </div>
         </div>
 
-        <div class="dress-code-button-container">
+        <!-- <div class="dress-code-button-container">
           <Button variant="white" @click="showModal = true">Tips de vestimenta</Button>
-        </div>
+        </div> -->
       </div>
     </Container>
   </div>
