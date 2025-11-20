@@ -334,8 +334,12 @@ onMounted(() => {
   }
 
   .gallery-item {
-    height: 220px;
-    aspect-ratio: 1/1;
+    max-height: 225px;
+    max-width: 225px;
+    min-height: 125px;
+    min-width: 150px;
+    height: auto;
+    width: auto;
   }
 
   .gallery-page .gallery-item:first-child {
@@ -360,8 +364,12 @@ onMounted(() => {
   }
 
   .gallery-item {
-    height: 200px;
-    aspect-ratio: 1/1;
+    max-height: 220px;
+    max-width: 220px;
+    min-height: 150px;
+    min-width: 150px;
+    height: auto;
+    width: auto;
     border-radius: 8px;
   }
 
@@ -398,8 +406,13 @@ onMounted(() => {
   }
 
   .gallery-item {
-    height: 280px;
-    aspect-ratio: 1/1;
+    max-height: 250px;
+    max-width: 300px;
+    min-height: 100px;
+    min-width: 100px;
+    height: auto;
+    width: auto;
+  }
   }
 
   .gallery-page .gallery-item:first-child {
@@ -420,7 +433,7 @@ onMounted(() => {
     width: 14px;
     height: 14px;
   }
-}
+
 
 /* Optimización específica para Realme X3 SuperZoom y pantallas similares (2400x1080) */
 @media only screen 
@@ -437,7 +450,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     gap: 18px;
-    padding: 25px 0 20px 0;
+    padding: 5px 0 5px 0;
     max-width: 100%;
     margin: 0 auto;
     align-items: center;
@@ -445,10 +458,12 @@ onMounted(() => {
   }
 
   .gallery-item {
-    height: 320px;
-    width: 90%;
-    max-width: 340px;
-    aspect-ratio: 1/1;
+    max-height: 250px;
+    max-width: 250px;
+    min-height: 200px;
+    min-width: 200px;
+    height: auto;
+    width: auto;
     border-radius: 10px;
     margin: 0 auto;
   }
